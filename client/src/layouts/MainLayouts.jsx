@@ -1,14 +1,16 @@
-import React from 'react'
-import{ Outlet } from "react-router-dom"
-import Navbar from '../components/Navbar'
+import React from "react";
+import { Outlet } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 const MainLayouts = () => {
   return (
-    <div>
-        <Navbar />
+    <>
+      <Navbar />
+      <div className="px-4 mt-6 md:px-8 lg:px-32 2xl:px-60">
         <Outlet />
-    </div>
-  )
-}
+      </div>
+    </>
+  );
+};
 
-export default MainLayouts
+export default MainLayouts;

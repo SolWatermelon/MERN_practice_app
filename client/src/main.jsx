@@ -1,37 +1,34 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import App from "./App.jsx";
 import {
   createBrowserRouter,
   RouterProvider,
   Route,
   Link,
 } from "react-router-dom";
-
-// import Navbar from "./components/Navbar"
-// import
-import Home from "./routes/Home"
-import About from "./routes/About"
-import SignIn from "./routes/SignIn"
-import SignUp from "./routes/SignUp"
-import Profile from "./routes/Profile"
-import MainLayouts from './layouts/MainLayouts';
-
-
+import Home from "./routes/Home";
+import About from "./routes/About";
+import SignIn from "./routes/SignIn";
+import SignUp from "./routes/SignUp";
+import Profile from "./routes/Profile";
+import MainLayouts from "./layouts/MainLayouts";
+import { Provider } from "react-redux";
+// import store from "./store";
 
 const router = createBrowserRouter([
   {
-    element: <MainLayouts/>,
+    element: <MainLayouts />,
     children: [
       {
         path: "/",
-        element:  <Home/>
+        element: <Home />,
       },
       {
         path: "/about",
         // element: <PostListPage />,
-        element: <About/>
+        element: <About />,
       },
       {
         path: "/sing-in",
@@ -44,16 +41,16 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <Profile />,
-      }
+      },
     ],
   },
 ]);
 
-
-
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
     {/* <App /> */}
-    <RouterProvider router={router} />
+    {/* <Provider store={store}> */}
+      <RouterProvider router={router} />
+    {/* </Provider> */}
   </StrictMode>
-)
+);
