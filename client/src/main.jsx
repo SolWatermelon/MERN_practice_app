@@ -15,6 +15,7 @@ import SignUp from "./routes/SignUp";
 import Profile from "./routes/Profile";
 import MainLayouts from "./layouts/MainLayouts";
 import { Provider } from "react-redux";
+import News from "./routes/News";
 // import store from "./store";
 
 const router = createBrowserRouter([
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <Profile />,
+      },
+      {
+        path: "/news",
+        element: <News />,
       },
     ],
   },
