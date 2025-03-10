@@ -8,21 +8,27 @@ const SignUp = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
+  const [formdata, setFormData] = useState(null);
   const onSubmit = (data) => {
+
+    setFormData(data);
     console.log(data);
+    reset();
   };
 
   return (
     <div className="flex items-center justify-center w-full">
       <div className="bg-white rounded-lg shadow-md p-8 w-full max-w-md">
+        {/* <h1 className="text-4xl font-bold text-gray-700 mb-8">{formdata?.name&&<p>{formdata.name}{formdata.email}{formdata.password}</p>}</h1> */}
         <h1 className="text-4xl font-bold text-gray-700 mb-8">Sign Up</h1>
-
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <input
+              id="name"
               type="text"
               placeholder="name"
               className="w-full p-3 border border-pink-200 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-200"
@@ -38,6 +44,7 @@ const SignUp = () => {
 
           <div className="mb-4">
             <input
+              id="email"
               type="email"
               placeholder="email"
               className="w-full p-3 border border-pink-200 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-200"
@@ -59,6 +66,7 @@ const SignUp = () => {
 
           <div className="mb-6">
             <input
+              id="password"
               type="password"
               placeholder="password"
               className="w-full p-3 border border-pink-200 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-200"
