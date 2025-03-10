@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { useForm } from "react-hook-form";
+// , useDispatch 
+import { useSelector, useDispatch} from "react-redux";
+import {toggleMenu} from "../slices/navToggleSlice"
 
 const Navbar = () => {
+  const { isOpened } = useSelector((state) => state.navToggleReducer);
+  const dispatch = useDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
   const {
@@ -34,7 +39,7 @@ const Navbar = () => {
     e.stopPropagation();
   };
 
-  // 點畫面任一處關閉所有
+  // 點nav任一處關閉所有
   const handleGlobalClick = () => {
     setIsMenuOpen(false);
     setIsAvatarOpen(false);
@@ -45,10 +50,17 @@ const Navbar = () => {
     console.log("搜尋");
   };
 
+  useEffect(() => {
+    setIsMenuOpen(false);
+    setIsAvatarOpen(false);
+  }, [isOpened]);
+
   return (
     <header
       className="w-full bg-white shadow-md relative"
-      onClick={handleGlobalClick}
+      onClick={() => {
+        dispatch(toggleMenu());
+      }}
     >
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
@@ -96,9 +108,9 @@ const Navbar = () => {
               <Link to="/news" className="hover:text-purple-500">
                 News
               </Link>
-              <Link to="/auth/login">
+              <Link to="/sign-in">
                 <button className="bg-purple-300 hover:bg-purple-400 text-white px-4 py-1 rounded-full transition-colors">
-                  Login
+                  Sign In
                 </button>
               </Link>
             </nav>
@@ -186,14 +198,28 @@ const Navbar = () => {
               >
                 <div className="flex flex-col items-center py-8 space-y-6">
                   <p className="text-pink-500">MENU</p>
-                  <Link to="/" className="text-lg hover:text-purple-500 transition-all">
+                  <Link
+                    to="/"
+                    className="text-lg hover:text-purple-500 transition-all"
+                  >
                     Home
                   </Link>
-                  <Link to="/about" className="text-lg hover:text-purple-500 transition-all">
+                  <Link
+                    to="/about"
+                    className="text-lg hover:text-purple-500 transition-all"
+                  >
                     About
                   </Link>
-                  <Link to="/news" className="text-lg hover:text-purple-500 transition-all">
+                  <Link
+                    to="/news"
+                    className="text-lg hover:text-purple-500 transition-all"
+                  >
                     News
+                  </Link>
+                  <Link to="/sign-in">
+                    <button className="bg-purple-300 hover:bg-purple-400 text-white px-4 py-1 rounded-full transition-colors">
+                      Sign In
+                    </button>
                   </Link>
                 </div>
               </div>

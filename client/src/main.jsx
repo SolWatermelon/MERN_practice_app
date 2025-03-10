@@ -16,7 +16,10 @@ import Profile from "./routes/Profile";
 import MainLayouts from "./layouts/MainLayouts";
 import { Provider } from "react-redux";
 import News from "./routes/News";
+import store from "./store";
+// import { Provider } from "react-redux"
 // import store from "./store";
+// import store from ""
 
 const router = createBrowserRouter([
   {
@@ -32,7 +35,7 @@ const router = createBrowserRouter([
         element: <About />,
       },
       {
-        path: "/sing-in",
+        path: "/sign-in",
         element: <SignIn />,
       },
       {
@@ -53,9 +56,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+  {/* <Store></Store> */}
     {/* <App /> */}
-    {/* <Provider store={store}> */}
+    <Provider store={store}>
       <RouterProvider router={router} />
-    {/* </Provider> */}
+    </Provider>
   </StrictMode>
 );
