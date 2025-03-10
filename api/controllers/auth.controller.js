@@ -1,7 +1,7 @@
 import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 
-export const signup = async (req, res) => {
+export const signup = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
     // hashSync
@@ -14,6 +14,6 @@ export const signup = async (req, res) => {
     await newUser.save();
     return res.status(201).json({ message: "新增資料成功" });
   } catch (e) {
-    return res.status(500).json({ message: "新增資料失敗", error: e.message });
+    next(e)
   }
 };
