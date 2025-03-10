@@ -1,7 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-
+import { Link } from "react-router-dom";
+import { ErrorMessage } from "@hookform/error-message";
 // =============================== 可以使用react hook form將state存在redux!!!請看form的官網(但我們是要redux toolkit唷) ----------------------
 const SignUp = () => {
   const {
@@ -20,30 +21,40 @@ const SignUp = () => {
         <h1 className="text-4xl font-bold text-gray-700 mb-8">Sign Up</h1>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-
-
-
-
-        <div className="mb-4">
+          <div className="mb-4">
             <input
               type="text"
               placeholder="name"
               className="w-full p-3 border border-pink-200 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-200"
-              {...register("name", { required: true })}
+              {...register("name", { required: "name is required." })}
             />
-            {errors.name && <p>Name is required</p>}
+            <ErrorMessage
+              errors={errors}
+              name="name"
+              as="p"
+              className="text-red-500 text-sm"
+            />
           </div>
-
-
 
           <div className="mb-4">
             <input
               type="email"
               placeholder="email"
               className="w-full p-3 border border-pink-200 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-200"
-              {...register("email", { required: true })}
+              {...register("email", {
+                required: "Email is required.",
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                  message: "Email format is incorrect.",
+                },
+              })}
             />
-            {errors.email && <p>Email is required</p>}
+            <ErrorMessage
+              errors={errors}
+              name="email"
+              as="p"
+              className="text-red-500 text-sm"
+            />
           </div>
 
           <div className="mb-6">
@@ -51,9 +62,17 @@ const SignUp = () => {
               type="password"
               placeholder="password"
               className="w-full p-3 border border-pink-200 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-200"
-              {...register("password, { required: true})")}
+              {...register("password", {
+                required: "password is required",
+                minLength: { value: 8, message: "minimun is 8 characters." },
+              })}
             />
-            {errors.password && <p>Password is required</p>}
+            <ErrorMessage
+              errors={errors}
+              name="password"
+              as="p"
+              className="text-red-500 text-sm"
+            />
           </div>
 
           <button
@@ -72,9 +91,9 @@ const SignUp = () => {
 
         <div className="text-center mt-6 text-gray-500 text-sm">
           You already have an account?
-          <a href="#" className="text-gray-700 ml-1">
-            sign in
-          </a>
+          <Link to={"/sign-in"} className="text-gray-700 ml-1">
+            <span className="text-blue-700 decoration-blue-700">sign in</span>
+          </Link>
         </div>
       </div>
     </div>
