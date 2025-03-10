@@ -1,9 +1,18 @@
 import React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ErrorMessage } from "@hookform/error-message";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { signUp, getUser } from "../service/service";
+
 // =============================== 可以使用react hook form將state存在redux!!!請看form的官網(但我們是要redux toolkit唷) ----------------------
+
 const SignUp = () => {
   const {
     register,
@@ -12,12 +21,24 @@ const SignUp = () => {
     formState: { errors },
   } = useForm();
 
-  const [formdata, setFormData] = useState(null);
-  const onSubmit = (data) => {
+  // const [formdata, setFormData] = useState(null);
+  const queryClient = useQueryClient();
+  const navigate = useNavigate()
 
-    setFormData(data);
-    console.log(data);
+  const mutation = useMutation({
+    mutationFn: (userSigninData) => signUp(userSigninData),
+    onSuccess: () => {
+      setTimeout(() => {
+        navigate("/sign-in")
+      }, 2000)
+  },
+  });
+
+  const onSubmit = (data) => {
+    // setFormData(data);
+    mutation.mutate({ ...data });
     reset();
+
   };
 
   return (
@@ -25,6 +46,14 @@ const SignUp = () => {
       <div className="bg-white rounded-lg shadow-md p-8 w-full max-w-md">
         {/* <h1 className="text-4xl font-bold text-gray-700 mb-8">{formdata?.name&&<p>{formdata.name}{formdata.email}{formdata.password}</p>}</h1> */}
         <h1 className="text-4xl font-bold text-gray-700 mb-8">Sign Up</h1>
+
+        {mutation.isError && (
+          <p className="text-red-500 text-sm">{"信箱已被使用，請重新註冊"}</p>
+        )}
+
+        {mutation.isSuccess && (
+          <p className="text-blue-500 text-sm">{"成功註冊！即將跳轉到登入頁..."}</p>
+        )}
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <input
@@ -84,23 +113,24 @@ const SignUp = () => {
           </div>
 
           <button
+          disabled={mutation.isPending} 
             type="submit"
             className="w-full bg-pink-200 text-gray-700 font-medium py-3 px-4 rounded-full hover:bg-pink-300 transition duration-200"
           >
-            Sign up
+            {mutation.isPending ? "還在pend可以放icon" : "Sign up"}
           </button>
         </form>
 
         <div className="text-center my-4 text-gray-500">or</div>
 
-        <button className="w-full bg-pink-200 text-gray-700 font-medium py-3 px-4 rounded-full flex items-center justify-center hover:bg-pink-300 transition duration-200">
+        <button disabled={mutation.isPending} className="w-full bg-pink-200 text-gray-700 font-medium py-3 px-4 rounded-full flex items-center justify-center hover:bg-pink-300 transition duration-200">
           Sign in with Google
         </button>
 
-        <div className="text-center mt-6 text-gray-500 text-sm">
+        <div disabled={mutation.isPending}  className="text-center mt-6 text-gray-500 text-sm">
           You already have an account?
           <Link to={"/sign-in"} className="text-gray-700 ml-1">
-            <span className="text-blue-700 decoration-blue-700">sign in</span>
+            <span className="text-blue-700">sign in</span>
           </Link>
         </div>
       </div>
