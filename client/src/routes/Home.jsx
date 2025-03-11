@@ -1,12 +1,21 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
+
 // import { toggleMenu } from "../slices/navMenuToggleSlice";
 import { toggleMenu } from "../slices/navToggleSlice.js";
-// , useDispatch
 const Home = () => {
   const dispatch = useDispatch();
   const { isOpened } = useSelector((state) => state.navToggleReducer);
+  const { currentUser } = useSelector((state) => state.userReducer);
+
+
+
+  // useEffect(() => {
+  //   console.log("currentUser:", currentUser)
+
+  // }, [currentUser]);
+
   return (
     <div
       className="mt-14"
@@ -14,7 +23,7 @@ const Home = () => {
         dispatch(toggleMenu());
       }}
     >
-    {/* <div>{isOpened? "開":"關"}</div> */}
+    {/* <p>{currentUser?.emaial}</p> */}
       <blockquote
         className={`text-2xl font-semibold italic text-center text-slate-900`}
       >

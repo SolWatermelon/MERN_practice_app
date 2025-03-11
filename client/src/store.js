@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import navToggleReducer from "./slices/navToggleSlice.js";
-import { userReducer } from "./slices/userSlice.js";
+import userReducer from "./slices/userSlice.js";
 
 export default configureStore({
   reducer: {

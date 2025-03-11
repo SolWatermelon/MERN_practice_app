@@ -2,6 +2,7 @@ import axios from "axios";
 
 // axios.defaults.baseURL = "http://localhost:3000"
 
+
 export const getUser = async () => {
   try {
     const res = await axios.get("/posts");
@@ -17,12 +18,14 @@ export const getUser = async () => {
 
 export const signUp = async (data) => {
   const { name, email, password } = data;
+
   try {
     const res = await axios.post("/api/auth/signup", {
       username:name,
       email,
       password,
     });
+    
     return res.data;
   } catch (e) {
     // 一定要拋出來，錯誤時isError才會抓到
@@ -32,12 +35,14 @@ export const signUp = async (data) => {
 
 
 export const signIn = async (data) => {
+
     const { email, password } = data;
     try {
       const res = await axios.post("/api/auth/signin", {
         email,
         password,
       });
+      // console.log("res.data:",res.data)
       return res.data;
     } catch (e) {
       // 一定要拋出來，錯誤時isError才會抓到

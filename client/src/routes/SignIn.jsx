@@ -1,7 +1,10 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch} from "react-redux";
+// // import {toggleMenu} from "../slices/navToggleSlice.js"
+import {signInSuccess} from "../slices/userSlice.js"
 import { ErrorMessage } from "@hookform/error-message";
 import {
   QueryClient,
@@ -13,6 +16,8 @@ import { signIn, getUser } from "../service/service";
 
 // =============================== 可以使用react hook form將state存在redux!!!請看form的官網(但我們是要redux toolkit唷) ----------------------
 const SignIn = () => {
+  // const { currentUser } = useSelector((state) => state.userReducer);
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -25,11 +30,15 @@ const SignIn = () => {
 
   const mutation = useMutation({
     mutationFn: (userSigninData) => signIn(userSigninData),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      dispatch(signInSuccess(data))
       setTimeout(() => {
         navigate("/");
       }, 1000);
     },
+    onError: (error) => {
+    console.error("API error:", error);
+  },
 
   });
 
@@ -38,6 +47,8 @@ const SignIn = () => {
     mutation.mutate({ ...data });
     reset();
   };
+
+
 
   return (
     <div className="flex items-center justify-center w-full">

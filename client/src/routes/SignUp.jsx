@@ -23,22 +23,23 @@ const SignUp = () => {
 
   // const [formdata, setFormData] = useState(null);
   const queryClient = useQueryClient();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const mutation = useMutation({
     mutationFn: (userSigninData) => signUp(userSigninData),
     onSuccess: () => {
       setTimeout(() => {
-        navigate("/sign-in")
-      }, 1000)
-  },
+        navigate("/sign-in");
+      }, 1000);
+    },
+    onError: (error) => {
+      console.error("API error:", error);
+    },
   });
 
   const onSubmit = (data) => {
-    // setFormData(data);
     mutation.mutate({ ...data });
     reset();
-
   };
 
   return (
@@ -52,7 +53,9 @@ const SignUp = () => {
         )}
 
         {mutation.isSuccess && (
-          <p className="text-blue-500 text-sm">{"成功註冊！即將跳轉到登入頁..."}</p>
+          <p className="text-blue-500 text-sm">
+            {"成功註冊！即將跳轉到登入頁..."}
+          </p>
         )}
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
@@ -113,7 +116,7 @@ const SignUp = () => {
           </div>
 
           <button
-          disabled={mutation.isPending} 
+            disabled={mutation.isPending}
             type="submit"
             className="w-full bg-pink-200 text-gray-700 font-medium py-3 px-4 rounded-full hover:bg-pink-300 transition duration-200"
           >
@@ -123,11 +126,17 @@ const SignUp = () => {
 
         <div className="text-center my-4 text-gray-500">or</div>
 
-        <button disabled={mutation.isPending} className="w-full bg-pink-200 text-gray-700 font-medium py-3 px-4 rounded-full flex items-center justify-center hover:bg-pink-300 transition duration-200">
+        <button
+          disabled={mutation.isPending}
+          className="w-full bg-pink-200 text-gray-700 font-medium py-3 px-4 rounded-full flex items-center justify-center hover:bg-pink-300 transition duration-200"
+        >
           Sign in with Google
         </button>
 
-        <div disabled={mutation.isPending}  className="text-center mt-6 text-gray-500 text-sm">
+        <div
+          disabled={mutation.isPending}
+          className="text-center mt-6 text-gray-500 text-sm"
+        >
           You already have an account?
           <Link to={"/sign-in"} className="text-gray-700 ml-1">
             <span className="text-blue-700">sign in</span>
