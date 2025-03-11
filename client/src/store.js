@@ -1,12 +1,25 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
+// import { combineReducers } from '@reduxjs/toolkit';
 import navToggleReducer from "./slices/navToggleSlice.js";
 import userReducer from "./slices/userSlice.js";
+import storage from "redux-persist/lib/storage";
 
-export default configureStore({
-  reducer: {
-    navToggleReducer, // 這邊的 key 是 "navToggleReducer"
-    userReducer
-  },
+const rootReducer = combineReducers({
+  navToggleReducer,
+  userReducer,
+});
+
+const persistConfig = {
+  key: "root",
+  storage,
+  version: 1,
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = configureStore({
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     // 序列化檢查（serializable check）
     // 序列化（serialization）指的是將一個資料結構或物件轉換成一種可以儲存或傳輸的格式（通常是字串）的過程
@@ -19,3 +32,5 @@ export default configureStore({
       serializableCheck: false,
     }),
 });
+
+export const persistor = persistStore(store);
