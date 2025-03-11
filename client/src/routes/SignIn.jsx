@@ -28,7 +28,7 @@ const SignIn = () => {
     onSuccess: () => {
       setTimeout(() => {
         navigate("/");
-      }, 2000);
+      }, 1000);
     },
 
   });

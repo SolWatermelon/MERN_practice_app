@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
 // import { toggleMenu } from "../slices/navMenuToggleSlice";
-import { toggleMenu } from "../slices/navToggleSlice";
+import { toggleMenu } from "../slices/navToggleSlice.js";
 // , useDispatch
 const Home = () => {
   const dispatch = useDispatch();

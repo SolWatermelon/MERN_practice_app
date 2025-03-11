@@ -4,7 +4,7 @@ import { FaSearch } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 // , useDispatch 
 import { useSelector, useDispatch} from "react-redux";
-import {toggleMenu} from "../slices/navToggleSlice"
+import {toggleMenu} from "../slices/navToggleSlice.js"
 
 const Navbar = () => {
   const { isOpened } = useSelector((state) => state.navToggleReducer);
