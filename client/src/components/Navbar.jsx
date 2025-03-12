@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-// , useDispatch 
-import { useSelector, useDispatch} from "react-redux";
-import {toggleMenu} from "../slices/navToggleSlice.js"
+// , useDispatch
+import { useSelector, useDispatch } from "react-redux";
+import { toggleMenu } from "../slices/navToggleSlice.js";
 
 const Navbar = () => {
   const { isOpened } = useSelector((state) => state.navToggleReducer);
+  const { currentUser } = useSelector((state) => state.userReducer);
   const dispatch = useDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
@@ -108,12 +109,8 @@ const Navbar = () => {
               <Link to="/news" className="hover:text-purple-500">
                 News
               </Link>
-              <Link to="/sign-in">
-                <button className="bg-purple-300 hover:bg-purple-400 text-white px-4 py-1 rounded-full transition-colors">
-                  Sign In
-                </button>
-              </Link>
             </nav>
+            {/* 大頭貼 */}
           </div>
 
           {/* 手機 */}
@@ -145,85 +142,111 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* 大頭貼 */}
-          <div className="relative">
-            <button
-              onClick={handleAvatarToggle}
-              className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center relative"
-            >
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-400 rounded-full"></span>
-            </button>
-
-            {/* 使用者小卡 */}
-            {isAvatarOpen && (
-              <div
-                className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg p-4 z-50"
-                onClick={handleMenuContentClick}
-              >
-                <div className="flex flex-col items-center">
-                  <p className="text-gray-600 mb-2">xxx123@gmail.com</p>
-                  <div className="w-16 h-16 bg-gray-300 rounded-full mb-2"></div>
-                  <div className="flex items-center mb-2">
-                    <span className="font-medium">xxx您好</span>
-                  </div>
-                  <button className="text-pink-500 text-sm mb-4">
-                    編輯或管理個人資料
-                  </button>
-                  <button className="w-full py-2 bg-pink-100 text-gray-800 rounded-lg hover:bg-pink-200 transition-colors">
-                    登出
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
+          {/* 大頭貼原位置 */}
 
           {/* 漢堡按鈕 */}
-          <div className="md:hidden ml-3">
-            <button
-              onClick={handleMenuToggle}
-              className="text-gray-700 focus:outline-none"
-            >
-              {isMenuOpen ? (
-                <span className="text-xl">x</span>
+          <div className="flex justify-center items-center">
+            <div className="relative">
+              {currentUser?._id ? (
+                <button type="button">
+                  <img
+                    onClick={handleAvatarToggle}
+                    className="w-10 h-10 rounded-full object-cover bg-gray-300 flex items-center justify-center relative"
+                    src={currentUser?.avatar}
+                    alt="profile_pic"
+                  />
+                  <span className="absolute -top-0 -right-0.5 w-3 h-3 bg-red-400 rounded-full"></span>
+                </button>
               ) : (
-                <span>三</span>
+                <Link to="/sign-in">
+                <button
+                  type="button"
+                  className="bg-purple-300 hover:bg-purple-400 text-white px-2 py-1 rounded-full transition-colors"
+                >
+                  Sign In
+                </button>
+                </Link>
               )}
-            </button>
 
-            {/* 漢堡內容 */}
-            {isMenuOpen && (
-              <div
-                className="absolute top-16 right-0 left-0 bg-purple-50 z-40"
-                onClick={handleMenuContentClick}
+              {/* 使用者小卡 */}
+              {isAvatarOpen && (
+                <div
+                  className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg p-4 z-50"
+                  onClick={handleMenuContentClick}
+                >
+                  <div className="flex flex-col items-center">
+                    {/* <p className="text-gray-600 mb-2">xxx123@gmail.com</p> */}
+                    <div className="w-16 h-16 bg-gray-300 rounded-full mb-2"></div>
+                    <div className="flex items-center mb-2">
+                      <span className="font-medium">{currentUser.username}，您好</span>
+                    </div>
+                    <Link to='/profile'>
+                      <button
+                        className="text-pink-500 text-sm mb-4"
+                      >
+                        編輯或管理個人資料
+                      </button>
+                    </Link>
+                    <Link className="w-full" to="/">
+                      <button
+                        type="button"
+                        className="w-full py-2 bg-pink-100 text-gray-800 rounded-lg hover:bg-pink-200 transition-colors"
+                      >
+                        登出
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="md:hidden ml-3">
+              <button
+                onClick={handleMenuToggle}
+                className="text-gray-700 focus:outline-none"
               >
-                <div className="flex flex-col items-center py-8 space-y-6">
-                  <p className="text-pink-500">MENU</p>
-                  <Link
-                    to="/"
-                    className="text-lg hover:text-purple-500 transition-all"
-                  >
-                    Home
-                  </Link>
-                  <Link
-                    to="/about"
-                    className="text-lg hover:text-purple-500 transition-all"
-                  >
-                    About
-                  </Link>
-                  <Link
-                    to="/news"
-                    className="text-lg hover:text-purple-500 transition-all"
-                  >
-                    News
-                  </Link>
-                  <Link to="/sign-in">
+                {isMenuOpen ? (
+                  <span className="text-xl">x</span>
+                ) : (
+                  <span>三</span>
+                )}
+              </button>
+
+              {/* 漢堡內容 */}
+              {isMenuOpen && (
+                <div
+                  className="absolute top-16 right-0 left-0 bg-purple-50 z-40"
+                  onClick={handleMenuContentClick}
+                >
+                  <div className="flex flex-col items-center py-8 space-y-6">
+                    <p className="text-pink-500">MENU</p>
+                    <Link
+                      to="/"
+                      className="text-lg hover:text-purple-500 transition-all"
+                    >
+                      Home
+                    </Link>
+                    <Link
+                      to="/about"
+                      className="text-lg hover:text-purple-500 transition-all"
+                    >
+                      About
+                    </Link>
+                    <Link
+                      to="/news"
+                      className="text-lg hover:text-purple-500 transition-all"
+                    >
+                      News
+                    </Link>
+                    {/* <Link to="/sign-in">
                     <button className="bg-purple-300 hover:bg-purple-400 text-white px-4 py-1 rounded-full transition-colors">
                       Sign In
                     </button>
-                  </Link>
+                  </Link> */}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>

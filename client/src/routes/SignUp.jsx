@@ -30,7 +30,7 @@ const SignUp = () => {
     mutationFn: (userSigninData) => signUp(userSigninData),
     onSuccess: () => {
       setTimeout(() => {
-        navigate("/sign-in");
+        navigate("/sign-in", { replace: true });
       }, 1000);
     },
     onError: (error) => {

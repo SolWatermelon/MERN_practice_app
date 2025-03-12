@@ -34,7 +34,7 @@ const SignIn = () => {
     onSuccess: (data) => {
       dispatch(signInSuccess(data));
       setTimeout(() => {
-        navigate("/");
+        navigate("/", { replace: true });
       }, 1000);
     },
     onError: (error) => {
