@@ -44,7 +44,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="sign-page">
+    <div className="sign-page themed-background">
     <div className="flex items-center justify-center w-full mt-[100px]">
       <div className="bg-white rounded-lg shadow-md p-8 w-full max-w-md">
         {/* <h1 className="text-4xl font-bold text-gray-700 mb-8">{formdata?.name&&<p>{formdata.name}{formdata.email}{formdata.password}</p>}</h1> */}
@@ -65,7 +65,7 @@ const SignUp = () => {
               id="name"
               type="text"
               placeholder="name"
-              className="w-full p-3 border border-pink-200 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-200"
+              className="w-full p-3 rounded-full border-2 border-gray-300 text-gray-800 focus:outline-none focus:border-darkorange"
               {...register("name", { required: "name is required." })}
             />
             <ErrorMessage
@@ -81,7 +81,7 @@ const SignUp = () => {
               id="email"
               type="email"
               placeholder="email"
-              className="w-full p-3 border border-pink-200 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-200"
+              className="w-full p-3 rounded-full border-2 border-gray-300 text-gray-800 focus:outline-none focus:border-darkorange"
               {...register("email", {
                 required: "Email is required.",
                 pattern: {
@@ -103,7 +103,7 @@ const SignUp = () => {
               id="password"
               type="password"
               placeholder="password"
-              className="w-full p-3 border border-pink-200 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-200"
+              className="w-full p-3 rounded-full border-2 border-gray-300 text-gray-800 focus:outline-none focus:border-darkorange"
               {...register("password", {
                 required: "password is required",
                 minLength: { value: 8, message: "minimun is 8 characters." },
@@ -120,7 +120,7 @@ const SignUp = () => {
           <button
             disabled={mutation.isPending}
             type="submit"
-            className="w-full bg-pink-200 text-gray-700 font-medium py-3 px-4 rounded-full hover:bg-pink-300 transition duration-200"
+            className="w-full font-medium py-3 px-4 bg-darkorange hover:bg-hoverlighttext text-white rounded-full transition-colors"
           >
             {mutation.isPending ? "還在pend可以放icon" : "Sign up"}
           </button>

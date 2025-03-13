@@ -5,6 +5,12 @@ import { useForm } from "react-hook-form";
 // , useDispatch
 import { useSelector, useDispatch } from "react-redux";
 import { toggleMenu } from "../slices/navToggleSlice.js";
+import { ModeToggle } from "./mode-toggle";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const Navbar = () => {
   const { isOpened } = useSelector((state) => state.navToggleReducer);
@@ -58,7 +64,7 @@ const Navbar = () => {
 
   return (
     <header
-      className="w-full bg-white shadow-md relative"
+      className="w-full bg-orange dark:bg-slate-900 shadow-md relative"
       onClick={() => {
         dispatch(toggleMenu());
       }}
@@ -66,8 +72,8 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="text-xl font-extrabold">
-            <span className="underline decoration-4 decoration-pink-500/30">
+          <Link to="/" className="text-lg md:text-2xl font-extrabold">
+            <span className="underline decoration-4 decoration-darkorange">
               99房屋
             </span>
           </Link>
@@ -87,7 +93,7 @@ const Navbar = () => {
                 <input
                   type="text"
                   placeholder="search"
-                  className="w-64 px-4 py-2 rounded-full border-2 border-gray-300 focus:outline-none focus:border-pink-300"
+                  className="dark:text-gray-900 w-64 px-4 py-2 rounded-full border-2 border-gray-300 focus:outline-none focus:border-darkorange"
                   {...register("search")}
                 />
                 <button
@@ -100,17 +106,16 @@ const Navbar = () => {
             </div>
 
             <nav className="flex items-center space-x-6">
-              <Link to="/" className="hover:text-purple-500">
+              <Link to="/" className="hover:text-hoverlighttext">
                 Home
               </Link>
-              <Link to="/about" className="hover:text-purple-500">
+              <Link to="/about" className="hover:text-hoverlighttext">
                 About
               </Link>
-              <Link to="/news" className="hover:text-purple-500">
+              <Link to="/news" className="hover:text-hoverlighttext">
                 News
               </Link>
             </nav>
-            {/* 大頭貼 */}
           </div>
 
           {/* 手機 */}
@@ -127,7 +132,8 @@ const Navbar = () => {
                 <input
                   type="text"
                   placeholder="search"
-                  className="w-44 px-3 py-1 text-sm rounded-full border-2 border-gray-300 focus:outline-none focus:border-pink-300"
+                  // dark:text-gray-900 w-64 px-4 py-2 rounded-full border-2 border-gray-300 focus:outline-none focus:border-darkorange
+                  className="dark:text-gray-900 w-32 px-3 py-1 text-sm rounded-full border-2 border-gray-300 focus:outline-none focus:border-darkorange"
                   {...register("username", {
                     required: "Username is required",
                   })}
@@ -142,111 +148,99 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* 大頭貼原位置 */}
+          <div className="flex gap-3 justify-center items-center">
+            {/* 切換dark mode */}
+            <ModeToggle />
 
-          {/* 漢堡按鈕 */}
-          <div className="flex justify-center items-center">
-            <div className="relative">
-              {currentUser?._id ? (
-                <button type="button">
-                  <img
-                    onClick={handleAvatarToggle}
-                    className="w-10 h-10 rounded-full object-cover bg-gray-300 flex items-center justify-center relative"
-                    src={currentUser?.avatar}
-                    alt="profile_pic"
-                  />
-                  <span className="absolute -top-0 -right-0.5 w-3 h-3 bg-red-400 rounded-full"></span>
-                </button>
-              ) : (
-                <Link to="/sign-in">
-                <button
-                  type="button"
-                  className="bg-purple-300 hover:bg-purple-400 text-white px-2 py-1 rounded-full transition-colors"
-                >
-                  Sign In
-                </button>
-                </Link>
-              )}
-
-              {/* 使用者小卡 */}
-              {isAvatarOpen && (
-                <div
-                  className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg p-4 z-50"
-                  onClick={handleMenuContentClick}
-                >
-                  <div className="flex flex-col items-center">
-                    {/* <p className="text-gray-600 mb-2">xxx123@gmail.com</p> */}
-                    <div className="w-16 h-16 bg-gray-300 rounded-full mb-2"></div>
-                    <div className="flex items-center mb-2">
-                      <span className="font-medium">{currentUser.username}，您好</span>
-                    </div>
-                    <Link to='/profile'>
-                      <button
-                        className="text-pink-500 text-sm mb-4"
-                      >
-                        編輯或管理個人資料
-                      </button>
-                    </Link>
-                    <Link className="w-full" to="/">
-                      <button
-                        type="button"
-                        className="w-full py-2 bg-pink-100 text-gray-800 rounded-lg hover:bg-pink-200 transition-colors"
-                      >
-                        登出
-                      </button>
-                    </Link>
+            {/* 使用者資料popup */}
+            <Popover>
+              <PopoverTrigger>
+                {currentUser?._id ? (
+                  <div>
+                    <img
+                      className="w-10 h-10 rounded-full object-cover bg-gray-300 flex items-center justify-center relative"
+                      src={currentUser?.avatar}
+                      alt="profile_pic"
+                    />
+                    <span className="absolute top-2 w-3 h-3 bg-red-400 rounded-full"></span>
                   </div>
-                </div>
-              )}
-            </div>
-
-            <div className="md:hidden ml-3">
-              <button
-                onClick={handleMenuToggle}
-                className="text-gray-700 focus:outline-none"
-              >
-                {isMenuOpen ? (
-                  <span className="text-xl">x</span>
                 ) : (
-                  <span>三</span>
-                )}
-              </button>
-
-              {/* 漢堡內容 */}
-              {isMenuOpen && (
-                <div
-                  className="absolute top-16 right-0 left-0 bg-purple-50 z-40"
-                  onClick={handleMenuContentClick}
-                >
-                  <div className="flex flex-col items-center py-8 space-y-6">
-                    <p className="text-pink-500">MENU</p>
-                    <Link
-                      to="/"
-                      className="text-lg hover:text-purple-500 transition-all"
+                  <Link to="/sign-in">
+                    <button
+                      type="button"
+                      className="px-2 py-1 bg-darkorange hover:bg-hoverlighttext text-white rounded-full transition-colors"
                     >
-                      Home
-                    </Link>
-                    <Link
-                      to="/about"
-                      className="text-lg hover:text-purple-500 transition-all"
-                    >
-                      About
-                    </Link>
-                    <Link
-                      to="/news"
-                      className="text-lg hover:text-purple-500 transition-all"
-                    >
-                      News
-                    </Link>
-                    {/* <Link to="/sign-in">
-                    <button className="bg-purple-300 hover:bg-purple-400 text-white px-4 py-1 rounded-full transition-colors">
                       Sign In
                     </button>
-                  </Link> */}
-                  </div>
+                  </Link>
+                )}
+              </PopoverTrigger>
+              <PopoverContent className="dark:bg-white text-darkblue">
+                <div className="flex items-center justify-center mb-2">
+                  <span className="font-medium">
+                    {currentUser.username}，您好
+                  </span>
                 </div>
+                <Link
+                  to="/profile"
+                  className="flex items-center justify-center"
+                >
+                  <button className="text-hoverlighttext text-sm mb-4">
+                    編輯或管理個人資料
+                  </button>
+                </Link>
+                <Link className="w-full" to="/">
+                  <button
+                    type="button"
+                    className="w-full py-2 bg-darkorange text-darkblue rounded-lg hover:bg-hoverlighttext transition-colors"
+                  >
+                    登出
+                  </button>
+                </Link>
+              </PopoverContent>
+            </Popover>
+
+            {/* 漢堡開關 */}
+            <button
+              onClick={handleMenuToggle}
+              className="dark:text-white text-gray-700 focus:outline-none flex md:hidden"
+            >
+              {isMenuOpen ? (
+                <span className="text-xl pr-">x</span>
+              ) : (
+                <span className="pr-1">三</span>
               )}
-            </div>
+            </button>
+
+            {/* 漢堡內容 */}
+            {isMenuOpen && (
+              <div
+                className="absolute top-16 right-0 left-0 bg-amber-100 dark:bg-darkblue z-40"
+                onClick={handleMenuContentClick}
+              >
+                <div className="flex flex-col items-center py-8 space-y-6">
+                  <p className="text-darkorange">MENU</p>
+                  <Link
+                    to="/"
+                    className="text-lg hover:text-hoverlighttext transition-all"
+                  >
+                    Home
+                  </Link>
+                  <Link
+                    to="/about"
+                    className="text-lg hover:text-hoverlighttext transition-all"
+                  >
+                    About
+                  </Link>
+                  <Link
+                    to="/news"
+                    className="text-lg hover:text-hoverlighttext transition-all"
+                  >
+                    News
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

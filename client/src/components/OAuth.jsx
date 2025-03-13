@@ -53,7 +53,7 @@ const OAuth = () => {
       onClick={handleGoogle}
       type="button"
       disabled={mutation.isPending}
-      className="w-full bg-pink-200 text-gray-700 font-medium py-3 px-4 rounded-full flex items-center justify-center hover:bg-pink-300 transition duration-200"
+      className="w-full font-medium py-3 px-4 border-4 border-darkorange hover:border-hoverlighttext text-gray-800 rounded-full transition-colors"
     >
       Sign in with Google
     </button>
