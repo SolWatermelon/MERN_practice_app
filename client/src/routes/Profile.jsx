@@ -2,7 +2,10 @@ import React from "react";
 import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+// import { handleUploadImg } from "../service/service";
+// import { useSelector, useDispatch } from "react-redux";
 import { ErrorMessage } from "@hookform/error-message";
+import { updateUserSuccess } from "../slices/userSlice";
 import {
   QueryClient,
   useMutation,
@@ -21,37 +24,97 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSelector, useDispatch } from "react-redux";
 import { MdOutlineEdit } from "react-icons/md";
+import axios from "axios";
+import { useEffect } from "react";
 
 const Profile = () => {
+  const { currentUser } = useSelector((state) => state.userReducer);
+  const dispatch = useDispatch();
   const avatarRef = useRef(null);
+  const [avatar, setAvatar] = useState(currentUser?.avatar);
+  const [image, setImage] = useState("");
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm();
-  const { currentUser } = useSelector((state) => state.userReducer);
 
   // const [formdata, setFormData] = useState(null);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const handleAvatar = () => {
-    avatarRef.current.click();
+  const setFileToBase = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = (err) => reject(err);
+    });
+  };
+
+  const handleUploadImg = async (e) => {
+    try {
+      const file = e.target.files?.[0];
+      // console.log("URL.createObjectURL(file):", URL.createObjectURL(file));
+      // setAvatar(file ? URL.createObjectURL(file) : undefined);
+      const base64Image = await setFileToBase(file);
+      console.log(base64Image);
+      console.log("嗨嗨");
+      const res = await axios.post("/api/avatar/upload", {
+        ...currentUser,
+        base64Image,
+      });
+      console.log("res~~", res);
+      // dispatch(
+      //   updateUserSuccess({
+      //     ...currentUser,
+      //     avatar: res?.data?.secure_url,
+      //     updatedAt: res?.data?._doc?.updatedAt,
+      //   })
+      // );
+      return res.data;
+    } catch (e) {
+      throw new Error(e.message);
+    }
   };
 
   const mutation = useMutation({
-    mutationFn: (userSigninData) => signUp(userSigninData),
-    onSuccess: () => {
+    mutationFn: (event) => handleUploadImg(event),
+    onSuccess: (data) => {
+      console.log("data!", data);
+      dispatch(
+        updateUserSuccess({
+          ...currentUser,
+          avatar: data?.secure_url,
+          updatedAt: data?._doc?.updatedAt,
+        })
+      );
       // setTimeout(() => {
-      //   navigate("/sign-in", { replace: true });
+      //   navigate("/", { replace: true });
       // }, 1000);
-      console / log("修改成功");
     },
     onError: (error) => {
       console.error("API error:", error);
     },
   });
+
+  const handleAvatar = () => {
+    avatarRef.current.click();
+  };
+
+  // const mutation = useMutation({
+  //   mutationFn: (userSigninData) => signUp(userSigninData),
+  //   onSuccess: () => {
+  //     // setTimeout(() => {
+  //     //   navigate("/sign-in", { replace: true });
+  //     // }, 1000);
+  //     console / log("修改成功");
+  //   },
+  //   onError: (error) => {
+  //     console.error("API error:", error);
+  //   },
+  // });
 
   const onSubmit = (data) => {
     mutation.mutate({ ...data });
@@ -70,18 +133,42 @@ const Profile = () => {
           <div className="flex tablet:flex-row flex-col justify-center items-center tablet:items-start box-content bg-white rounded-lg shadow-md">
             {/* 放大頭照 */}
 
-            <span className="px-12 pt-12 md:p-12 relative">
-              <img
-                onClick={handleAvatar}
-                className="cursor-pointer hover:ring-4 w-40 rounded-full object-cover bg-gray-300 flex items-center justify-center relative"
-                src={currentUser?.avatar}
-                alt="profile_pic"
-              />
-              <MdOutlineEdit className="absolute top-32 right-16 text-2xl text-white" />
-            </span>
+            <div className="px-12 pt-12 md:p-12 relative">
+              <div className="w-40 h-40 rounded-full overflow-hidden relative bg-gray-300">
+                <MdOutlineEdit className="absolute bottom-1 right-1 text-2xl text-red-600" />
+                <img
+                  className="w-full h-full object-cover cursor-pointer"
+                  src={currentUser.avatar}
+                  alt="profile_pic"
+                />
+
+                <div
+                  onClick={handleAvatar}
+                  className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 opacity-0 hover:opacity-100 transition-opacity rounded-full"
+                >
+                  <MdOutlineEdit className="text-3xl text-white" />
+                </div>
+                {/* <div className="absolute inset-0 hover:bg-black hover:bg-opacity-20 transition-all rounded-full"></div> */}
+              </div>
+
+              {mutation.isPending && (
+                <div className="text-gray-500 text-sm">上傳中...</div>
+              )}
+
+              {mutation.isError && (
+                <div className="text-red-500 text-sm">上傳錯誤，請重新上傳</div>
+              )}
+
+              {mutation.isSuccess && (
+                <div className="text-blue-500 text-sm">上傳成功</div>
+              )}
+            </div>
 
             <input
               className="hidden"
+              onChange={(e) => {
+                mutation.mutate(e);
+              }}
               ref={avatarRef}
               id="avatar"
               type="file"
@@ -93,10 +180,10 @@ const Profile = () => {
             <div className="flex items-center justify-center mt-[10px] w-full">
               <div className="px-8 pt-3 pb-16 md:p-8 w-full max-w-md">
                 <h1 className="text-4xl font-bold text-gray-700 mb-8">
-                  Sign Up
+                  個人資料
                 </h1>
 
-                {mutation.isError && (
+                {/* {mutation.isError && (
                   <p className="text-red-500 text-sm">
                     {"信箱已被使用，請更改"}
                   </p>
@@ -104,7 +191,7 @@ const Profile = () => {
 
                 {mutation.isSuccess && (
                   <p className="text-blue-500 text-sm">{"成功修改資料！"}</p>
-                )}
+                )} */}
                 <form onSubmit={handleSubmit(onSubmit)}>
                   {/* <div className="hidden mb-4">
                     <input
@@ -188,9 +275,7 @@ const Profile = () => {
                       type="submit"
                       className="w-full font-medium py-3 px-4 bg-darkorange hover:bg-hoverlighttext text-white rounded-full transition-colors"
                     >
-                      {mutation.isPending
-                        ? "還在pend可以放icon"
-                        : "儲存所有更新"}
+                      {mutation.isPending ? "還在pend可以放icon" : "儲存"}
                     </button>
 
                     <button
@@ -198,7 +283,7 @@ const Profile = () => {
                       type="submit"
                       className="w-full font-medium py-3 px-4 border-2 border-darkorange text-darkblue  hover:bg-hoverlighttext hover:text-white hover:border-hoverlighttext rounded-full transition-colors"
                     >
-                      取消所有更新
+                      取消
                     </button>
                   </span>
                 </form>
@@ -212,19 +297,11 @@ const Profile = () => {
         {/* =================================================================================== */}
 
         <TabsContent
-          className=" xl-24 md:w-[600px] xl:w-[700px] "
+          className=" xl-24 mobile:w-[330px] md:w-[500px] xl:w-[700px] "
           value="accountandarticle"
         >
           <div className="flex tablet:flex-row flex-col justify-center items-center tablet:items-start box-content bg-white rounded-lg shadow-md">
             {/* 放大頭照 */}
-
-            <span className="px-12 pt-12 md:p-12">
-              <img
-                className="w-40 rounded-full object-cover bg-gray-300 flex items-center justify-center relative"
-                src={currentUser?.avatar}
-                alt="profile_pic"
-              />
-            </span>
 
             {/* <div> */}
             <div className="flex items-center justify-center mt-[10px] w-full">
@@ -242,7 +319,7 @@ const Profile = () => {
               <div className="px-8 pt-3 pb-16 md:p-8 w-full max-w-md">
                 <h1 className="text-4xl font-bold text-gray-700 mb-8"> */}
 
-              <div className="flex gap-6 flex-col justify-center items-center tablet:items-start px-8 pt-3 pb-16 md:p-8 w-full max-w-md">
+              <div className="flex gap-6 flex-col justify-center items-center tablet:items-start px-8 pt-3 pb-16 md:p-8 w-[600px] max-w-md">
                 <h1 className="text-gray-600 text-2xl font-extrabold">
                   物件管理
                 </h1>
