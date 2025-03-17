@@ -6,6 +6,7 @@ import authRouter from "./routes/auth.route.js";
 import avatarRouter from "./routes/avatar.route.js";
 import { v2 as cloudinary } from "cloudinary";
 import cookieParser from "cookie-parser";
+import listingRouter from "./routes/listing.route.js"
 // import cors from "cors";
 
 
@@ -35,6 +36,7 @@ app.use(cookieParser());
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/avatar", avatarRouter);
+app.use("/api/listing", listingRouter);
 
 // error handing middleware
 app.use((err, req, res, next) => {
