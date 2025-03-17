@@ -189,15 +189,15 @@ const Navbar = () => {
                   {/* <button className="text-hoverlighttext text-sm mb-4">
                   </button> */}
                 </Link>
-                <Link className="w-full py-2 bg-darkorange text-darkblue rounded-lg hover:bg-hoverlighttext transition-colors" to="/">
+                {/* <Link className="w-full py-2 bg-darkorange text-darkblue rounded-lg hover:bg-hoverlighttext transition-colors" to="/">
                   登出
-                  {/* <button
+                  <button
                     type="button"
                     className="w-full py-2 bg-darkorange text-darkblue rounded-lg hover:bg-hoverlighttext transition-colors"
                   >
                     登出
-                  </button> */}
-                </Link>
+                  </button>
+                </Link> */}
               </PopoverContent>
             </Popover>
 

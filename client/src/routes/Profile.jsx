@@ -5,7 +5,11 @@ import { Link, useNavigate } from "react-router-dom";
 // import { handleUploadImg } from "../service/service";
 // import { useSelector, useDispatch } from "react-redux";
 import { ErrorMessage } from "@hookform/error-message";
-import { updateUserSuccess, deleteUserSuccess } from "../slices/userSlice";
+import {
+  updateUserSuccess,
+  deleteUserSuccess,
+  signOutUserSuccess,
+} from "../slices/userSlice";
 import {
   QueryClient,
   useMutation,
@@ -197,6 +201,35 @@ const Profile = () => {
 
   const handleDeleteUser = () => {
     deleteUserMutation.mutate();
+  };
+
+  const signoutUser = async () => {
+    try {
+      const res = await axios.get(`/api/auth/signout`);
+      console.log("res~~~~", res);
+      return res.data;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  };
+
+  const signoutUserMutation = useMutation({
+    mutationFn: () => signoutUser(),
+
+    onSuccess: (res) => {
+      console.log("res!", res);
+      dispatch(signOutUserSuccess(res));
+      setTimeout(() => {
+        navigate("/sign-in", { replace: true });
+      });
+    },
+    onError: (error) => {
+      console.error("API error:", error);
+    },
+  });
+
+  const handleSignout = () => {
+    signoutUserMutation.mutate();
   };
 
   return (
@@ -442,13 +475,26 @@ const Profile = () => {
                         </DialogDescription>
                       </DialogHeader>
                       <DialogFooter>
-                        <Button variant="outline" onClick={() => {}}>
+                        {/* <Button variant="outline" onClick={() => {}}>
                           取消
-                        </Button>
-                        <Button variant="destructive" onClick={() => {}}>
+                        </Button> */}
+                        <Button variant="destructive" onClick={handleSignout}>
                           確認登出
                         </Button>
                       </DialogFooter>
+                      {signoutUserMutation.isPending && (
+                        <div className="text-gray-500 text-sm">登出中...</div>
+                      )}
+
+                      {signoutUserMutation.isError && (
+                        <div className="text-red-500 text-sm">
+                          無法登出
+                        </div>
+                      )}
+
+                      {signoutUserMutation.isSuccess && (
+                        <div className="text-blue-500 text-sm">登出成功</div>
+                      )}
                     </DialogContent>
                   </Dialog>
 
