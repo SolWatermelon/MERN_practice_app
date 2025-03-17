@@ -178,7 +178,7 @@ const Navbar = () => {
               <PopoverContent className="dark:bg-white text-darkblue">
                 <div className="flex items-center justify-center mb-2">
                   <span className="font-medium">
-                    {currentUser.username}，您好
+                    {currentUser?.username}，您好
                   </span>
                 </div>
                 <Link

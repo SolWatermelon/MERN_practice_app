@@ -26,6 +26,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { MdOutlineEdit } from "react-icons/md";
 import axios from "axios";
 import { useEffect } from "react";
+// import {handleUpdateUserInfo} from "../service/service"
 
 const Profile = () => {
   const { currentUser } = useSelector((state) => state.userReducer);
@@ -116,9 +117,53 @@ const Profile = () => {
   //   },
   // });
 
-  const onSubmit = (data) => {
-    mutation.mutate({ ...data });
-    reset();
+  const handleUpdateUserInfo = async (data) => {
+    console.log("data~", data);
+    try {
+      const { name, email, password } = data;
+      let updatedData = password ? { name, email, password } : { name, email };
+      console.log("updatedData~", updatedData);
+      console.log("currentUser?._id~", currentUser?._id);
+      const res = await axios.post(
+        `/api/user/update/${currentUser?._id}`,
+        updatedData
+      );
+      console.log("res:", res);
+      return res.data;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  };
+
+  const updateInfoMutation = useMutation({
+    // mutationFn: (event) => handleUploadImg(event),
+    mutationFn: (data) => handleUpdateUserInfo(data),
+
+    onSuccess: (res) => {
+      console.log("res!", res);
+      dispatch(
+        updateUserSuccess({
+          ...currentUser,
+          username: res?.username,
+          email: res?.email,
+          updatedAt: res?.updatedAt,
+        })
+      );
+      // setTimeout(() => {
+      //   navigate("/", { replace: true });
+      // }, 1000);
+    },
+    onError: (error) => {
+      console.error("API error:", error);
+    },
+  });
+
+  const onSubmits = (data) => {
+    updateInfoMutation.mutate({ ...data });
+    // reset();
+    reset({
+      password: "",
+    });
   };
 
   return (
@@ -138,7 +183,7 @@ const Profile = () => {
                 <MdOutlineEdit className="absolute bottom-1 right-1 text-2xl text-red-600" />
                 <img
                   className="w-full h-full object-cover cursor-pointer"
-                  src={currentUser.avatar}
+                  src={currentUser?.avatar}
                   alt="profile_pic"
                 />
 
@@ -164,6 +209,8 @@ const Profile = () => {
               )}
             </div>
 
+            {/* defaultValue={avatarRef} */}
+            {/* value={avatarRef} */}
             <input
               className="hidden"
               onChange={(e) => {
@@ -192,25 +239,12 @@ const Profile = () => {
                 {mutation.isSuccess && (
                   <p className="text-blue-500 text-sm">{"成功修改資料！"}</p>
                 )} */}
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  {/* <div className="hidden mb-4">
-                    <input
-                    ref={avatarRef}
-                      id="avatar"
-                      type="file"
-                      placeholder="avatar"
-                      {...register("avatar")}
-                    />
-                    <ErrorMessage
-                      errors={errors}
-                      name="avatar"
-                      as="p"
-                    />
-                  </div> */}
-
+                <form onSubmit={handleSubmit(onSubmits)}>
                   <div className="mb-4">
+                    {/* defaultValue={currentUser.username} */}
                     <input
                       id="name"
+                      defaultValue={currentUser?.username}
                       type="text"
                       placeholder="name"
                       className="w-full p-3 rounded-full border-2 border-gray-300 text-gray-800 focus:outline-none focus:border-darkorange"
@@ -225,8 +259,10 @@ const Profile = () => {
                   </div>
 
                   <div className="mb-4">
+                    {/* defaultValue={currentUser.email} */}
                     <input
                       id="email"
+                      defaultValue={currentUser?.email}
                       type="email"
                       placeholder="email"
                       className="w-full p-3 rounded-full border-2 border-gray-300 text-gray-800 focus:outline-none focus:border-darkorange"
@@ -247,6 +283,7 @@ const Profile = () => {
                     />
                   </div>
 
+                  {/* defaultValue={currentUser.password} */}
                   <div className="mb-6">
                     <input
                       id="password"
@@ -254,9 +291,8 @@ const Profile = () => {
                       placeholder="password"
                       className="w-full p-3 rounded-full border-2 border-gray-300 text-gray-800 focus:outline-none focus:border-darkorange"
                       {...register("password", {
-                        required: "password is required",
                         minLength: {
-                          value: 8,
+                          value: 0 || 8,
                           message: "minimun is 8 characters.",
                         },
                       })}
@@ -271,21 +307,38 @@ const Profile = () => {
 
                   <span className="flex gap-3">
                     <button
-                      disabled={mutation.isPending}
+                      disabled={updateInfoMutation.isPending}
                       type="submit"
                       className="w-full font-medium py-3 px-4 bg-darkorange hover:bg-hoverlighttext text-white rounded-full transition-colors"
                     >
-                      {mutation.isPending ? "還在pend可以放icon" : "儲存"}
+                      {/* 儲存 */}
+                      {updateInfoMutation.isPending
+                        ? "還在pend可以放icon"
+                        : "儲存"}
                     </button>
 
+                    {/* {updateInfoMutation.isPending && (
+                <div className="text-gray-500 text-sm">上傳中...</div>
+              )} */}
+
+
+
+                    {/* type="submit" */}
                     <button
-                      disabled={mutation.isPending}
-                      type="submit"
+                      type="button"
+                      disabled={updateInfoMutation.isPending}
                       className="w-full font-medium py-3 px-4 border-2 border-darkorange text-darkblue  hover:bg-hoverlighttext hover:text-white hover:border-hoverlighttext rounded-full transition-colors"
                     >
                       取消
                     </button>
                   </span>
+                  {updateInfoMutation.isError && (
+                      <div className="text-red-500 text-sm">儲存失敗</div>
+                    )}
+
+                    {updateInfoMutation.isSuccess && (
+                      <div className="text-blue-500 text-sm">儲存成功</div>
+                    )}
                 </form>
               </div>
             </div>
@@ -323,16 +376,16 @@ const Profile = () => {
                 <h1 className="text-gray-600 text-2xl font-extrabold">
                   物件管理
                 </h1>
+                {/* disabled={mutation.isPending} */}
                 <button
-                  disabled={mutation.isPending}
                   type="submit"
                   className="w-3/4 font-medium py-3 px-4 bg-darkorange hover:bg-hoverlighttext text-white rounded-full transition-colors"
                 >
                   新增房源
                 </button>
 
+                {/* disabled={mutation.isPending} */}
                 <button
-                  disabled={mutation.isPending}
                   type="submit"
                   className="w-3/4  font-medium py-3 px-4 border-2 border-darkorange text-darkblue  hover:bg-hoverlighttext hover:text-white hover:border-hoverlighttext rounded-full transition-colors"
                 >
