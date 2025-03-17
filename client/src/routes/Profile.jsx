@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 // import { handleUploadImg } from "../service/service";
 // import { useSelector, useDispatch } from "react-redux";
 import { ErrorMessage } from "@hookform/error-message";
-import { updateUserSuccess } from "../slices/userSlice";
+import { updateUserSuccess, deleteUserSuccess } from "../slices/userSlice";
 import {
   QueryClient,
   useMutation,
@@ -20,6 +20,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSelector, useDispatch } from "react-redux";
@@ -164,6 +165,38 @@ const Profile = () => {
     reset({
       password: "",
     });
+  };
+
+  const deleteUser = async () => {
+    try {
+      console.log("嗨嗨嗨");
+      console.log("currentUser?._id~", currentUser?._id);
+      const res = await axios.delete(`/api/user/delete/${currentUser?._id}`);
+      console.log("res~~~~", res);
+      return res.data;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  };
+
+  const deleteUserMutation = useMutation({
+    // mutationFn: () => {return () => {}},
+    mutationFn: () => deleteUser(),
+
+    onSuccess: (res) => {
+      console.log("res!", res);
+      dispatch(deleteUserSuccess(res));
+      setTimeout(() => {
+        navigate("/sign-in", { replace: true });
+      });
+    },
+    onError: (error) => {
+      console.error("API error:", error);
+    },
+  });
+
+  const handleDeleteUser = () => {
+    deleteUserMutation.mutate();
   };
 
   return (
@@ -321,8 +354,6 @@ const Profile = () => {
                 <div className="text-gray-500 text-sm">上傳中...</div>
               )} */}
 
-
-
                     {/* type="submit" */}
                     <button
                       type="button"
@@ -333,12 +364,12 @@ const Profile = () => {
                     </button>
                   </span>
                   {updateInfoMutation.isError && (
-                      <div className="text-red-500 text-sm">儲存失敗</div>
-                    )}
+                    <div className="text-red-500 text-sm">儲存失敗</div>
+                  )}
 
-                    {updateInfoMutation.isSuccess && (
-                      <div className="text-blue-500 text-sm">儲存成功</div>
-                    )}
+                  {updateInfoMutation.isSuccess && (
+                    <div className="text-blue-500 text-sm">儲存成功</div>
+                  )}
                 </form>
               </div>
             </div>
@@ -398,40 +429,64 @@ const Profile = () => {
                 </h1>
                 <span className="flex gap-3">
                   <Dialog>
-                    <DialogTrigger>
+                    <DialogTrigger asChild>
                       <Button variant="signoutmode" size="sm">
                         登出帳戶
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
-                        <DialogTitle>Are you absolutely sure?</DialogTitle>
+                        <DialogTitle>您確定要登出嗎？</DialogTitle>
                         <DialogDescription>
-                          This action cannot be undone. This will permanently
-                          delete your account and remove your data from our
-                          servers.
+                          登出後您需要重新登入才能使用完整功能
                         </DialogDescription>
                       </DialogHeader>
+                      <DialogFooter>
+                        <Button variant="outline" onClick={() => {}}>
+                          取消
+                        </Button>
+                        <Button variant="destructive" onClick={() => {}}>
+                          確認登出
+                        </Button>
+                      </DialogFooter>
                     </DialogContent>
                   </Dialog>
 
-                  {/* =================== */}
-
                   <Dialog>
-                    <DialogTrigger>
+                    <DialogTrigger asChild>
                       <Button variant="deletemode" size="sm">
                         刪除帳戶
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
-                        <DialogTitle>Are you absolutely sure?</DialogTitle>
+                        <DialogTitle>確定要刪除帳戶嗎？</DialogTitle>
                         <DialogDescription>
-                          This action cannot be undone. This will permanently
-                          delete your account and remove your data from our
-                          servers.
+                          此操作無法撤消。這將永久刪除您的帳戶並從我們的伺服器中移除您的數據。
                         </DialogDescription>
                       </DialogHeader>
+                      <DialogFooter>
+                        {/* <Button variant="outline" onClick={() => {}}>取消</Button> */}
+                        <Button
+                          variant="destructive"
+                          onClick={handleDeleteUser}
+                          disabled={deleteUserMutation.isPending}
+                        >
+                          {deleteUserMutation.isPending
+                            ? "刪除中..."
+                            : "確認刪除"}
+                        </Button>
+                      </DialogFooter>
+                      {deleteUserMutation.isError && (
+                        <div className="text-red-500 text-sm mt-2">
+                          刪除失敗
+                        </div>
+                      )}
+                      {deleteUserMutation.isSuccess && (
+                        <div className="text-green-500 text-sm mt-2">
+                          刪除成功
+                        </div>
+                      )}
                     </DialogContent>
                   </Dialog>
                 </span>

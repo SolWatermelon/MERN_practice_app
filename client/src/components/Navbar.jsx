@@ -165,13 +165,13 @@ const Navbar = () => {
                     <span className="absolute top-2 w-3 h-3 bg-red-400 rounded-full"></span>
                   </div>
                 ) : (
-                  <Link to="/sign-in">
-                    <button
+                  <Link to="/sign-in" className="px-2 py-1 bg-darkorange hover:bg-hoverlighttext text-white rounded-full transition-colors">
+                    {/* <button
                       type="button"
                       className="px-2 py-1 bg-darkorange hover:bg-hoverlighttext text-white rounded-full transition-colors"
                     >
                       Sign In
-                    </button>
+                    </button> */}
                   </Link>
                 )}
               </PopoverTrigger>
@@ -183,19 +183,20 @@ const Navbar = () => {
                 </div>
                 <Link
                   to="/profile"
-                  className="flex items-center justify-center"
+                  className="flex items-center justify-center text-hoverlighttext text-sm mb-4"
                 >
-                  <button className="text-hoverlighttext text-sm mb-4">
                     編輯或管理個人資料
-                  </button>
+                  {/* <button className="text-hoverlighttext text-sm mb-4">
+                  </button> */}
                 </Link>
-                <Link className="w-full" to="/">
-                  <button
+                <Link className="w-full py-2 bg-darkorange text-darkblue rounded-lg hover:bg-hoverlighttext transition-colors" to="/">
+                  登出
+                  {/* <button
                     type="button"
                     className="w-full py-2 bg-darkorange text-darkblue rounded-lg hover:bg-hoverlighttext transition-colors"
                   >
                     登出
-                  </button>
+                  </button> */}
                 </Link>
               </PopoverContent>
             </Popover>
