@@ -4,7 +4,13 @@ import dotenv from "dotenv";
 import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
 import avatarRouter from "./routes/avatar.route.js";
-import { v2 as cloudinary } from 'cloudinary';
+import { v2 as cloudinary } from "cloudinary";
+import cookieParser from "cookie-parser";
+// import cors from "cors";
+
+
+// import pkg from 'cookie-parser';
+// const { cookieParser } = pkg;
 dotenv.config();
 const app = express();
 
@@ -19,8 +25,13 @@ mongoose
 
 // app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
-app.use(express.json({ limit: "10mb" })); // 允許最大 10MB JSON 數據
+app.use(express.json({ limit: "10mb" })); // 允許最大10MB JSON資料
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
+app.use(cookieParser());
+// app.use(cors({
+//   origin: "http://localhost:5173", // 前端網址
+//   credentials: true // 允許發送Cookie
+// }));
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/avatar", avatarRouter);
@@ -39,12 +50,3 @@ app.use((err, req, res, next) => {
 app.listen(3000, () => {
   console.log("server is running on PORT 3000");
 });
-
-
-
-
-
-
-
-
-
