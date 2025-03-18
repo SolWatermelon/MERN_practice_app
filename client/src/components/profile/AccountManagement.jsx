@@ -40,6 +40,7 @@ const AccountManagement = () => {
 
         <button
           type="button"
+          onClick={() => {navigate("/profile/create-listing")}}
           className="w-3/4 font-medium py-3 px-4 bg-darkorange hover:bg-hoverlighttext text-white rounded-full transition-colors"
         >
           新增房源

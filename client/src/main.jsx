@@ -23,6 +23,7 @@ import { persistor, store } from "./store.js";
 import { PersistGate } from "redux-persist/integration/react";
 import PrivateRoute from "./components/privateRoute";
 import { ThemeProvider } from "./components/theme-provider";
+import CreateListing from "./routes/CreateListing";
 
 const queryClient = new QueryClient();
 
@@ -50,7 +51,13 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <PrivateRoute />,
-        children: [{ path: "", element: <Profile /> }],
+        children: [
+          { path: "", element: <Profile /> },
+          {
+            path: "create-listing",
+            element: <CreateListing />,
+          },
+        ],
       },
       {
         path: "/news",
@@ -66,10 +73,9 @@ createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-
-          <RouterProvider router={router} />
-        </ThemeProvider>
+          <ThemeProvider>
+            <RouterProvider router={router} />
+          </ThemeProvider>
           <ReactQueryDevtools />
         </QueryClientProvider>
       </PersistGate>
