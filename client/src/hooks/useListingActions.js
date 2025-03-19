@@ -9,16 +9,18 @@ export const useListingActions = () => {
 
   //  get all listings mutation
   const getListingMutation = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (setUserListings) => {
       try {
         const res = await axios.get(`/api/user/listings/${currentUser._id}`);
-        return res.data;
+        setUserListings(res.data)
+        return res.data
       } catch (error) {
         throw new Error(error.message);
       }
     },
     onSuccess: (data) => {
       if (!data) return;
+      // setGetUserListings(data)
     },
   });
   return { getListingMutation };
