@@ -11,9 +11,9 @@ import {
 import { Button } from "../ui/button";
 import Pic from "./Pic";
 
-const ListingPics = ({ form }) => {
+const ListingPics = ({ form, imageItems, setImageItems }) => {
   const { currentUser } = useSelector((state) => state.userReducer);
-  const [imageItems, setImageItems] = useState([]);
+  // const [imageItems, setImageItems] = useState([]);
   // imageItem結構：
   // {
   //   id: ID,
@@ -24,12 +24,12 @@ const ListingPics = ({ form }) => {
   //   status: 'pending' | 'uploading' | 'uploaded' | 'error'
   // }
 
-  
   const handleFileSelect = async (e) => {
     try {
       const files = e.target.files;
       if (!files || files.length === 0) return;
-
+      // console.log("files Type:", files instanceof FileList);
+      // console.log("files.length:", files?.length);
       // 建新的圖片
       const newItems = [];
 
@@ -156,7 +156,6 @@ const ListingPics = ({ form }) => {
       );
     },
   });
-
 
   const handleRemove = (item) => {
     setImageItems((prev) => prev.filter((i) => i.id !== item.id));

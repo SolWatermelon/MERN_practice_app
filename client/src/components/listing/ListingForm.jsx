@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -12,7 +12,8 @@ import {
 } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
 
-const ListingForm = ({ form }) => {
+const ListingForm = ({ form, checkboxOptions}) => {
+  const [isDiscountPrice, setIsDiscountPrice] = useState(false);
   return (
     <>
       {/* Grid讓輸入欄位自動RWD */}
@@ -84,7 +85,7 @@ const ListingForm = ({ form }) => {
         <FormItem>
           <FormLabel>Select Options</FormLabel>
           <div className="space-y-2">
-            {["furnished", "parking", "rent", "sell", "offer"].map((option) => (
+            {checkboxOptions.map((option) => (
               <FormField
                 key={option}
                 control={form.control}
@@ -98,13 +99,16 @@ const ListingForm = ({ form }) => {
                       className=" text-gray-800 border-2 border-gray-300"
                       checked={field.value.includes(option)}
                       onCheckedChange={(checked) => {
-                        if (checked) {
-                          form.setValue("options", [...field.value, option]);
-                        } else {
-                          form.setValue(
-                            "options",
-                            field.value.filter((val) => val !== option)
-                          );
+                        const newOptions = checked
+                          ? [...field.value, option] // 加入選項
+                          : field.value.filter((val) => val !== option); // 移除選項
+
+                          form.setValue("options", newOptions, { shouldValidate: true });
+
+                        // offer控制isDiscountPrice
+                        if (option === "offer") {
+                          console.log("checked", checked)
+                          setIsDiscountPrice(checked);
                         }
                       }}
                     />
@@ -114,7 +118,13 @@ const ListingForm = ({ form }) => {
               />
             ))}
           </div>
-          <FormMessage className="text-red-400 dark:text-red-400 text-sm" />
+            <p
+              hidden={!isDiscountPrice}
+              className="text-red-400 dark:text-red-400 text-sm"
+            >
+              勾選offer後請記得填discountPrice
+            </p>
+          {/* <FormMessage className="text-red-400 dark:text-red-400 text-sm" /> */}
         </FormItem>
 
         {/* 使用Grid自動適應 */}
@@ -148,6 +158,7 @@ const ListingForm = ({ form }) => {
                 <FormLabel>discountPrice</FormLabel>
                 <FormControl>
                   <Input
+                    disabled={!isDiscountPrice}
                     className="w-full p-3 rounded-full border-2 border-gray-400 text-gray-800 focus:outline-none focus:border-darkorange"
                     type="number"
                     placeholder="Enter discountPrice"

@@ -4,16 +4,18 @@ import cloudinary from "cloudinary";
 dotenv.config();
 export const createListing = async (req, res, next) => {
   try {
-    const listing = await Listing.create(req.body);
+    const listing = await Listing.create(req.body.reqData);
     return res.status(200).json(listing);
-  } catch (e) {}
+  } catch (e) {
+    next(e);
+  }
 };
 
 export const createListingPics = async (req, res, next) => {
   cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET, // Click 'View API Keys' above to copy your API secret
+    api_secret: process.env.CLOUDINARY_API_SECRET,
   });
 
   try {
@@ -23,8 +25,8 @@ export const createListingPics = async (req, res, next) => {
     const uploadListingPics = await Promise.allSettled(
       pendingItems.map((base64Image) => {
         return cloudinary.v2.uploader.upload(base64Image.base64, {
-        public_id: `listing-${base64Image.id}`,
-      });
+          public_id: `listing-${base64Image.id}`,
+        });
       })
     );
 
@@ -39,7 +41,7 @@ export const createListingPics = async (req, res, next) => {
       _id,
       username,
       email,
-      picsMainInfo
+      picsMainInfo,
     });
   } catch (e) {
     next(e);
