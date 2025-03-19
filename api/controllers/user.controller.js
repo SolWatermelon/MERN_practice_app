@@ -1,6 +1,7 @@
 import { errorHandler } from "../utils/error.js";
 import bcryptjs from "bcryptjs";
 import User from "../models/user.model.js";
+import Listing from "../models/listing.model.js"
 
 export const updateUserInfo = async (req, res, next) => {
   if (req.user.id !== req.params.id)
@@ -40,6 +41,22 @@ export const deleteUser = async (req, res, next) => {
     await User.findByIdAndDelete(req.params.id);
     res.clearCookie("access_token");
     return res.status(200).json({ msg: "user has been deleted" });
+  } catch (e) {
+    next(e);
+  }
+};
+
+
+export const getUserListing =  async (req, res, next) => {
+  // check token first
+  // 記得user id是從verify user來的(cookie)
+  // console.log("req.user.id", req.user.id)
+  // console.log("req.params.id",req.params.id)
+  if (req.user.id !== req.params.id)
+    return errorHandler(401, "u can only delete ur own account");
+  try {
+    const listings = await Listing.find({userRef: req.params.id})
+    return res.status(200).json({ msg: "success", listings });
   } catch (e) {
     next(e);
   }
