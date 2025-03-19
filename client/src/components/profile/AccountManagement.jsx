@@ -48,6 +48,7 @@ const AccountManagement = () => {
 
         <button
           type="button"
+          onClick={() => {navigate("/profile/listings")}}
           className="w-3/4 font-medium py-3 px-4 border-2 border-darkorange text-darkblue hover:bg-hoverlighttext hover:text-white hover:border-hoverlighttext rounded-full transition-colors"
         >
           查看房源

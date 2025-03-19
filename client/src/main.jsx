@@ -24,6 +24,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import PrivateRoute from "./components/privateRoute";
 import { ThemeProvider } from "./components/theme-provider";
 import CreateListing from "./routes/CreateListing";
+import ShowListings from "./routes/ShowListings";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
           {
             path: "create-listing",
             element: <CreateListing />,
+          },
+          {
+            path: "listings",
+            element: <ShowListings />,
           },
         ],
       },
