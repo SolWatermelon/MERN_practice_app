@@ -17,32 +17,29 @@ export const createListingPics = async (req, res, next) => {
   });
 
   try {
-    const { _id, username, avatar, email, createdAt, updatedAt, base64Images } =
+    const { _id, username, avatar, email, createdAt, updatedAt, pendingItems } =
       req.body;
 
-    const allPicturesInfo = await Promise.allSettled(
-      base64Images.map((base64ImagesURL) => {
-        return cloudinary.v2.uploader.upload(base64ImagesURL);
+    const uploadListingPics = await Promise.allSettled(
+      pendingItems.map((base64Image) => {
+        return cloudinary.v2.uploader.upload(base64Image.base64, {
+        public_id: `listing-${base64Image.id}`,
+      });
       })
     );
 
-
-    console.log("~~~~allPicturesInfo!!!!!!", allPicturesInfo)
-
-    // secure_url、public_id
-    const listingPicsPublicID = allPicturesInfo.map((res) => {
-      return res.value.public_id;
-    });
-    const listingPicsSecureURL = allPicturesInfo.map((res) => {
-      return res.value.secure_url;
+    const picsMainInfo = uploadListingPics.map((info) => {
+      return {
+        listingPicsPublicID: info.value.public_id,
+        listingPicsSecureURL: info.value.secure_url,
+      };
     });
 
     return res.status(200).json({
       _id,
       username,
       email,
-      listingPicsPublicID,
-      listingPicsSecureURL,
+      picsMainInfo
     });
   } catch (e) {
     next(e);

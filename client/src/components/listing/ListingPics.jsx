@@ -1,8 +1,7 @@
-import React, { useRef, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
-import { updateUserSuccess } from "../../slices/userSlice";
 import {
   FormField,
   FormItem,
@@ -13,156 +12,155 @@ import { Button } from "../ui/button";
 import Pic from "./Pic";
 
 const ListingPics = ({ form }) => {
-  //   const dispatch = useDispatch();
-  const [files, setFiles] = useState([]);
   const { currentUser } = useSelector((state) => state.userReducer);
-  const base64ImagesURLsRef = useRef(null);
-  const [previewImages, setPreviewImages] = useState([]);
-  const [imgs, setImgs] = useState([]);
+  const [imageItems, setImageItems] = useState([]);
+  // imageItem結構：
+  // {
+  //   id: ID,
+  //   file: 文件obj,
+  //   base64: base64 encoded,
+  //   url: 上傳後的URL,
+  //   publicId: 上傳後的publicId,
+  //   status: 'pending' | 'uploading' | 'uploaded' | 'error'
+  // }
 
-  // listing pics upload mutation
-  const uploadPics = useMutation({
-    mutationFn: (e) => handlePics(e),
-    onSuccess: (data) => {
-      if (!data) return;
-      setPreviewImages([]);
-      console.log("~data", data);
+  
+  const handleFileSelect = async (e) => {
+    try {
+      const files = e.target.files;
+      if (!files || files.length === 0) return;
 
-      //   dispatch(
-      //     updateUserSuccess({
-      //       ...currentUser,
-      //       avatar: data?.secure_url,
-      //       updatedAt: data?._doc?.updatedAt,
-      //     })
-      //   );
-    },
-  });
+      // 建新的圖片
+      const newItems = [];
 
-  const uploadPicsToDB = useMutation({
-    mutationFn: () => handleUploadPicsToDB(),
-    onSuccess: (data) => {
-      console.log("data~`", data);
-      if (!data) return;
-    },
-  });
+      // 轉換為base64-1
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
 
-  //   const removeFile = (index) => {
-  //     const updatedFiles = [...files];
-  //     updatedFiles.splice(index, 1);
-  //     setFiles(updatedFiles);
+        // 轉換為base64-2
+        const base64 = await convertToBase64(file);
 
-  //     // 更新
-  //     if (updatedFiles.length > 0) {
-  //       const dataTransfer = new DataTransfer();
-  //       updatedFiles.forEach((file) => dataTransfer.items.add(file));
-  //       form.setValue("file", dataTransfer.files);
-  //     } else {
-  //       form.setValue("file", null);
-  //     }
-  //   };
+        // 加到arr
+        newItems.push({
+          id: `file-${Date.now()}-${i}`,
+          file,
+          base64,
+          status: "pending",
+        });
+      }
 
-  // Helper function to convert file to base64
-  const setFileToBase = (vals) => {
-    console.log("vals!!", vals);
-    return vals.map((val) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(val.file);
-        reader.onloadend = () => {
-          console.log("file:", reader.result);
-          resolve(reader.result);
-        };
-        reader.onerror = (err) => reject(err);
-      });
+      // 更新
+      setImageItems([...imageItems, ...newItems]);
+      updateFormFileValue();
+
+      return newItems;
+    } catch (error) {
+      console.error("處理文件失敗:", error);
+      throw error;
+    }
+  };
+
+  // 轉換文件為base64
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      if (!(file instanceof Blob)) {
+        return reject(new Error("非有效的File物件"));
+      }
+
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = (err) => reject(err);
     });
   };
 
-  const handlePics = async (e) => {
-    try {
-      const vals = e.target.files;
-      console.log("res!!!!");
-      if (!vals || !vals.length) return;
-      // 確保vals是 Array- 新增
-      const fileArray = Array.from(vals);
-      console.log("previewImages~~~", previewImages)
-      console.log("fileArray~~~~", fileArray)
-      
-      const uploadData = [...previewImages, ...fileArray];
-    //   setFiles(uploadData);
+  // 更新form裡面的file值
+  const updateFormFileValue = () => {
+    const pendingFiles = imageItems
+      .filter((item) => item.status === "pending")
+      .map((item) => item.file);
 
-      //   預覽
-      const previews = uploadData.map((file) => {
-        return { srcs: URL.createObjectURL(file), file };
-      });
-      console.log("previews:", previews);
-      setPreviewImages(previews);
-      console.log("uploadData~~", uploadData);
-
-      //   // 轉換為FileList格式
-      //   const dataTransfer = new DataTransfer();
-      //   console.log("imgs~~~~", imgs)
-      //   previews.forEach((data) => {
-      //     try {
-      //       dataTransfer.items.add(data.file);
-      //     } catch (err) {
-      //       console.error(err);
-      //     }
-      //   });
-      //   form.setValue("file", dataTransfer.files);
-      //   const base64Images = await Promise.allSettled(setFileToBase(previews));
-      //   console.log("base64Images!", base64Images)
-      //   const base64ImagesURLs = base64Images.map((base64Image) => {
-      //     return base64Image.value;
-      //   });
-      //   console.log("base64ImagesURLs~", base64ImagesURLs)
-      //   console.log("file~~~~~~~", files);
-      //   console.log("previewImages~~~",previewImages)
-      //   base64ImagesURLsRef.current = base64ImagesURLs;
-      //   return base64Images;
-    } catch (error) {
-      throw new Error(error.message);
+    if (pendingFiles.length > 0) {
+      // Web API中用於保存拖放操作或剪貼板操作期間的數據
+      // 將js file轉換為form可以使用的FileList格式
+      const dataTransfer = new DataTransfer();
+      pendingFiles.forEach((file) => dataTransfer.items.add(file));
+      form.setValue("file", dataTransfer.files);
+    } else {
+      form.setValue("file", null);
     }
   };
 
-  const handleUploadPicsToDB = async () => {
-    try {
-      // 轉換為FileList格式
-      const dataTransfer = new DataTransfer();
-      console.log("previewImages~~~~", previewImages);
-      previewImages.forEach((data) => {
-        try {
-          dataTransfer.items.add(data.file);
-        } catch (err) {
-          console.error(err);
-        }
-      });
-      form.setValue("file", dataTransfer.files);
-      const base64Imagess = await Promise.allSettled(
-        setFileToBase(previewImages)
+  // 上傳文件mutation
+  const uploadMutation = useMutation({
+    mutationFn: async () => {
+      const pendingItems = imageItems.filter(
+        (item) => item.status === "pending"
       );
-      console.log("base64Images!", base64Imagess);
-      const base64ImagesURLs = base64Imagess.map((base64Image) => {
-        return base64Image.value;
-      });
-      console.log("base64ImagesURLs~", base64ImagesURLs);
-    //   console.log("file~~~~~~~", files);
-      console.log("previewImages~~~", previewImages);
-      //   base64ImagesURLsRef.current = base64ImagesURLs;
-      //   return base64Images;
 
-      console.log("previewImages~!!~~", previewImages);
-      //   const base64Images = base64ImagesURLsRef.current;
-      const base64Images = base64ImagesURLs;
-      console.log("base64Images`~~~", base64Images);
-      if (!base64Images.length)  throw new Error();
+      if (pendingItems.length === 0) {
+        throw new Error("沒有等待上傳的圖片");
+      }
+
+      // 更新狀態為uploading
+      setImageItems((prev) =>
+        prev.map((item) =>
+          item.status === "pending" ? { ...item, status: "uploading" } : item
+        )
+      );
+
+      // 所有base64
+      const base64Images = pendingItems.map((item) => item.base64);
+
+      // console.log("pendingItems", pendingItems);
+
       const res = await axios.post("/api/listing/create/pics", {
         ...currentUser,
-        base64Images,
+        // base64Images,
+        pendingItems,
       });
-      return res.data;
-    } catch (error) {
-      throw new Error(error.message);
-    }
+
+      return {
+        data: res.data,
+        pendingItems,
+      };
+    },
+    onSuccess: ({ data, pendingItems }) => {
+      if (!data || !data.picsMainInfo) return;
+
+      // console.log("data", data);
+
+      let updatedItems = [...imageItems];
+
+      data.picsMainInfo.forEach((info, index) => {
+        updatedItems.forEach((item) => {
+          if (info.listingPicsPublicID.includes(item.id)) {
+            item.publicId = info.listingPicsPublicID;
+            item.url = info.listingPicsSecureURL;
+            item.status = "uploaded";
+            console.log("item", item);
+          }
+        });
+      });
+
+      setImageItems(updatedItems);
+    },
+    onError: (error) => {
+      console.error("上傳失敗:", error);
+
+      // 失敗後將狀態改變
+      setImageItems((prev) =>
+        prev.map((item) =>
+          item.status === "uploading" ? { ...item, status: "error" } : item
+        )
+      );
+    },
+  });
+
+
+  const handleRemove = (item) => {
+    setImageItems((prev) => prev.filter((i) => i.id !== item.id));
+    updateFormFileValue();
   };
 
   return (
@@ -170,26 +168,26 @@ const ListingPics = ({ form }) => {
       <div>
         <div className="flex items-center gap-2">
           <div className="text-gray-700 text-sm">Upload File</div>
-          {uploadPicsToDB.isPending && <p className="text-xs">處理中...</p>}
-          {uploadPicsToDB.isSuccess && (
+          {uploadMutation.isPending && <p className="text-xs">處理中...</p>}
+          {uploadMutation.isSuccess && (
             <p className="text-blue-500 text-xs">上傳成功！</p>
           )}
-          {uploadPicsToDB.isError && (
+          {uploadMutation.isError && (
             <p className="text-red-500 text-xs">上傳失敗</p>
           )}
         </div>
+
         <div className="flex justify-start items-center flex-wrap gap-2">
           <FormField
             control={form.control}
             name="file"
             render={({ field }) => (
               <FormItem>
-                {/* <FormLabel className="text-gray-700">Upload File</FormLabel> */}
                 <FormControl className="flex justify-center items-center">
                   <input
                     className="w-[180px] border-2 border-gray-400 text-gray-800 focus:outline-none focus:border-darkorange"
                     type="file"
-                    onChange={(e) => uploadPics.mutate(e)}
+                    onChange={handleFileSelect}
                     accept="image/*"
                     multiple
                   />
@@ -198,43 +196,68 @@ const ListingPics = ({ form }) => {
               </FormItem>
             )}
           />
+
           <Button
             variant="signoutmode"
-            onClick={() => {
-              uploadPicsToDB.mutate();
-            }}
+            onClick={() => uploadMutation.mutate()}
             type="button"
             size="sm"
+            disabled={!imageItems.some((item) => item.status === "pending")}
           >
             上傳
           </Button>
         </div>
 
-        {/* <div className="mt-6">
-          {files.map((file, index) => (
-            <div key={index}>
-              <div className="text-xs text-blue-500 min-w-[100px] mt-1">
-                {file.name}
-
-                <button
-                  type="button"
-                  className="ml-2 text-xs text-red-400"
-                  onClick={() => removeFile(index)}
-                >
-                  删除
-                </button>
-              </div>
+        {/* 顯示已上傳的圖片 */}
+        <div className="mt-4 flex flex-wrap gap-4">
+          {imageItems.map((item) => (
+            <div key={item.id} className="relative">
+              {item.status === "uploaded" ? (
+                <>
+                  <Pic url={item.url} />
+                  <button
+                    type="button"
+                    className="mt-1 text-xs text-red-400"
+                    onClick={() => handleRemove(item)}
+                  >
+                    刪除
+                  </button>
+                </>
+              ) : item.status === "pending" || item.status === "uploading" ? (
+                <div className="flex flex-col items-center">
+                  <div className="h-20 w-20 bg-gray-200 flex items-center justify-center">
+                    {item.status === "uploading" ? (
+                      <span className="text-xs">上傳中...</span>
+                    ) : (
+                      <span className="text-xs">等待上傳</span>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    className="mt-1 text-xs text-red-400"
+                    onClick={() => handleRemove(item)}
+                    disabled={item.status === "uploading"}
+                  >
+                    刪除
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center">
+                  <div className="h-20 w-20 bg-red-100 flex items-center justify-center">
+                    <span className="text-xs text-red-500">上傳失敗</span>
+                  </div>
+                  <button
+                    type="button"
+                    className="mt-1 text-xs text-red-400"
+                    onClick={() => handleRemove(item)}
+                  >
+                    刪除
+                  </button>
+                </div>
+              )}
             </div>
           ))}
-        </div> */}
-        {/* {previewImages.map((image, i) => {
-          return <div key={i}>{image.srcs}</div>;
-        })} */}
-
-        <Pic
-          previewImages={previewImages}
-          setPreviewImages={setPreviewImages}
-        />
+        </div>
       </div>
     </div>
   );
