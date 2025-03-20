@@ -20,7 +20,7 @@ const OAuth = () => {
   const mutation = useMutation({
     mutationFn: () => googleSignIn(),
     onSuccess: (data) => {
-      console.log("data!!!", data)
+      // console.log("data!!!", data)
       dispatch(signInSuccess(data));
       setTimeout(() => {
         navigate("/");

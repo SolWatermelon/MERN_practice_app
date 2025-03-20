@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import PerListing from "./perListing";
 import { useSelector, useDispatch } from "react-redux";
 import { useListingActions } from "../../hooks/useListingActions";
+// import { useListingActions } from "../../hooks/useListingActions";
 
 const ShowListingsComponent = () => {
   const { currentUser } = useSelector((state) => state.userReducer);
   const dispatch = useDispatch();
-  const { getListingMutation } = useListingActions();
+  const { getListingMutation, deleteListingMutation } = useListingActions();
   const [userListings, setUserListings] = useState([]);
 
   useEffect(() => {
@@ -19,6 +20,18 @@ const ShowListingsComponent = () => {
         <div className=" px-6 py-4 bg-gray-300 dark:bg-gray-700">
           <h2 className="text-xl font-semibold text-center ">已發表房型列表</h2>
         </div>
+        {!userListings[0]?._id && (
+          <div className="text-lg text-center">尚無貼文...</div>
+        )}
+        {deleteListingMutation.isPending && (
+          <p className="text-xs">處理中...</p>
+        )}
+        {deleteListingMutation.isSuccess && (
+          <p className="text-blue-500 text-xs">刪除成功！</p>
+        )}
+        {deleteListingMutation.isError && (
+          <p className="text-red-500 text-xs">刪除失敗</p>
+        )}
 
         <div className="overflow-x-auto">
           {/* {<p>{userListings.msg}</p>} */}
@@ -50,21 +63,13 @@ const ShowListingsComponent = () => {
               </tr>
             </thead>
             <tbody className=" divide-y divide-gray-200">
-              {userListings?.msg &&
-                userListings.listings?.map((listing) => {
-                  const {
-                    name,
-                    createdAt,
-                    updatedAt,
-                    imageUrls,
-                    ...rest
-                  } = listing;
+              {userListings[0]?._id &&
+                userListings?.map((listing) => {
                   return (
                     <PerListing
-                      name={name}
-                      createdAt={createdAt}
-                      updatedAt={updatedAt}
-                      imageUrls={imageUrls}
+                      key={listing._id}
+                      listing={listing}
+                      setUserListings={setUserListings}
                     />
                   );
                 })}

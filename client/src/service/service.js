@@ -76,6 +76,8 @@ export const createListingForm = async (
   _id,
   checkboxOptions
 ) => {
+
+
   let checkboxSelected = [];
   checkboxOptions.forEach((option) => {
     const checkboxArr = formValue.options.some((opt) => opt === option);
@@ -85,51 +87,64 @@ export const createListingForm = async (
   const isCheckboxSelected = checkboxSelected.every((val) => {
     return val === false;
   });
+
+
+  // console.log("isCheckboxSelected", isCheckboxSelected)
   if (isCheckboxSelected) {
     throw new Error("請勾選checkbox");
   }
 
+  // console.log("imageItems.length", imageItems.length)
   if (!imageItems.length) {
     throw new Error("請上傳圖片並確認其他欄位有無錯誤");
   }
+
+  // console.log("+formValue.discountPrice > +formValue.regularPrice", +formValue.discountPrice > +formValue.regularPrice)
   if (+formValue.discountPrice > +formValue.regularPrice) {
     throw new Error("discountPrice必須比regularPrice小");
   }
 
   try {
-  const {
-    name,
-    description,
-    address,
-    regularPrice,
-    discountPrice,
-    bathrooms,
-    bedrooms,
-    options,
-  } = formValue;
+    // console.log("這裡")
+    const {
+      name,
+      description,
+      address,
+      regularPrice,
+      discountPrice,
+      bathrooms,
+      bedrooms,
+      options,
+    } = formValue;
 
-  const imgs = imageItems.map((img) => {
-    return img.url
-  });
+    // console.log("imageItems", imageItems)
+    const imgs = imageItems.map((img) => {
+      return {publicID:img.publicId, url:img.url};
+    });
+    // console.log("imgs", imgs)
 
-  const reqData = {
-    userRef: _id,
-    name,
-    description,
-    address,
-    regularPrice,
-    discountPrice,
-    bathrooms,
-    bedrooms,
-    offer: options.some((option) => option === "offer"),
-    parking: options.some((option) => option === "parking"),
-    furnished: options.some((option) => option === "furnished"),
-    type: options.includes("sell") ? "sell" : "rent",
-    imageUrls: imgs,
-  };
+    const reqData = {
+      userRef: _id,
+      name,
+      description,
+      address,
+      regularPrice,
+      discountPrice,
+      bathrooms,
+      bedrooms,
+      offer: options.some((option) => option === "offer"),
+      parking: options.some((option) => option === "parking"),
+      furnished: options.some((option) => option === "furnished"),
+      type: options.includes("sell") ? "sell" : "rent",
+      // publicId: imgs.map((img) => img.publicID),
+      // imageUrls: imgs.map((img) => img.url),
+      imageUrls: imgs
+    };
+
+    // console.log("reqData", reqData)
     const res = await axios.post("/api/listing/create", {
-      reqData
-  });
+      reqData,
+    });
     return res.data;
   } catch (e) {
     // 一定要拋出來，錯誤時isError才會抓到

@@ -107,7 +107,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
 
                         // offer控制isDiscountPrice
                         if (option === "offer") {
-                          console.log("checked", checked)
+                          // console.log("checked", checked)
                           setIsDiscountPrice(checked);
                         }
                       }}

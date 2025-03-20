@@ -12,8 +12,8 @@ export const useListingActions = () => {
     mutationFn: async (setUserListings) => {
       try {
         const res = await axios.get(`/api/user/listings/${currentUser._id}`);
-        setUserListings(res.data)
-        return res.data
+        setUserListings(res.data.listings);
+        return res.data.listings;
       } catch (error) {
         throw new Error(error.message);
       }
@@ -23,5 +23,26 @@ export const useListingActions = () => {
       // setGetUserListings(data)
     },
   });
-  return { getListingMutation };
+
+  // listing deletion mutation
+  const deleteListingMutation = useMutation({
+    mutationFn: async ({ imageUrls, _id }) => {
+      console.log("imageUrls", imageUrls);
+      console.log("_id", _id);
+      try {
+        const res = await axios.post(`/api/listing/delete/${_id}`, {
+          imageUrls,
+        });
+        return res.data;
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
+    // onSuccess: (data) => {
+
+    //   // dispatch(deleteUserSuccess(data));
+    // }
+  });
+
+  return { getListingMutation, deleteListingMutation };
 };
