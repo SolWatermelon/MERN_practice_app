@@ -25,6 +25,7 @@ import PrivateRoute from "./components/privateRoute";
 import { ThemeProvider } from "./components/theme-provider";
 import CreateListing from "./routes/CreateListing";
 import ShowListings from "./routes/ShowListings";
+import UpdateListing from "./routes/UpdateListing";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
           {
             path: "listings",
             element: <ShowListings />,
+          },
+          {
+            path: "update-listing/:listingId",
+            element: <UpdateListing/>,
           },
         ],
       },

@@ -7,11 +7,11 @@ import { useListingActions } from "../../hooks/useListingActions";
 const ShowListingsComponent = () => {
   const { currentUser } = useSelector((state) => state.userReducer);
   const dispatch = useDispatch();
-  const { getListingMutation, deleteListingMutation } = useListingActions();
-  const [userListings, setUserListings] = useState([]);
+  const { getListingMutation, deleteListingMutation, userListings, setUserListings } = useListingActions();
+  // const [userListings, setUserListings] = useState([]);
 
   useEffect(() => {
-    getListingMutation.mutate(setUserListings);
+    getListingMutation.mutate();
   }, []);
 
   return (
@@ -69,7 +69,6 @@ const ShowListingsComponent = () => {
                     <PerListing
                       key={listing._id}
                       listing={listing}
-                      setUserListings={setUserListings}
                     />
                   );
                 })}

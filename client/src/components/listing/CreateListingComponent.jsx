@@ -53,9 +53,9 @@ const CreateListingComponent = () => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "聒聒",
-      description: "12345667mjkl",
-      address: "hjkldnkljiko",
+      name: "預設name",
+      description: "預設description",
+      address: "descriptionaddress",
       type: "rent",
       regularPrice: 3,
       discountPrice: 0,

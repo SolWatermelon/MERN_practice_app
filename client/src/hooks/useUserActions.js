@@ -11,7 +11,7 @@ export const useUserActions = () => {
   const { currentUser } = useSelector((state) => state.userReducer);
   const dispatch = useDispatch();
 
-  // Helper function to convert file to base64
+  // convert file to base64
   const setFileToBase = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -21,7 +21,7 @@ export const useUserActions = () => {
     });
   };
 
-  // Avatar upload mutation
+  // avatar upload mutation
   const updateAvatar = useMutation({
     mutationFn: async (e) => {
       try {
@@ -51,7 +51,7 @@ export const useUserActions = () => {
     }
   });
 
-  // User info update mutation
+  // user info update mutation
   const updateUserInfo = useMutation({
     mutationFn: async (data) => {
       try {
@@ -79,7 +79,7 @@ export const useUserActions = () => {
     }
   });
 
-  // User deletion mutation
+  // user deletion mutation
   const deleteUser = useMutation({
     mutationFn: async () => {
       try {
@@ -94,7 +94,7 @@ export const useUserActions = () => {
     }
   });
 
-  // User signout mutation
+  // user signout mutation
   const signoutUser = useMutation({
     mutationFn: async () => {
       try {

@@ -11,10 +11,14 @@ import {
 } from "@/components/ui/dialog";
 
 import { useListingActions } from "../../hooks/useListingActions";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const PerListing = ({ listing, setUserListings }) => {
-  const { deleteListingMutation } = useListingActions();
+
+const PerListing = ({ listing }) => {
+
+  // const { getListingMutationTest, deleteListingMutation, userListings, setUserListings } = useListingActions();
+  const navigate = useNavigate();
+  const { deleteListingMutation, setUserListings } = useListingActions();
 
   const handleListingDelete = () => {
     const { imageUrls, _id } = listing;
@@ -29,7 +33,7 @@ const PerListing = ({ listing, setUserListings }) => {
           {/* .publicID */}
           {listing?.imageUrls[0]?.url ? (
             <Link
-              to={`/listing/${listing._id}`}
+              to={`/profile/listing/${listing._id}`}
               className="hover:scale-[1.05] transition-transform duration-2000"
             >
               <img
@@ -49,7 +53,7 @@ const PerListing = ({ listing, setUserListings }) => {
             </Link>
           )}
           <Link
-            to={`/listing/${listing._id}`}
+            to={`/profile/listing/${listing._id}`}
             className="hover:scale-[1.05] transition-transform duration-2000"
           >
             <p>{listing?.name}</p>
@@ -89,7 +93,8 @@ const PerListing = ({ listing, setUserListings }) => {
         {/* <Button variant="deletemode" size="sm">
             刪除
           </Button> */}
-        <Button variant="signoutmode" size="sm">
+          
+        <Button onClick={() => {navigate(`/profile/update-listing/${listing._id}`)}} variant="signoutmode" size="sm">
           編輯
         </Button>
       </td>

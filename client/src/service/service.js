@@ -50,6 +50,37 @@ export const signIn = async (data) => {
   }
 };
 
+
+
+const certainFieldSValidation = (checkboxOptions, imageItems, formValue, displayedOldPics) => {
+  let checkboxSelected = [];
+  checkboxOptions.forEach((option) => {
+    const checkboxArr = formValue.options.some((opt) => opt === option);
+    checkboxSelected.push(checkboxArr);
+  });
+
+  const isCheckboxSelected = checkboxSelected.every((val) => {
+    return val === false;
+  });
+
+  // console.log("isCheckboxSelected", isCheckboxSelected)
+  if (isCheckboxSelected) {
+    throw new Error("請勾選checkbox");
+  }
+
+  console.log("imageItems.length", imageItems?.length)
+  console.log("displayedOldPics?.length", displayedOldPics?.length)
+  if (!imageItems?.length && !displayedOldPics?.length) {
+    throw new Error("請上傳圖片並確認其他欄位有無錯誤");
+  }
+
+  // console.log("+formValue.discountPrice > +formValue.regularPrice", +formValue.discountPrice > +formValue.regularPrice)
+  if (+formValue.discountPrice > +formValue.regularPrice) {
+    throw new Error("discountPrice必須比regularPrice小");
+  }
+}
+
+
 export const googleSignIn = async () => {
   // console.log("data:", data);
   try {
@@ -76,33 +107,32 @@ export const createListingForm = async (
   _id,
   checkboxOptions
 ) => {
+  // let checkboxSelected = [];
+  // checkboxOptions.forEach((option) => {
+  //   const checkboxArr = formValue.options.some((opt) => opt === option);
+  //   checkboxSelected.push(checkboxArr);
+  // });
 
+  // const isCheckboxSelected = checkboxSelected.every((val) => {
+  //   return val === false;
+  // });
 
-  let checkboxSelected = [];
-  checkboxOptions.forEach((option) => {
-    const checkboxArr = formValue.options.some((opt) => opt === option);
-    checkboxSelected.push(checkboxArr);
-  });
+  // // console.log("isCheckboxSelected", isCheckboxSelected)
+  // if (isCheckboxSelected) {
+  //   throw new Error("請勾選checkbox");
+  // }
 
-  const isCheckboxSelected = checkboxSelected.every((val) => {
-    return val === false;
-  });
+  // // console.log("imageItems.length", imageItems.length)
+  // if (!imageItems.length) {
+  //   throw new Error("請上傳圖片並確認其他欄位有無錯誤");
+  // }
 
+  // // console.log("+formValue.discountPrice > +formValue.regularPrice", +formValue.discountPrice > +formValue.regularPrice)
+  // if (+formValue.discountPrice > +formValue.regularPrice) {
+  //   throw new Error("discountPrice必須比regularPrice小");
+  // }
 
-  // console.log("isCheckboxSelected", isCheckboxSelected)
-  if (isCheckboxSelected) {
-    throw new Error("請勾選checkbox");
-  }
-
-  // console.log("imageItems.length", imageItems.length)
-  if (!imageItems.length) {
-    throw new Error("請上傳圖片並確認其他欄位有無錯誤");
-  }
-
-  // console.log("+formValue.discountPrice > +formValue.regularPrice", +formValue.discountPrice > +formValue.regularPrice)
-  if (+formValue.discountPrice > +formValue.regularPrice) {
-    throw new Error("discountPrice必須比regularPrice小");
-  }
+  certainFieldSValidation(checkboxOptions, imageItems, formValue)
 
   try {
     // console.log("這裡")
@@ -119,7 +149,7 @@ export const createListingForm = async (
 
     // console.log("imageItems", imageItems)
     const imgs = imageItems.map((img) => {
-      return {publicID:img.publicId, url:img.url};
+      return { publicID: img.publicId, url: img.url };
     });
     // console.log("imgs", imgs)
 
@@ -138,11 +168,99 @@ export const createListingForm = async (
       type: options.includes("sell") ? "sell" : "rent",
       // publicId: imgs.map((img) => img.publicID),
       // imageUrls: imgs.map((img) => img.url),
-      imageUrls: imgs
+      imageUrls: imgs,
     };
 
     // console.log("reqData", reqData)
     const res = await axios.post("/api/listing/create", {
+      reqData,
+    });
+    return res.data;
+  } catch (e) {
+    // 一定要拋出來，錯誤時isError才會抓到
+    throw new Error(error.response?.data?.message || "發生未知錯誤");
+  }
+};
+
+export const updateListingForm = async (
+  formValue,
+  displayedOldPics,
+  imageItems,
+  _id,
+  listingId,
+  checkboxOptions
+) => {
+
+  certainFieldSValidation(checkboxOptions, imageItems, formValue, displayedOldPics)
+  // let checkboxSelected = [];
+  // checkboxOptions.forEach((option) => {
+  //   const checkboxArr = formValue.options.some((opt) => opt === option);
+  //   checkboxSelected.push(checkboxArr);
+  // });
+
+  // const isCheckboxSelected = checkboxSelected.every((val) => {
+  //   return val === false;
+  // });
+
+  // // console.log("isCheckboxSelected", isCheckboxSelected)
+  // if (isCheckboxSelected) {
+  //   throw new Error("請勾選checkbox");
+  // }
+
+  // // console.log("imageItems.length", imageItems.length)
+  // if (!imageItems.length) {
+  //   throw new Error("請上傳圖片並確認其他欄位有無錯誤");
+  // }
+
+  // // console.log("+formValue.discountPrice > +formValue.regularPrice", +formValue.discountPrice > +formValue.regularPrice)
+  // if (+formValue.discountPrice > +formValue.regularPrice) {
+  //   throw new Error("discountPrice必須比regularPrice小");
+  // }
+console.log("這裡1");
+
+  try {
+    console.log("這裡2")
+    const {
+      name,
+      description,
+      address,
+      regularPrice,
+      discountPrice,
+      bathrooms,
+      bedrooms,
+      options,
+    } = formValue;
+
+    // 新圖片
+    const newImgs = imageItems.map((img) => {
+      return { publicID: img.publicId, url: img.url };
+    });
+    // 舊圖片
+    // displayedOldPics
+    console.log("這裡3");
+    const uploadPics = [...displayedOldPics, ...newImgs]
+
+    const reqData = {
+      listingId,
+      userRef: _id,
+      name,
+      description,
+      address,
+      regularPrice,
+      discountPrice,
+      bathrooms,
+      bedrooms,
+      offer: options.some((option) => option === "offer"),
+      parking: options.some((option) => option === "parking"),
+      furnished: options.some((option) => option === "furnished"),
+      type: options.includes("sell") ? "sell" : "rent",
+      // publicId: imgs.map((img) => img.publicID),
+      // imageUrls: imgs.map((img) => img.url),
+      imageUrls: uploadPics,
+    };
+
+    console.log("reqData", reqData)
+    const res = await axios.post(`/api/listing/update/${listingId}`, {
       reqData,
     });
     return res.data;

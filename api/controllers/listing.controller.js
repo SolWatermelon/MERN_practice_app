@@ -2,7 +2,7 @@ import Listing from "../models/listing.model.js";
 import dotenv from "dotenv";
 import cloudinary from "cloudinary";
 dotenv.config();
-import {errorHandler} from "../utils/error.js"
+import { errorHandler } from "../utils/error.js";
 
 export const createListing = async (req, res, next) => {
   try {
@@ -80,16 +80,41 @@ export const deleteListing = async (req, res, next) => {
   }
 };
 
+// 發送的payload正確，但是送到資料庫時是舊資料3/21
 export const updateListing = async (req, res, next) => {
+  console.log("req.body", req.body);
+  console.log("req.params.id", req.params.id);
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
+
+
+
+  const { imageUrls } = req.body.reqData
   const listing = await Listing.findById(req.params.id);
   if (!listing) return next(errorHandler(404, "listing not found"));
   if (req.user.id !== listing.userRef) {
-    return next(errorHandler(404, "lu can only update ur own listing"));
+    return next(errorHandler(404, "u can only update ur own listing"));
   }
-  try{
-    const updatedListing = await Listing.findByIdAndUpdate(req.params.id, req.body, {new: true})
+  try {
+    const deletingImgs = imageUrls.map((url) => {
+      return cloudinary.v2.uploader.destroy(`${url.publicID}`);
+    });
+
+
+    const updatedListing = await Listing.findByIdAndUpdate(
+      req.params.id,
+      req.body.reqData,
+      { new: true }
+    );
+
+    if (!updatedListing) {
+      return res.status(404).json({ message: "listing can not be updated" });
+    }
     return res.status(200).json(updatedListing);
-  }catch(e){
-    next(e)
+  } catch (e) {
+    next(e);
   }
 };

@@ -17,6 +17,7 @@ import { useSelector, useDispatch } from "react-redux";
 const OAuth = () => {
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const mutation = useMutation({
     mutationFn: () => googleSignIn(),
     onSuccess: (data) => {
@@ -30,7 +31,7 @@ const OAuth = () => {
       console.error("API error:", error);
     },
   });
-  const navigate = useNavigate();
+  
   
   const handleGoogle = () => {
     // try {
