@@ -2,7 +2,7 @@ import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import { errorHandler } from "../utils/error.js";
 import jwt from "jsonwebtoken";
-import crypto from 'crypto';
+import crypto from "crypto";
 
 const generateRandomPassword = (length = 12) => {
   const charset =
@@ -14,8 +14,7 @@ const generateRandomPassword = (length = 12) => {
     password += charset[randomValues[i] % charset.length];
   }
   return password;
-}
-
+};
 
 const generateTokenAndStoreIt = (user, res) => {
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
@@ -24,7 +23,7 @@ const generateTokenAndStoreIt = (user, res) => {
     .cookie("access_token", token, { httpOnly: true })
     .status(200)
     .json(rest);
-}
+};
 
 export const signup = async (req, res, next) => {
   try {
@@ -52,7 +51,7 @@ export const signin = async (req, res, next) => {
     const validPassword = bcryptjs.compareSync(password, validUser.password);
     if (!validPassword) return next(errorHandler(401, "wrong credentials"));
 
-    generateTokenAndStoreIt(validUser, res)
+    generateTokenAndStoreIt(validUser, res);
   } catch (e) {
     next(e);
   }
@@ -74,21 +73,20 @@ export const googleSignin = async (req, res, next) => {
         password: hashedPassword,
       });
       await newUser.save();
-      generateTokenAndStoreIt(newUser, res)
+      generateTokenAndStoreIt(newUser, res);
     } else {
-      generateTokenAndStoreIt(validUser, res)
+      generateTokenAndStoreIt(validUser, res);
     }
   } catch (e) {
     next(e);
   }
 };
 
-
-export const signout = async(req, res, next) => {
-  try{
+export const signout = async (req, res, next) => {
+  try {
     res.clearCookie("access_token");
     return res.status(200).json({ msg: "user has been logged out" });
-  }catch(e){
+  } catch (e) {
     next(e);
   }
-}
+};

@@ -5,31 +5,59 @@ import axios from "axios";
 
 export const useListingActions = () => {
   const { currentUser } = useSelector((state) => state.userReducer);
-  // const dispatch = useDispatch();
   const [userListings, setUserListings] = useState([]);
   const [perUserListings, setPerUserListings] = useState([]);
+  const [unverifiedPerListing, setUnverifiedPerListing] = useState({});
 
-  //  get per listing mutation
+  //  get per listing mutation(verified)
   const getPerListingMutation = useMutation({
     mutationFn: async (listingId) => {
       try {
-        console.log("listingId", listingId);
+        // console.log("listingId", listingId);
         const res = await axios.get(`/api/user/listings/${currentUser._id}`);
-        console.log('res.data.listings', res.data.listings);
-        if(!res.data.listings.length)  throw new Error("無法抓取資料");
+        // console.log("res.data.listings", res.data.listings);
+        if (!res.data.listings.length) throw new Error("無法抓取資料");
         const perListing = res.data.listings.find((listing) => {
-          return listing._id ===listingId
-        })
-        return perListing
+          return listing._id === listingId;
+        });
+        return perListing;
       } catch (error) {
-        return error.message
+        throw error.message;
       }
     },
     onSuccess: (data) => {
       console.log("data", data);
-      setPerUserListings(data);
       if (!data) return;
+      setPerUserListings(data);
       // setGetUserListings(data)
+    },
+    onError: (error) => {
+      console.error("請求錯誤", error);
+    },
+  });
+
+  //  get per listing mutation(unverified)
+  const getUnverifiedPerListingMutation = useMutation({
+    mutationFn: async (listingId) => {
+      try {
+        console.log("listingId", listingId);
+        const res = await axios.get(`/api/listing/get/${listingId}`);
+        console.log("res", res);
+        console.log("res.data.listing", res.data.listing);
+        if (!Object.keys(res?.data?.listing).length) {
+          throw new Error("無法抓取資料");
+        }
+        return res.data.listing;
+      } catch (error) {
+        throw error.message;
+      }
+    },
+    onSuccess: (data) => {
+      if (!data) return;
+      setUnverifiedPerListing(data);
+    },
+    onError: (error) => {
+      console.error("請求錯誤", error);
     },
   });
 
@@ -49,6 +77,9 @@ export const useListingActions = () => {
       if (!data) return;
       // setGetUserListings(data)
     },
+    onError: (error) => {
+      console.error("請求錯誤", error);
+    },
   });
 
   // listing deletion mutation
@@ -65,6 +96,13 @@ export const useListingActions = () => {
         throw new Error(error.message);
       }
     },
+    onSuccess: (data) => {
+      if (!data) return;
+      console.log("成功");
+    },
+    onError: (error) => {
+      console.error("請求錯誤", error);
+    },
   });
 
   return {
@@ -73,6 +111,9 @@ export const useListingActions = () => {
     deleteListingMutation,
     userListings,
     setUserListings,
-    perUserListings, setPerUserListings
+    perUserListings,
+    setPerUserListings,
+    getUnverifiedPerListingMutation,
+    unverifiedPerListing,
   };
 };

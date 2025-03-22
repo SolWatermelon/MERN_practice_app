@@ -57,9 +57,9 @@ const UpdatelistingComponent = () => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "default",
-      description: "default",
-      address: "default",
+      name: "defaultdefault",
+      description: "defaultdefault",
+      address: "defaultdefault",
       type: "default",
       regularPrice: 3,
       discountPrice: 0,
@@ -75,6 +75,7 @@ const UpdatelistingComponent = () => {
   useEffect(() => {
     console.log("perUserListings!", perUserListings);
     if (perUserListings) {
+      console.log("嗨嗨嗨嗨~~~");
       const {
         name,
         description,

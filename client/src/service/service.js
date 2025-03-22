@@ -50,9 +50,12 @@ export const signIn = async (data) => {
   }
 };
 
-
-
-const certainFieldSValidation = (checkboxOptions, imageItems, formValue, displayedOldPics) => {
+const certainFieldSValidation = (
+  checkboxOptions,
+  imageItems,
+  formValue,
+  displayedOldPics
+) => {
   let checkboxSelected = [];
   checkboxOptions.forEach((option) => {
     const checkboxArr = formValue.options.some((opt) => opt === option);
@@ -68,8 +71,8 @@ const certainFieldSValidation = (checkboxOptions, imageItems, formValue, display
     throw new Error("請勾選checkbox");
   }
 
-  console.log("imageItems.length", imageItems?.length)
-  console.log("displayedOldPics?.length", displayedOldPics?.length)
+  console.log("imageItems.length", imageItems?.length);
+  console.log("displayedOldPics?.length", displayedOldPics?.length);
   if (!imageItems?.length && !displayedOldPics?.length) {
     throw new Error("請上傳圖片並確認其他欄位有無錯誤");
   }
@@ -78,8 +81,7 @@ const certainFieldSValidation = (checkboxOptions, imageItems, formValue, display
   if (+formValue.discountPrice > +formValue.regularPrice) {
     throw new Error("discountPrice必須比regularPrice小");
   }
-}
-
+};
 
 export const googleSignIn = async () => {
   // console.log("data:", data);
@@ -132,7 +134,7 @@ export const createListingForm = async (
   //   throw new Error("discountPrice必須比regularPrice小");
   // }
 
-  certainFieldSValidation(checkboxOptions, imageItems, formValue)
+  certainFieldSValidation(checkboxOptions, imageItems, formValue);
 
   try {
     // console.log("這裡")
@@ -190,8 +192,12 @@ export const updateListingForm = async (
   listingId,
   checkboxOptions
 ) => {
-
-  certainFieldSValidation(checkboxOptions, imageItems, formValue, displayedOldPics)
+  certainFieldSValidation(
+    checkboxOptions,
+    imageItems,
+    formValue,
+    displayedOldPics
+  );
   // let checkboxSelected = [];
   // checkboxOptions.forEach((option) => {
   //   const checkboxArr = formValue.options.some((opt) => opt === option);
@@ -216,10 +222,10 @@ export const updateListingForm = async (
   // if (+formValue.discountPrice > +formValue.regularPrice) {
   //   throw new Error("discountPrice必須比regularPrice小");
   // }
-console.log("這裡1");
+  console.log("這裡1");
 
   try {
-    console.log("這裡2")
+    console.log("這裡2");
     const {
       name,
       description,
@@ -232,14 +238,15 @@ console.log("這裡1");
     } = formValue;
 
     // 新圖片
+    // console.log("這裡3");
     const newImgs = imageItems.map((img) => {
       return { publicID: img.publicId, url: img.url };
     });
+
     // 舊圖片
     // displayedOldPics
-    console.log("這裡3");
-    const uploadPics = [...displayedOldPics, ...newImgs]
-
+    const uploadPics = [...displayedOldPics, ...newImgs];
+    // console.log("uploadPics", uploadPics)
     const reqData = {
       listingId,
       userRef: _id,
@@ -259,7 +266,7 @@ console.log("這裡1");
       imageUrls: uploadPics,
     };
 
-    console.log("reqData", reqData)
+    console.log("reqData", reqData);
     const res = await axios.post(`/api/listing/update/${listingId}`, {
       reqData,
     });

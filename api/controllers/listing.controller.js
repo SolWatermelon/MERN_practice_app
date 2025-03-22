@@ -90,9 +90,7 @@ export const updateListing = async (req, res, next) => {
     api_secret: process.env.CLOUDINARY_API_SECRET,
   });
 
-
-
-  const { imageUrls } = req.body.reqData
+  const { imageUrls } = req.body.reqData;
   const listing = await Listing.findById(req.params.id);
   if (!listing) return next(errorHandler(404, "listing not found"));
   if (req.user.id !== listing.userRef) {
@@ -102,7 +100,6 @@ export const updateListing = async (req, res, next) => {
     const deletingImgs = imageUrls.map((url) => {
       return cloudinary.v2.uploader.destroy(`${url.publicID}`);
     });
-
 
     const updatedListing = await Listing.findByIdAndUpdate(
       req.params.id,
@@ -114,6 +111,18 @@ export const updateListing = async (req, res, next) => {
       return res.status(404).json({ message: "listing can not be updated" });
     }
     return res.status(200).json(updatedListing);
+  } catch (e) {
+    next(e);
+  }
+};
+
+export const getUnverifiedListing = async (req, res, next) => {
+  try {
+    const listing = await Listing.findById(req.params.id);
+    if (!listing) {
+      return res.status(404).json({ message: "listing can not be found" });
+    }
+    return res.status(200).json({ msg: "success", listing });
   } catch (e) {
     next(e);
   }

@@ -26,6 +26,7 @@ import { ThemeProvider } from "./components/theme-provider";
 import CreateListing from "./routes/CreateListing";
 import ShowListings from "./routes/ShowListings";
 import UpdateListing from "./routes/UpdateListing";
+import Listing from "./routes/Listing";
 
 const queryClient = new QueryClient();
 
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
       {
         path: "/news",
         element: <News />,
+      },
+      {
+        path: "/listing/:listingId",
+        element: <Listing />,
       },
     ],
   },

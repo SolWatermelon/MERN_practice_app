@@ -27,7 +27,7 @@ export const useUserActions = () => {
       try {
         const file = e.target.files?.[0];
         if (!file) return null;
-        
+
         const base64Image = await setFileToBase(file);
         const res = await axios.post("/api/avatar/upload", {
           ...currentUser,
@@ -40,7 +40,7 @@ export const useUserActions = () => {
     },
     onSuccess: (data) => {
       if (!data) return;
-      
+
       dispatch(
         updateUserSuccess({
           ...currentUser,
@@ -48,7 +48,10 @@ export const useUserActions = () => {
           updatedAt: data?._doc?.updatedAt,
         })
       );
-    }
+    },
+    onError: (error) => {
+      console.error("請求錯誤", error);
+    },
   });
 
   // user info update mutation
@@ -56,8 +59,10 @@ export const useUserActions = () => {
     mutationFn: async (data) => {
       try {
         const { name, email, password } = data;
-        const updatedData = password ? { name, email, password } : { name, email };
-        
+        const updatedData = password
+          ? { name, email, password }
+          : { name, email };
+
         const res = await axios.post(
           `/api/user/update/${currentUser?._id}`,
           updatedData
@@ -76,7 +81,10 @@ export const useUserActions = () => {
           updatedAt: data?.updatedAt,
         })
       );
-    }
+    },
+    onError: (error) => {
+      console.error("請求錯誤", error);
+    },
   });
 
   // user deletion mutation
@@ -91,7 +99,10 @@ export const useUserActions = () => {
     },
     onSuccess: (data) => {
       dispatch(deleteUserSuccess(data));
-    }
+    },
+    onError: (error) => {
+      console.error("請求錯誤", error);
+    },
   });
 
   // user signout mutation
@@ -106,7 +117,10 @@ export const useUserActions = () => {
     },
     onSuccess: (data) => {
       dispatch(signOutUserSuccess(data));
-    }
+    },
+    onError: (error) => {
+      console.error("請求錯誤", error);
+    },
   });
 
   return {
@@ -114,6 +128,6 @@ export const useUserActions = () => {
     updateAvatar,
     updateUserInfo,
     deleteUser,
-    signoutUser
+    signoutUser,
   };
 };

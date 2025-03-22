@@ -53,6 +53,11 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
       setImageItems([...imageItems, ...newItems]);
       updateFormFileValue();
 
+      if (newItems.length > 6) {
+        form.setValue("file", null);
+        setImageItems([]);
+      }
+
       return newItems;
     } catch (error) {
       console.error("處理文件失敗:", error);
@@ -166,7 +171,9 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
     <div className="flex flex-col gap-4">
       <div>
         <div className="flex items-center gap-2">
-          <div className="text-gray-700 text-sm">Upload File</div>
+          <div className="text-gray-700 text-sm">Upload File
+          <p className="text-[12px] text-red-500">（圖片上限為6張）</p>
+          </div>
           {uploadMutation.isPending && <p className="text-xs">處理中...</p>}
           {uploadMutation.isSuccess && (
             <p className="text-blue-500 text-xs">上傳成功！</p>
@@ -184,9 +191,9 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
               <FormItem>
                 <FormControl className="flex justify-center items-center">
                   <input
+                    onChange={handleFileSelect}
                     className="w-[180px] border-2 border-gray-400 text-gray-800 focus:outline-none focus:border-darkorange"
                     type="file"
-                    onChange={handleFileSelect}
                     accept="image/*"
                     multiple
                   />
@@ -201,7 +208,10 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
             onClick={() => uploadMutation.mutate()}
             type="button"
             size="sm"
-            disabled={!imageItems.some((item) => item.status === "pending")}
+            disabled={
+              imageItems.length > 6 ||
+              !imageItems.some((item) => item.status === "pending")
+            }
           >
             上傳
           </Button>
@@ -209,7 +219,58 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
 
         {/* 顯示已上傳的圖片 */}
         <div className="mt-4 flex flex-wrap gap-4">
-          {imageItems.map((item) => (
+          {imageItems.length > 6 ? (
+            <p className="text-[14px] text-red-200">圖片數量錯誤</p>
+          ) : (
+            imageItems.map((item) => (
+              <div key={item.id} className="relative">
+                {item.status === "uploaded" ? (
+                  <>
+                    <Pic url={item.url} />
+                    <button
+                      type="button"
+                      className="mt-1 text-xs text-red-400"
+                      onClick={() => handleRemove(item)}
+                    >
+                      刪除
+                    </button>
+                  </>
+                ) : item.status === "pending" || item.status === "uploading" ? (
+                  <div className="flex flex-col items-center">
+                    <div className="h-20 w-20 bg-gray-200 flex items-center justify-center">
+                      {item.status === "uploading" ? (
+                        <span className="text-xs">上傳中...</span>
+                      ) : (
+                        <span className="text-xs">等待上傳</span>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      className="mt-1 text-xs text-red-400"
+                      onClick={() => handleRemove(item)}
+                      disabled={item.status === "uploading"}
+                    >
+                      刪除
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center">
+                    <div className="h-20 w-20 bg-red-100 flex items-center justify-center">
+                      <span className="text-xs text-red-500">上傳失敗</span>
+                    </div>
+                    <button
+                      type="button"
+                      className="mt-1 text-xs text-red-400"
+                      onClick={() => handleRemove(item)}
+                    >
+                      刪除
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))
+          )}
+          {/* {imageItems.map((item) => (
             <div key={item.id} className="relative">
               {item.status === "uploaded" ? (
                 <>
@@ -255,7 +316,7 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
                 </div>
               )}
             </div>
-          ))}
+          ))} */}
         </div>
       </div>
     </div>

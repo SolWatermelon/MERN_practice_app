@@ -53,7 +53,7 @@ export const getUserListing =  async (req, res, next) => {
   // console.log("req.user.id", req.user.id)
   // console.log("req.params.id",req.params.id)
   if (req.user.id !== req.params.id)
-    return errorHandler(401, "u can only delete ur own account");
+    return errorHandler(401, "u can only get ur own listings");
   try {
     const listings = await Listing.find({userRef: req.params.id})
     return res.status(200).json({ msg: "success", listings });

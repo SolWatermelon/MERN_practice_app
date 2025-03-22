@@ -18,7 +18,7 @@ const UpdateListingPics = ({
   setImageItems,
   oldImageUrls,
   displayedOldPics,
-  setDisplayedOldPics
+  setDisplayedOldPics,
 }) => {
   const { currentUser } = useSelector((state) => state.userReducer);
   // // 舊圖片的狀態
@@ -36,7 +36,7 @@ const UpdateListingPics = ({
     try {
       const files = e.target.files;
       if (!files || files.length === 0) return;
-      
+
       const newItems = [];
 
       // 轉換為base64-1
@@ -51,9 +51,15 @@ const UpdateListingPics = ({
           status: "pending",
         });
       }
-// 更新
+      // 更新
       setImageItems([...imageItems, ...newItems]);
       updateFormFileValue();
+      // console.log("newItems.length", newItems.length);
+      // console.log("displayedOldPics.length", displayedOldPics.length);
+      if (newItems.length + displayedOldPics.length > 6) {
+        form.setValue("file", null);
+        setImageItems([]);
+      }
 
       return newItems;
     } catch (error) {
@@ -83,7 +89,7 @@ const UpdateListingPics = ({
       .map((item) => item.file);
 
     if (pendingFiles.length > 0) {
-            // Web API中用於保存拖放操作或剪貼板操作期間的數據
+      // Web API中用於保存拖放操作或剪貼板操作期間的數據
       // 將js file轉換為form可以使用的FileList格式
       const dataTransfer = new DataTransfer();
       pendingFiles.forEach((file) => dataTransfer.items.add(file));
@@ -91,7 +97,7 @@ const UpdateListingPics = ({
     } else {
       form.setValue("file", null);
     }
-    
+
     // 同時更新移除的舊圖片列表
     // form.setValue("removedImageIds", removedOldPicsIds);
   };
@@ -107,7 +113,7 @@ const UpdateListingPics = ({
         throw new Error("沒有等待上傳的圖片");
       }
 
-       // 更新狀態為uploading
+      // 更新狀態為uploading
       setImageItems((prev) =>
         prev.map((item) =>
           item.status === "pending" ? { ...item, status: "uploading" } : item
@@ -139,7 +145,7 @@ const UpdateListingPics = ({
         });
       });
 
-      console.log("updatedItems", updatedItems)
+      // console.log("updatedItems", updatedItems);
 
       setImageItems(updatedItems);
     },
@@ -163,13 +169,11 @@ const UpdateListingPics = ({
   // 刪掉舊圖片
   const handleOldPicRemove = (item) => {
     // 從顯示列表移除
-    setDisplayedOldPics((prev) => 
-      prev.filter((pic) => pic.url !== item.url)
-    );
-    
+    setDisplayedOldPics((prev) => prev.filter((pic) => pic.url !== item.url));
+
     // 要刪除的圖片ID或url加入
     // setRemovedOldPicsIds((prev) => [...prev, item.publicID || item.url]);
-    
+
     // 更新表單值
     updateFormFileValue();
   };
@@ -177,12 +181,17 @@ const UpdateListingPics = ({
   return (
     <div className="flex flex-col gap-4">
       {/* 顯示舊的已上傳圖片 */}
+      <p>{displayedOldPics.length}</p>
+
       {displayedOldPics.length > 0 && (
         <div className="mt-4">
           <h3 className="text-gray-700 text-sm mb-2">已上傳圖片</h3>
           <div className="flex flex-wrap gap-4">
             {displayedOldPics.map((item, index) => (
-              <div key={item.publicID || item.url || index} className="relative">
+              <div
+                key={item.publicID || item.url || index}
+                className="relative"
+              >
                 <Pic url={item.url} />
                 <button
                   type="button"
@@ -200,6 +209,7 @@ const UpdateListingPics = ({
       <div>
         <div className="flex items-center gap-2">
           <div className="text-gray-700 text-sm">Upload File</div>
+
           {uploadMutation.isPending && <p className="text-xs">處理中...</p>}
           {uploadMutation.isSuccess && (
             <p className="text-blue-500 text-xs">上傳成功！</p>
@@ -240,8 +250,11 @@ const UpdateListingPics = ({
           </Button>
         </div>
 
+        {/* <p>{imageItems.length}</p> */}
+        {/* <p>{imageItems.length + displayedOldPics.length}</p> */}
         {/* 顯示新上傳的圖片 */}
-        {imageItems.length > 0 && (
+        {imageItems.length > 0 &&
+        imageItems.length + displayedOldPics.length <= 6 ? (
           <div className="mt-4 flex flex-wrap gap-4">
             {imageItems.map((item) => (
               <div key={item.id} className="relative">
@@ -291,16 +304,9 @@ const UpdateListingPics = ({
               </div>
             ))}
           </div>
+        ) : (
+          <p className="text-[12px] text-red-500">請注意!圖片上限為6張</p>
         )}
-
-
-
-
-
-
-
-
-
       </div>
     </div>
   );
