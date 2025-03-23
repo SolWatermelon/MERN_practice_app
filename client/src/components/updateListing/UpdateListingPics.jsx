@@ -56,7 +56,7 @@ const UpdateListingPics = ({
       updateFormFileValue();
       // console.log("newItems.length", newItems.length);
       // console.log("displayedOldPics.length", displayedOldPics.length);
-      if (newItems.length + displayedOldPics.length > 6) {
+      if (newItems.length + displayedOldPics.length > 5) {
         form.setValue("file", null);
         setImageItems([]);
       }
@@ -254,7 +254,7 @@ const UpdateListingPics = ({
         {/* <p>{imageItems.length + displayedOldPics.length}</p> */}
         {/* 顯示新上傳的圖片 */}
         {imageItems.length > 0 &&
-        imageItems.length + displayedOldPics.length <= 6 ? (
+        imageItems.length + displayedOldPics.length <= 5 ? (
           <div className="mt-4 flex flex-wrap gap-4">
             {imageItems.map((item) => (
               <div key={item.id} className="relative">
@@ -305,7 +305,7 @@ const UpdateListingPics = ({
             ))}
           </div>
         ) : (
-          <p className="text-[12px] text-red-500">請注意!圖片上限為6張</p>
+          <p className="text-[12px] text-red-500">請注意!圖片上限為5張</p>
         )}
       </div>
     </div>

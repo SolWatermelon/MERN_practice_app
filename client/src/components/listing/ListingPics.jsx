@@ -53,7 +53,7 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
       setImageItems([...imageItems, ...newItems]);
       updateFormFileValue();
 
-      if (newItems.length > 6) {
+      if (newItems.length > 5) {
         form.setValue("file", null);
         setImageItems([]);
       }
@@ -172,7 +172,7 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
       <div>
         <div className="flex items-center gap-2">
           <div className="text-gray-700 text-sm">Upload File
-          <p className="text-[12px] text-red-500">（圖片上限為6張）</p>
+          <p className="text-[12px] text-red-500">（圖片上限為5張）</p>
           </div>
           {uploadMutation.isPending && <p className="text-xs">處理中...</p>}
           {uploadMutation.isSuccess && (
@@ -209,7 +209,7 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
             type="button"
             size="sm"
             disabled={
-              imageItems.length > 6 ||
+              imageItems.length > 5 ||
               !imageItems.some((item) => item.status === "pending")
             }
           >
@@ -219,7 +219,7 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
 
         {/* 顯示已上傳的圖片 */}
         <div className="mt-4 flex flex-wrap gap-4">
-          {imageItems.length > 6 ? (
+          {imageItems.length > 5 ? (
             <p className="text-[14px] text-red-200">圖片數量錯誤</p>
           ) : (
             imageItems.map((item) => (
