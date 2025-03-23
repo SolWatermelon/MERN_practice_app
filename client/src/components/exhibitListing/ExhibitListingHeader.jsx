@@ -50,7 +50,7 @@ const ExhibitListingHeader = ({ getUnverifiedPerListingMutation }) => {
   // return <div>{isSuccess && <p>{data?.address}</p>}</div>;
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* <div>{isSuccess && <p>{data?.address}</p>}</div> */}
+      {/* <div>{data?.imageUrls.length}</div> */}
       {/* 一張圖片 */}
       {data?.imageUrls.length === 1 && (
         <div className="grid grid-cols-1 gap-4 h-[300px]">
@@ -101,39 +101,37 @@ const ExhibitListingHeader = ({ getUnverifiedPerListingMutation }) => {
 
       {/* 三張圖片 */}
       {data?.imageUrls.length === 3 && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 grid-rows-2 gap-4 h-auto xl:h-[300px]">
-          <div className="col-span-1 sm:col-span-2 row-span-2 hover:scale-[1.05] transition-transform duration-3000">
-            <div
-              className="bg-gray-200 cursor-pointer h-full"
-              onClick={() => openFullscreen(0)}
-            >
-              <img
-                src={data?.imageUrls[0].url}
-                alt="Gallery thumbnail 1"
-                className="w-full h-full object-cover mx-auto"
-              />
-            </div>
-          </div>
-          {data?.imageUrls.slice(1, 5).map((image, index) => (
-            <div
-              key={index + 1}
-              className="col-span-1 row-span-1 bg-gray-200 cursor-pointer hover:scale-[1.05] transition-transform duration-3000"
-              onClick={() => openFullscreen(index + 1)}
-            >
-              <img
-                src={image.url}
-                alt={`Gallery thumbnail ${index + 2}`}
-                className="w-full h-full object-cover mx-auto"
-              />
-            </div>
-          ))}
-        </div>
-      )}
+      <div className="grid grid-cols-1 sm:grid-cols-3 grid-rows-[auto,1fr] gap-4 h-auto">
+  <div className="col-span-1 sm:col-span-2 row-span-1 sm:row-span-2 h-[150px] sm:h-auto hover:scale-[1.05] transition-transform duration-3000">
+    <div className="bg-gray-200 cursor-pointer h-full " onClick={() => openFullscreen(0)}>
+      <img
+        src={data?.imageUrls[0].url}
+        alt="Gallery thumbnail 1"
+        className="w-full h-full max-h-[150px] sm:max-h-none object-cover"
+      />
+    </div>
+  </div>
+
+  {data?.imageUrls.slice(1, 3).map((image, index) => (
+    <div
+      key={index + 1}
+      className="col-span-1 row-span-1 bg-gray-200 cursor-pointer hover:scale-[1.05] transition-transform duration-3000"
+      onClick={() => openFullscreen(index + 1)}
+    >
+      <img
+        src={image.url}
+        alt={`Gallery thumbnail ${index + 2}`}
+        className="w-full h-full max-h-[100px] sm:max-h-none object-cover"
+      />
+    </div>
+  ))}
+</div>)}
+
 
       {/* 四張圖片 */}
       {data?.imageUrls.length === 4 && (
-        <div className="grid grid-cols-2 grid-rows-2 sm:grid-cols-3 sm:grid-rows-3 gap-4 h-auto xl:h-[300px]">
-          <div className="col-span-1 row-span-1 sm:col-span-2 sm:row-span-4 hover:scale-[1.05] transition-transform duration-3000">
+        <div className="grid grid-cols-2 grid-rows-2 md:grid-cols-4 md:grid-rows-3 gap-4 h-auto xl:h-[400px]">
+          <div className="col-span-1 row-span-1 md:col-span-2 md:row-span-4 hover:scale-[1.05] transition-transform duration-3000">
             <div
               className="bg-gray-200 cursor-pointer h-full"
               onClick={() => openFullscreen(0)}
@@ -148,7 +146,7 @@ const ExhibitListingHeader = ({ getUnverifiedPerListingMutation }) => {
           {data?.imageUrls.slice(1, 5).map((image, index) => (
             <div
               key={index + 1}
-              className="col-span-1 row-span-1 sm:col-span-1 sm:row-span-1 bg-gray-200 cursor-pointer hover:scale-[1.05] transition-transform duration-3000"
+              className="col-span-1 row-span-1 md:col-span-2 md:row-span-1 bg-gray-200 cursor-pointer hover:scale-[1.05] transition-transform duration-3000"
               onClick={() => openFullscreen(index + 1)}
             >
               <img

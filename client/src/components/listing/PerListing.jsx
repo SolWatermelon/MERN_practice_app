@@ -33,7 +33,7 @@ const PerListing = ({ listing }) => {
           {/* .publicID */}
           {listing?.imageUrls[0]?.url ? (
             <Link
-              to={`/profile/listing/${listing._id}`}
+              to={`/listing/${listing._id}`}
               className="hover:scale-[1.05] transition-transform duration-2000"
             >
               <img
@@ -53,7 +53,7 @@ const PerListing = ({ listing }) => {
             </Link>
           )}
           <Link
-            to={`/profile/listing/${listing._id}`}
+            to={`/listing/${listing._id}`}
             className="hover:scale-[1.05] transition-transform duration-2000"
           >
             <p>{listing?.name}</p>

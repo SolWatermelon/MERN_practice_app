@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import ExhibitListingHeader from "./exhibitListingHeader";
 import { useListingActions } from "../../hooks/useListingActions";
 import { useParams } from "react-router-dom";
+import ExhibitListingBody from "./ExhibitListingBody";
 
 const ExhibitListingComponent = () => {
   const { getUnverifiedPerListingMutation, unverifiedPerListing } =
@@ -21,7 +22,10 @@ const ExhibitListingComponent = () => {
       {getUnverifiedPerListingMutation.isPending ? (
         <p>讀取中loading...</p>
       ) : (
+        <>
         <ExhibitListingHeader getUnverifiedPerListingMutation={getUnverifiedPerListingMutation} />
+        <ExhibitListingBody getUnverifiedPerListingMutation={getUnverifiedPerListingMutation}/>
+        </>
       )}
     </div>
   );
