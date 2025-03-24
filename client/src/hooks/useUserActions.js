@@ -1,4 +1,6 @@
-import { useMutation } from "@tanstack/react-query";
+import React, { useEffect, useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import {
@@ -7,9 +9,11 @@ import {
   signOutUserSuccess,
 } from "../slices/userSlice";
 
-export const useUserActions = () => {
+export const useUserActions = (userRef) => {
   const { currentUser } = useSelector((state) => state.userReducer);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // const [landlordInfo, setLandlordInfo] = useState(null)
 
   // convert file to base64
   const setFileToBase = (file) => {
@@ -123,11 +127,72 @@ export const useUserActions = () => {
     },
   });
 
+  // const {
+  //   data: signoutData,
+  //   isPending: signoutPending,
+  //   isError: isSignoutError,
+  //   error: signoutErrorMsg,
+  //   isSuccess: isSignoutSuccess,
+  //   refetch: signoutRefetch,
+  // } = useQuery({
+  //   queryKey: ["signout"],
+  //   queryFn: async () => {
+  //     try {
+  //       // const [, isFetchabled] = queryKey
+  //       // if (!isFetchabled) return null;
+
+  //       const res = await axios.get(`/api/auth/signout`);
+  //       console.log("resresres~!!!", res)
+  //       if (!res.data) throw new Error("錯誤發生");
+  //       return res.data;
+  //     } catch (e) {
+  //       throw e;
+  //     }
+  //   },
+  //   enabled: false,
+  //   onSuccess: (data) => {
+  //     console.log("成功登出~~~~~", data);
+  //     dispatch(signOutUserSuccess(data));
+  //     navigate("/sign-in", { replace: true });
+  //   },
+  // });
+
+  // get landlord info Mutation
+  const getLandlordUserInfoMutation = useMutation({
+    mutationFn: async (userRef) => {
+      try {
+        const res = await axios.get(`/api/user/${userRef}`);
+        return res.data;
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
+    onSuccess: (data) => {
+      if (!data) return;
+      // setLandlordInfo(data)
+    },
+    onError: (error) => {
+      console.error("請求錯誤", error);
+    },
+  });
+
+
+
+
   return {
     currentUser,
     updateAvatar,
     updateUserInfo,
     deleteUser,
+    // signoutUser,
+    // signoutData,
+    // signoutRefetch,
+    // signoutPending,
+    // isSignoutError,
+    // signoutErrorMsg,
+    // isSignoutSuccess,
     signoutUser,
+    getLandlordUserInfoMutation,
+    // landlordInfo
   };
 };

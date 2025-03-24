@@ -5,26 +5,37 @@ import { useParams } from "react-router-dom";
 import ExhibitListingBody from "./ExhibitListingBody";
 
 const ExhibitListingComponent = () => {
-  const { getUnverifiedPerListingMutation, unverifiedPerListing } =
-    useListingActions();
   const params = useParams();
   const listingId = params.listingId;
+  const { getUnverifiedPerListQuery } = useListingActions(listingId);
+  const { data, isSuccess, isPending, isError, error, refetch } =
+    getUnverifiedPerListQuery;
 
   useEffect(() => {
-    getUnverifiedPerListingMutation.mutate(listingId);
-    console.log("getUnverifiedPerListingMutation.isError", getUnverifiedPerListingMutation.isError);
-  }, [listingId]);
+    if (listingId) {
+      console.log("listingId", listingId);
+      console.log("unverifiedPerListingData~~~~~", data);
+    }
+    // getUnverifiedPerListQueryingMutation.mutate(listingId);
+  }, [data]);
 
   return (
     <div>
-    {/* <p>{getUnverifiedPerListingMutation.isError}</p> */}
-      {getUnverifiedPerListingMutation.isError && <p>唉唷 Something went wrong!</p>}
-      {getUnverifiedPerListingMutation.isPending ? (
+      {/* {getUnverifiedPerListQueryingMutation.isError && <p>唉唷 Something went wrong!</p>}
+      {getUnverifiedPerListQueryingMutation.isPending ? (
         <p>讀取中loading...</p>
       ) : (
         <>
-        <ExhibitListingHeader getUnverifiedPerListingMutation={getUnverifiedPerListingMutation} />
-        <ExhibitListingBody getUnverifiedPerListingMutation={getUnverifiedPerListingMutation}/>
+        <ExhibitListingHeader getUnverifiedPerListQueryingMutation={getUnverifiedPerListQueryingMutation} />
+        <ExhibitListingBody getUnverifiedPerListQueryingMutation={getUnverifiedPerListQueryingMutation}/>
+        </>
+      )} */}
+      {isPending && <p>讀取中...</p>}
+      {isError && <p>{`錯誤！無法讀取頁面${error}`}</p>}
+      {isSuccess && (
+        <>
+          <ExhibitListingHeader unverifiedPerListingData={data} />
+          <ExhibitListingBody unverifiedPerListingData={data} />
         </>
       )}
     </div>

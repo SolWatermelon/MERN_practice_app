@@ -61,3 +61,19 @@ export const getUserListing =  async (req, res, next) => {
     next(e);
   }
 };
+
+
+export const getUser =  async (req, res, next) => {
+  // check token first
+  // 記得user id是從verify user來的(cookie)
+  // console.log("req.user.id", req.user.id)
+  // console.log("req.params.id",req.params.id)
+  try {
+    const user = await User.findById(req.params.id)
+    if (!user) return next(errorHandler(401, "user not found"))
+    const { password: pwd, ...rest } = user;
+    return res.status(200).json(rest);
+  } catch (e) {
+    next(e);
+  }
+};

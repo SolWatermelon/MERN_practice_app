@@ -15,13 +15,13 @@ import { Link, useNavigate } from "react-router-dom";
 
 
 const PerListing = ({ listing }) => {
+  const { imageUrls, _id, name, createdAt, updatedAt } = listing;
 
   // const { getListingMutationTest, deleteListingMutation, userListings, setUserListings } = useListingActions();
   const navigate = useNavigate();
   const { deleteListingMutation, setUserListings } = useListingActions();
 
   const handleListingDelete = () => {
-    const { imageUrls, _id } = listing;
     setUserListings((prev) => prev.filter((li) => li._id !== _id));
     deleteListingMutation.mutate({ imageUrls, _id });
   };
@@ -31,20 +31,20 @@ const PerListing = ({ listing }) => {
       <td className="px-6 py-4 whitespace-nowrap">
         <div className="text-sm font-medium flex gap-2 items-center">
           {/* .publicID */}
-          {listing?.imageUrls[0]?.url ? (
+          {imageUrls[0]?.url ? (
             <Link
-              to={`/listing/${listing._id}`}
+              to={`/listing/${_id}`}
               className="hover:scale-[1.05] transition-transform duration-2000"
             >
               <img
                 className="w-[50px]"
-                src={listing.imageUrls[0]?.url}
-                alt={listing.imageUrls[0]?.url}
+                src={imageUrls[0]?.url}
+                alt={imageUrls[0]?.url}
               />
             </Link>
           ) : (
             <Link
-              to={`/listing/${listing._id}`}
+              to={`/listing/${_id}`}
               className="hover:scale-[1.05] transition-transform duration-2000"
             >
               <span className="w-[50px] h-[50px] bg-slate-300 text-center text-gray-600">
@@ -53,20 +53,20 @@ const PerListing = ({ listing }) => {
             </Link>
           )}
           <Link
-            to={`/listing/${listing._id}`}
+            to={`/listing/${_id}`}
             className="hover:scale-[1.05] transition-transform duration-2000"
           >
-            <p>{listing?.name}</p>
+            <p>{name}</p>
           </Link>
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        <div className="text-sm">{listing?.updatedAt}</div>
+      <div className="text-sm">
+          {createdAt}
+        </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        <div className="text-sm">
-          {listing?.createdAt || "No date available"}
-        </div>
+      <div className="text-sm">{updatedAt|| "No update date"}</div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
         <Dialog>
@@ -94,7 +94,7 @@ const PerListing = ({ listing }) => {
             刪除
           </Button> */}
           
-        <Button onClick={() => {navigate(`/profile/update-listing/${listing._id}`)}} variant="signoutmode" size="sm">
+        <Button onClick={() => {navigate(`/profile/update-listing/${_id}`)}} variant="signoutmode" size="sm">
           編輯
         </Button>
       </td>

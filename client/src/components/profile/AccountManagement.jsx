@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,7 +14,8 @@ import {
 import { useUserActions } from "../../hooks/useUserActions";
 
 const AccountManagement = () => {
-  const { deleteUser, signoutUser } = useUserActions();
+  // const [fetchEnabled, setFetchEnabled] = useState(false);
+  const { deleteUser,  signoutUser } = useUserActions();
   const navigate = useNavigate();
 
   const handleSignout = () => {
@@ -23,6 +24,16 @@ const AccountManagement = () => {
         navigate("/sign-in", { replace: true });
       },
     });
+    // setFetchEnabled(true)
+
+    // signoutRefetch()
+    // console.log("isSignoutSuccess", isSignoutSuccess)
+    // console.log("signoutPending", signoutPending)
+    // console.log("isSignoutError", isSignoutError)
+    // // console.log("fetchEnabled", fetchEnabled)
+    // // if(isSignoutSuccess){
+    //   navigate("/sign-in", { replace: true });
+    // // }
   };
 
   const handleDeleteUser = () => {
@@ -74,7 +85,7 @@ const AccountManagement = () => {
               </DialogHeader>
               <DialogFooter>
                 <Button variant="destructive" onClick={handleSignout}>
-                  確認登出
+                確認登出
                 </Button>
               </DialogFooter>
 
@@ -87,6 +98,10 @@ const AccountManagement = () => {
               {signoutUser.isSuccess && (
                 <div className="text-blue-500 text-sm">登出成功</div>
               )}
+
+              {/* {isSignoutSuccess && (
+                <div className="text-blue-500 text-sm">登出成功</div>
+              )} */}
             </DialogContent>
           </Dialog>
 

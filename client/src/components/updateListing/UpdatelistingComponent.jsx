@@ -42,17 +42,20 @@ const UpdatelistingComponent = () => {
   const params = useParams();
   const listingId = params.listingId;
   const { currentUser } = useSelector((state) => state.userReducer);
-  const { getPerListingMutation, perUserListings, setPerUserListings } =
-    useListingActions();
+  // const {     verifiedPerListingData, verifiedPerListingPending, verifiedPerListingError, getVerifiedPerListQuery } =
+  //   useListingActions(listingId);
+  const {     getVerifiedPerListQuery} =
+    useListingActions(listingId);
+const   {data,isLoading,error, refetch} = getVerifiedPerListQuery
+
+
   // 舊圖片的狀態
   const [displayedOldPics, setDisplayedOldPics] = useState([]);
   console.log("listingId", listingId);
 
   useEffect(() => {
-    if (!listingId) return;
-    getPerListingMutation.mutate(listingId);
-    console.log("perUserListings", perUserListings);
-  }, [listingId]);
+    console.log("耶耶getVerifiedPerListQuery.data", data);
+  }, [data]);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -73,8 +76,8 @@ const UpdatelistingComponent = () => {
   });
 
   useEffect(() => {
-    console.log("perUserListings!", perUserListings);
-    if (perUserListings) {
+    console.log("data!", data);
+    if (data) {
       console.log("嗨嗨嗨嗨~~~");
       const {
         name,
@@ -95,7 +98,7 @@ const UpdatelistingComponent = () => {
         parking,
         updatedAt,
         // removedOldPicsIds
-      } = perUserListings;
+      } = data;
 
       const oldSelectedCheckbox = [
         furnished && "furnished",
@@ -119,7 +122,7 @@ const UpdatelistingComponent = () => {
         setOldImageUrls(imageUrls);
       }
     }
-  }, [perUserListings]);
+  }, [data]);
 
   // 提交form mutation
   const submitFormMutation = useMutation({
@@ -148,7 +151,7 @@ const UpdatelistingComponent = () => {
   // 提交form
   function onSubmit(formValue) {
     // console.log("form.getValues", form.getValues("removedOldPicsIds"))
-    console.log("perUserListings", perUserListings);
+    console.log("data", data);
     console.log("displayedOldPics", displayedOldPics);
     console.log("imageItems", imageItems);
     submitFormMutation.mutate(
