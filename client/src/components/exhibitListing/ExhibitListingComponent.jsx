@@ -12,12 +12,12 @@ const ExhibitListingComponent = () => {
     getUnverifiedPerListQuery;
 
   useEffect(() => {
-    if (listingId) {
+    if (listingId && data) {
       console.log("listingId", listingId);
       console.log("unverifiedPerListingData~~~~~", data);
     }
     // getUnverifiedPerListQueryingMutation.mutate(listingId);
-  }, [data]);
+  }, [listingId]);
 
   return (
     <div>

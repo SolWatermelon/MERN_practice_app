@@ -24,7 +24,7 @@ export const useListingActions = (listingId) => {
         const res = await axios.get(`/api/user/listings/${currentUser._id}`);
         if (!res.data.listings.length) throw new Error("無法抓取資料");
 
-        return res.data.listings.find((listing) => listing._id === id);
+        return res.data.listings.find((listing) => listing._id === id) || null;
       } catch (e) {
         console.log("e", e);
       }
@@ -64,6 +64,8 @@ export const useListingActions = (listingId) => {
   //   error: unverifiedPerListingError,
   //   refetch: unverifiedPerListingRefetch,
   // }
+
+  //  get per listing query(unverified)
   const getUnverifiedPerListQuery = useQuery({
     queryKey: ["perUnverifiedListing", listingId],
     queryFn: async ({ queryKey }) => {
@@ -76,13 +78,21 @@ export const useListingActions = (listingId) => {
         if (!Object.keys(res?.data?.listing).length)
           throw new Error("無法抓取資料");
 
-        return res.data.listing;
+        return res.data.listing || null;
       } catch (e) {
         console.log(e);
       }
     },
     enabled: !!currentUser?._id && !!listingId, // 變數存在才執行
   });
+
+
+
+
+
+
+
+
 
   //  get all listings mutation
   // const getListingMutation = useMutation({
@@ -123,7 +133,7 @@ export const useListingActions = (listingId) => {
         const res = await axios.get(`/api/user/listings/${currentUser._id}`);
         if (!res.data.listings) throw new Error("無法抓取資料");
 
-        return res.data.listings;
+        return res.data.listings || null;
       } catch (e) {
         console.log(e);
       }
@@ -140,7 +150,7 @@ export const useListingActions = (listingId) => {
         const res = await axios.post(`/api/listing/delete/${_id}`, {
           imageUrls,
         });
-        return res.data;
+        return res.data || null;
       } catch (error) {
         throw new Error(error.message);
       }

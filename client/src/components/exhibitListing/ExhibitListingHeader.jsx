@@ -53,16 +53,20 @@ const ExhibitListingHeader = ({ unverifiedPerListingData }) => {
       {/* <div>{data?.imageUrls.length}</div> */}
       {/* 一張圖片 */}
       {unverifiedPerListingData?.imageUrls.length === 1 && (
-        <div className="grid grid-cols-1 gap-4 h-auto">
-          <div>
-            <div className=" mx-auto w-[85%] h-full bg-gray-200">
+        <div className="grid grid-cols-1 gap-4 ">
+          {
+            <div
+              className="bg-gray-200 cursor-pointer hover:scale-[1.05] transition-transform duration-3000"
+              onClick={() => openFullscreen(0)}
+            >
               <img
                 src={unverifiedPerListingData?.imageUrls[0].url}
-                alt="Gallery thumbnail 1"
-                className="w-full h-full object-cover mx-auto"
+                alt={`Gallery thumbnail 0`}
+                // h-[300px]
+                className="w-full h-[400px] object-cover mx-auto"
               />
             </div>
-          </div>
+          }
         </div>
       )}
 

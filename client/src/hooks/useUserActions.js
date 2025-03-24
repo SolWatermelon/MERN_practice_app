@@ -37,7 +37,7 @@ export const useUserActions = (userRef) => {
           ...currentUser,
           base64Image,
         });
-        return res.data;
+        return res.data || null
       } catch (error) {
         throw new Error(error.message);
       }
@@ -71,7 +71,7 @@ export const useUserActions = (userRef) => {
           `/api/user/update/${currentUser?._id}`,
           updatedData
         );
-        return res.data;
+        return res.data || null
       } catch (error) {
         throw new Error(error.message);
       }
@@ -96,7 +96,7 @@ export const useUserActions = (userRef) => {
     mutationFn: async () => {
       try {
         const res = await axios.delete(`/api/user/delete/${currentUser?._id}`);
-        return res.data;
+        return res.data || null
       } catch (error) {
         throw new Error(error.message);
       }
@@ -114,7 +114,7 @@ export const useUserActions = (userRef) => {
     mutationFn: async () => {
       try {
         const res = await axios.get(`/api/auth/signout`);
-        return res.data;
+        return res.data || null
       } catch (error) {
         throw new Error(error.message);
       }
@@ -157,23 +157,24 @@ export const useUserActions = (userRef) => {
   //   },
   // });
 
-  // get landlord info Mutation
-  const getLandlordUserInfoMutation = useMutation({
-    mutationFn: async (userRef) => {
+  // get landlord info Query 
+    const getLandlordInfoQuery = useQuery({
+    queryKey: ["landlordInfo", userRef],
+    queryFn: async ({ queryKey }) => {
       try {
-        const res = await axios.get(`/api/user/${userRef}`);
-        return res.data;
-      } catch (error) {
-        throw new Error(error.message);
+        console.log("userRef", userRef)
+        const [, userRefId] = queryKey;
+        if (!userRefId) return;
+
+        const res = await axios.get(`/api/user/${userRefId}`);
+        if (!res.data) throw new Error("無法抓取資料");
+
+        return res.data || null;
+      } catch (e) {
+        console.log(e);
       }
     },
-    onSuccess: (data) => {
-      if (!data) return;
-      // setLandlordInfo(data)
-    },
-    onError: (error) => {
-      console.error("請求錯誤", error);
-    },
+    enabled: !!userRef, // 變數存在才執行(必須轉成布玲)
   });
 
 
@@ -184,6 +185,7 @@ export const useUserActions = (userRef) => {
     updateAvatar,
     updateUserInfo,
     deleteUser,
+    getLandlordInfoQuery,
     // signoutUser,
     // signoutData,
     // signoutRefetch,
@@ -192,7 +194,7 @@ export const useUserActions = (userRef) => {
     // signoutErrorMsg,
     // isSignoutSuccess,
     signoutUser,
-    getLandlordUserInfoMutation,
+    // getLandlordUserInfoMutation,
     // landlordInfo
   };
 };

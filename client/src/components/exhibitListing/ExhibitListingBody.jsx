@@ -24,20 +24,22 @@ const ExhibitListingBody = ({ unverifiedPerListingData }) => {
       {/* 標題 */}
       <div className="flex justify-start item-center gap-2">
         {unverifiedPerListingData?.type === "rent" ? (
-          <span className=" text-white bg-red-600 rounded-xl p-2 px-3 text-md font-semibold">
+          <span className="text-xs text-white bg-red-600 rounded-xl p-2 px-3 text-md font-semibold">
             出租中
           </span>
         ) : (
-          <span className="bg-blue-600 rounded-xl p-2 px-3 text-md font-semibold">
+          <span className="text-xs text-white bg-blue-600 rounded-xl p-2 px-3 text-md font-semibold">
             好屋出售
           </span>
         )}
         {!unverifiedPerListingData?.offer && (
-          <span className="text-white bg-green-600 rounded-xl p-2 px-3 text-md font-semibold">
+          <span className="text-xs text-white bg-green-600 rounded-xl p-2 px-3 text-md font-semibold">
             優惠中
           </span>
         )}
-        <h1 className="text-[20px] font-bold mt-1">{unverifiedPerListingData?.name}</h1>
+        <h1 className="text-[20px] font-bold mt-1">
+          {unverifiedPerListingData?.name}
+        </h1>
       </div>
       <div className="h-[2px] w-full dark:bg-gray-600 bg-gray-500 my-7"></div>
 
@@ -45,11 +47,13 @@ const ExhibitListingBody = ({ unverifiedPerListingData }) => {
         {/* currentUser && listingData?.userRef !== currentUser._id */}
 
         {/* 資訊大區塊 */}
-        <div className={`mb-[200px] flex flex-col md:flex-row-reverse ${
-  unverifiedPerListingData?.userRef !== currentUser._id 
-    ? "md:justify-between" 
-    : "md:justify-end"
-} w-full`}>
+        <div
+          className={`mb-[200px] flex flex-col md:flex-row-reverse ${
+            unverifiedPerListingData?.userRef !== currentUser._id
+              ? "md:justify-between"
+              : "md:justify-end"
+          } w-full`}
+        >
           {/* <div className="mb-[200px] flex justify-center w-full md:justify-between md:flex-row-reverse"> */}
           {/* <div className=" text-hoverlighttext bg-white w-[300px] h-[150px] shadow-md md:sticky md:top-3 mb-[70px] p-3 ">
           <div className="text-[20px] font-bold  mb-3 flex items-center gap-2 justify-center"><FaEnvelopeOpenText /><p>連絡房東</p></div>
@@ -61,11 +65,14 @@ const ExhibitListingBody = ({ unverifiedPerListingData }) => {
           </button>
         </div> */}
           {/* 連絡房東=> 自己的發文無法看到連絡房東 */}
-          {currentUser && unverifiedPerListingData?.userRef !== currentUser._id && (
-            <div className="sidebar w-1/4 max-w-[250px]">
-              <ContactLandlord listingData={unverifiedPerListingData} />
-            </div>
-          )}
+          {currentUser &&
+            unverifiedPerListingData?.userRef !== currentUser._id && (
+              <div className="sidebar w-1/4 max-w-[250px]">
+                <ContactLandlord
+                  unverifiedPerListingData={unverifiedPerListingData}
+                />
+              </div>
+            )}
 
           <div>
             {/* 服務與資訊 */}

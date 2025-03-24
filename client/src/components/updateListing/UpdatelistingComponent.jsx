@@ -44,16 +44,14 @@ const UpdatelistingComponent = () => {
   const { currentUser } = useSelector((state) => state.userReducer);
   // const {     verifiedPerListingData, verifiedPerListingPending, verifiedPerListingError, getVerifiedPerListQuery } =
   //   useListingActions(listingId);
-  const {     getVerifiedPerListQuery} =
-    useListingActions(listingId);
-const   {data,isLoading,error, refetch} = getVerifiedPerListQuery
-
+  const { getVerifiedPerListQuery } = useListingActions(listingId);
+  const { data, isLoading, error, refetch } = getVerifiedPerListQuery;
 
   // 舊圖片的狀態
   const [displayedOldPics, setDisplayedOldPics] = useState([]);
-  console.log("listingId", listingId);
-
+  
   useEffect(() => {
+    console.log("listingId", listingId);
     console.log("耶耶getVerifiedPerListQuery.data", data);
   }, [data]);
 
