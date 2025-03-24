@@ -170,8 +170,8 @@ export const useUserActions = (userRef) => {
         if (!res.data) throw new Error("無法抓取資料");
 
         return res.data || null;
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        throw new Error(error.message)
       }
     },
     enabled: !!userRef, // 變數存在才執行(必須轉成布玲)

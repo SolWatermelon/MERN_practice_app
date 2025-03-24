@@ -44,7 +44,7 @@ const UpdatelistingComponent = () => {
   const { currentUser } = useSelector((state) => state.userReducer);
   // const {     verifiedPerListingData, verifiedPerListingPending, verifiedPerListingError, getVerifiedPerListQuery } =
   //   useListingActions(listingId);
-  const { getVerifiedPerListQuery } = useListingActions(listingId);
+  const { getVerifiedPerListQuery, refetchAllListingsQuery } = useListingActions(listingId);
   const { data, isLoading, error, refetch } = getVerifiedPerListQuery;
 
   // 舊圖片的狀態
@@ -54,6 +54,9 @@ const UpdatelistingComponent = () => {
     console.log("listingId", listingId);
     console.log("耶耶getVerifiedPerListQuery.data", data);
   }, [data]);
+  useEffect(() => {
+    refetchAllListingsQuery()
+  }, [])
 
   const form = useForm({
     resolver: zodResolver(formSchema),

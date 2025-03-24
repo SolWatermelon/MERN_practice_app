@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -10,6 +10,8 @@ import { useMutation } from "@tanstack/react-query";
 import { createListingForm } from "@/service/service";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { useListingActions } from "@/hooks/useListingActions.js"
+import {acquireAllListings} from "@/slices/listingSlice.js"
 
 // Zod Schema驗證表單
 const formSchema = z.object({
@@ -32,14 +34,16 @@ const formSchema = z.object({
   // file: z
   //   .any()
   //   .refine(
-  //     (files) =>
-  //       files instanceof FileList && files?.length > 0 && files?.length <= 6,
-  //     { message: "You must upload at least 1 and at most 6 files." }
-  //   ),
-  // imageUrls: z.array(z.string())
-});
+    //     (files) =>
+    //       files instanceof FileList && files?.length > 0 && files?.length <= 6,
+    //     { message: "You must upload at least 1 and at most 6 files." }
+    //   ),
+    // imageUrls: z.array(z.string())
+  });
 
 const CreateListingComponent = () => {
+  const dispatch = useDispatch();
+  const {  refetchAllListingsQuery } = useListingActions();
   const { currentUser } = useSelector((state) => state.userReducer);
   const [imageItems, setImageItems] = useState([]);
   const [checkboxOptions, setCheckboxOptios] = useState([
@@ -50,6 +54,14 @@ const CreateListingComponent = () => {
     "offer",
   ]);
   const navigate = useNavigate()
+  // const {
+  //   data: allListingsData,
+  //   isPending: isAllListingsPending,
+  //   isSuccess: isAllListingsSuccess,
+  //   isError: isAllListingsError,
+  //   error: allListingsErrorMsg,
+  // } = getAllListingsQuery;
+  const { allListings } = useSelector((state) => state.allListingsReducer);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -71,6 +83,10 @@ const CreateListingComponent = () => {
     reValidateMode: "onChange",
   });
 
+  useEffect(() => {
+    refetchAllListingsQuery()
+  }, [])
+
   // 提交form mutation
   const submitFormMutation = useMutation({
     mutationFn: (formValue) => {
@@ -78,6 +94,7 @@ const CreateListingComponent = () => {
     },
     onSuccess: (data) => {
       console.log("data", data);
+      // dispatch(acquireAllListings([...allListings, data]))
       if (!data) return;
       navigate(`/listing/${data._id}`)
     },

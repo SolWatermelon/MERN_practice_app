@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 // , useDispatch
 import { useSelector, useDispatch } from "react-redux";
-import { toggleMenu } from "../slices/navToggleSlice.js";
+import { filteredAllListings, acquireAllListings } from "@/slices/listingSlice.js"
+import { toggleMenu } from "@/slices/navToggleSlice.js";
 import { ModeToggle } from "./mode-toggle";
+import {useListingActions} from "@/hooks/useListingActions.js"
 import {
   Popover,
   PopoverContent,
@@ -15,7 +17,9 @@ import {
 const Navbar = () => {
   const { isOpened } = useSelector((state) => state.navToggleReducer);
   const { currentUser } = useSelector((state) => state.userReducer);
+  const { allListings, filteredListing } = useSelector((state) => state.allListingsReducer);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
   const {
@@ -52,9 +56,29 @@ const Navbar = () => {
     setIsAvatarOpen(false);
   };
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    console.log("搜尋");
+
+  const filterData = (searchKeyword) => {
+    console.log("searchKeyword", searchKeyword)
+    // listing name or description filter
+    const filteredListings = allListings.filter((listing) => {
+      const nameAndDescription = listing.name+listing.description
+      console.log("nameAndDescription", nameAndDescription)
+      return nameAndDescription.includes(searchKeyword)
+    })
+    console.log("filteredListings", filteredListings)
+    console.log("allListings~~~~~~", allListings)
+    dispatch(filteredAllListings(filteredListings))
+    // searchkeyword attach to query value
+    navigate(`/search/?searchKeyword=${searchKeyword}`)
+  }
+
+  const handleSearchSubmit = (data) => {
+    if(data?.search){
+      const searchKeyword = data.search
+      filterData(searchKeyword)
+    }
+    console.log("allListings!!!!!!!!!!", allListings)
+    console.log("filteredListing", filteredListing)
   };
 
   useEffect(() => {
@@ -80,7 +104,7 @@ const Navbar = () => {
 
           {/* 電腦裝置menu */}
           <div
-            className="hidden md:flex items-center space-x-8"
+            className="md:flex items-center space-x-8"
             onClick={handleMenuContentClick}
           >
             {/* 搜尋 */}
@@ -93,7 +117,7 @@ const Navbar = () => {
                 <input
                   type="text"
                   placeholder="search"
-                  className="dark:text-gray-900 w-64 px-4 py-2 rounded-full border-2 border-gray-300 focus:outline-none focus:border-darkorange"
+                  className="dark:text-gray-900 w-[150px] tablet:w-64 px-4 py-2 rounded-full border-2 border-gray-300 focus:outline-none focus:border-darkorange"
                   {...register("search")}
                 />
                 <button
@@ -105,7 +129,7 @@ const Navbar = () => {
               </form>
             </div>
 
-            <nav className="flex items-center space-x-6">
+            <nav className="hidden md:block flex items-center space-x-6">
               <Link to="/" className="hover:text-hoverlighttext">
                 Home
               </Link>
@@ -118,35 +142,7 @@ const Navbar = () => {
             </nav>
           </div>
 
-          {/* 手機 */}
-          <div
-            className="flex md:hidden items-center space-x-3"
-            onClick={handleMenuContentClick}
-          >
-            {/* 搜尋 */}
-            <div className="relative">
-              <form
-                onSubmit={handleSubmit(handleSearchSubmit)}
-                className="flex items-center"
-              >
-                <input
-                  type="text"
-                  placeholder="search"
-                  // dark:text-gray-900 w-64 px-4 py-2 rounded-full border-2 border-gray-300 focus:outline-none focus:border-darkorange
-                  className="dark:text-gray-900 w-32 px-3 py-1 text-sm rounded-full border-2 border-gray-300 focus:outline-none focus:border-darkorange"
-                  {...register("username", {
-                    required: "Username is required",
-                  })}
-                />
-                <button
-                  type="submit"
-                  className="absolute right-2 text-slate-600 hover:text-slate-400 text-sm"
-                >
-                  <FaSearch />
-                </button>
-              </form>
-            </div>
-          </div>
+
 
           <div className="flex gap-3 justify-center items-center">
             {/* 切換dark mode */}
@@ -216,7 +212,7 @@ const Navbar = () => {
             {/* 漢堡內容 */}
             {isMenuOpen && (
               <div
-                className="absolute top-16 right-0 left-0 bg-amber-100 dark:bg-darkblue z-40"
+                className="md:hidden absolute top-16 right-0 left-0 bg-amber-100 dark:bg-darkblue z-40"
                 onClick={handleMenuContentClick}
               >
                 <div className="flex flex-col items-center py-8 space-y-6">

@@ -3,17 +3,20 @@ import { persistStore, persistReducer } from "redux-persist";
 // import { combineReducers } from '@reduxjs/toolkit';
 import navToggleReducer from "./slices/navToggleSlice.js";
 import userReducer from "./slices/userSlice.js";
+import allListingsReducer from "./slices/listingSlice.js"
 import storage from "redux-persist/lib/storage";
 
 const rootReducer = combineReducers({
   navToggleReducer,
   userReducer,
+  allListingsReducer
 });
 
 const persistConfig = {
   key: "root",
   storage,
   version: 1,
+  blacklist: ["allListingsReducer", "navToggleReducer"] //不存到 localStorage
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

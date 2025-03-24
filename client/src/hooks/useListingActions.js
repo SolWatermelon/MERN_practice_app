@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-
+import {acquireAllListings} from "@/slices/listingSlice.js"
 export const useListingActions = (listingId) => {
   const { currentUser } = useSelector((state) => state.userReducer);
+  const dispatch =  useDispatch()
   // const [userListings, setUserListings] = useState([]);
 
   //  get per listing(verified)
@@ -25,8 +26,9 @@ export const useListingActions = (listingId) => {
         if (!res.data.listings.length) throw new Error("無法抓取資料");
 
         return res.data.listings.find((listing) => listing._id === id) || null;
-      } catch (e) {
-        console.log("e", e);
+      } catch (error) {
+        // console.log("e", e);
+        throw new Error(error.message)
       }
     },
     enabled: !!currentUser?._id && !!listingId, // 變數存在才執行
@@ -70,7 +72,7 @@ export const useListingActions = (listingId) => {
     queryKey: ["perUnverifiedListing", listingId],
     queryFn: async ({ queryKey }) => {
       try {
-        console.log("listingId", listingId)
+        console.log("listingId", listingId);
         const [, id] = queryKey;
         if (!id || !currentUser?._id) return null;
 
@@ -79,20 +81,13 @@ export const useListingActions = (listingId) => {
           throw new Error("無法抓取資料");
 
         return res.data.listing || null;
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        // console.log(e);
+        throw new Error(error.message)
       }
     },
     enabled: !!currentUser?._id && !!listingId, // 變數存在才執行
   });
-
-
-
-
-
-
-
-
 
   //  get all listings mutation
   // const getListingMutation = useMutation({
@@ -124,8 +119,8 @@ export const useListingActions = (listingId) => {
   //   refetch: allListingsDataRefetch,
   // }
 
-  const getAllListingsDataQuery = useQuery({
-    queryKey: ["allListings"],
+  const getCertainUserAllListingsQuery = useQuery({
+    queryKey: ["certainUserAllListings"],
     queryFn: async () => {
       try {
         if (!currentUser?._id) return null;
@@ -134,12 +129,46 @@ export const useListingActions = (listingId) => {
         if (!res.data.listings) throw new Error("無法抓取資料");
 
         return res.data.listings || null;
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        // console.log(e);
+        throw new Error(error.message)
       }
     },
     enabled: !!currentUser?._id, // 變數存在才執行
   });
+
+
+
+  const getAllListingsQuery = useQuery({
+    queryKey: ["allListings"],
+    queryFn: async () => {
+      try {
+        const res = await axios.get(`/api/listing/getAllListing`);
+        if (!res.data.allListings) throw new Error("無法抓取資料");
+
+        return res.data || null;
+      } catch (error) {
+        throw new Error(error.message)
+      }
+    },
+    // enabled: !!currentUser?._id, // 變數存在才執行
+  });
+
+
+
+
+  const refetchAllListingsQuery = () => {
+    getAllListingsQuery.refetch().then(({ data }) => {
+      if (data) {
+        console.log("最新的 allListingsData:", data.allListings);
+        dispatch(acquireAllListings(data.allListings));
+      }
+    });
+  }
+
+
+
+
 
   // listing deletion mutation
   const deleteListingMutation = useMutation({
@@ -181,9 +210,11 @@ export const useListingActions = (listingId) => {
     // allListingsDataError,
     // isAllListingsDataError,
     // isAllListingsDataSuccess,
-    getAllListingsDataQuery,
+    getCertainUserAllListingsQuery,
     getVerifiedPerListQuery,
     getUnverifiedPerListQuery,
+    getAllListingsQuery,
+    refetchAllListingsQuery
     // perUserListings,
     // setPerUserListings,
     // getUnverifiedPerListQueryingMutation,

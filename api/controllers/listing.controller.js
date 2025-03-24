@@ -127,3 +127,19 @@ export const getUnverifiedListing = async (req, res, next) => {
     next(e);
   }
 };
+
+
+
+export const getAllListings = async (req, res, next) => {
+  try {
+    console.log("這這")
+    const allListings = await Listing.find({}).exec();
+    console.log("allListingsallListingsallListings~```", allListings)
+    if (!allListings) {
+      return res.status(404).json({ message: "listings can not be found" });
+    }
+    return res.status(200).json({ msg: "success", allListings });
+  } catch (e) {
+    next(e);
+  }
+};
