@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams  } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 // , useDispatch
@@ -22,10 +22,13 @@ const Navbar = () => {
   const navigate = useNavigate()
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
+  const [searchParams] = useSearchParams();
+  const searchQueryVal = searchParams.get("searchKeyword")
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue
   } = useForm();
 
   const handleMenuToggle = (e) => {
@@ -85,6 +88,13 @@ const Navbar = () => {
     setIsMenuOpen(false);
     setIsAvatarOpen(false);
   }, [isOpened]);
+
+
+  useEffect(() => {
+    setValue("search", searchQueryVal)
+  }, [searchQueryVal])
+
+
 
   return (
     <header

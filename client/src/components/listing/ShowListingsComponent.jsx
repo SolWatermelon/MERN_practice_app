@@ -50,7 +50,7 @@ const dispatch = useDispatch()
     <>
       {isPending && <p>loading...</p>}
       {isSuccess && (
-        <div className="max-w-4xl mx-auto bg-white dark:bg-gray-500 rounded-md">
+        <div className="max-w-4xl mx-auto bg-white dark:bg-gray-500 rounded-md mt-9">
           <div className=" rounded-lg shadow-lg overflow-hidden ">
             <div className=" px-6 py-4 bg-gray-300 dark:bg-gray-700">
               <h2 className="text-xl font-semibold text-center ">

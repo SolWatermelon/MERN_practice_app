@@ -21,7 +21,8 @@ const MainLayouts = () => {
       {navigation.state === `loading` ? <div className="mt-[100px]">loading</div>:''}
 
       </div> */}
-      <div className="px-4 mt-6 md:px-8 lg:px-32 2xl:px-60">
+      {/* <div className="px-4 mt-6 md:px-8 lg:px-32 2xl:px-60"> */}
+      <div>
         <Outlet />
       </div>
     </>

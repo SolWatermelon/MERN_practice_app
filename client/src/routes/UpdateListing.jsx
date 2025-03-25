@@ -3,7 +3,10 @@ import UpdatelistingComponent from "../components/updateListing/UpdatelistingCom
 
 const UpdateListing = () => {
   return (
+    <div className='px-[50px]'>
     <UpdatelistingComponent/>
+
+    </div>
   )
 }
 
