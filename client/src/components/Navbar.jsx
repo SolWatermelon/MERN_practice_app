@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useSearchParams  } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useSearchParams,
+  useLocation,
+} from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 // , useDispatch
 import { useSelector, useDispatch } from "react-redux";
-import { filteredAllListings, acquireAllListings } from "@/slices/listingSlice.js"
+import {
+  filteredAllListings,
+  acquireAllListings,
+} from "@/slices/listingSlice.js";
 import { toggleMenu } from "@/slices/navToggleSlice.js";
 import { ModeToggle } from "./mode-toggle";
-import {useListingActions} from "@/hooks/useListingActions.js"
+import { useListingActions } from "@/hooks/useListingActions.js";
 import {
   Popover,
   PopoverContent,
@@ -17,18 +25,21 @@ import {
 const Navbar = () => {
   const { isOpened } = useSelector((state) => state.navToggleReducer);
   const { currentUser } = useSelector((state) => state.userReducer);
-  const { allListings, filteredListing } = useSelector((state) => state.allListingsReducer);
+  const { allListings, filteredListing } = useSelector(
+    (state) => state.allListingsReducer
+  );
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
   const [searchParams] = useSearchParams();
-  const searchQueryVal = searchParams.get("searchKeyword")
+  const location = useLocation();
+  const searchQueryVal = searchParams.get("searchKeyword");
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue
+    setValue,
   } = useForm();
 
   const handleMenuToggle = (e) => {
@@ -59,29 +70,32 @@ const Navbar = () => {
     setIsAvatarOpen(false);
   };
 
+  useEffect(() => {
+    console.log("location.pathname~~~~~~~~", location.pathname);
+  }, [location.pathname]);
 
   const filterData = (searchKeyword) => {
-    console.log("searchKeyword", searchKeyword)
+    console.log("searchKeyword", searchKeyword);
     // listing name or description filter
     const filteredListings = allListings.filter((listing) => {
-      const nameAndDescription = listing.name+listing.description
-      console.log("nameAndDescription", nameAndDescription)
-      return nameAndDescription.includes(searchKeyword)
-    })
-    console.log("filteredListings", filteredListings)
-    console.log("allListings~~~~~~", allListings)
-    dispatch(filteredAllListings(filteredListings))
+      const nameAndDescription = listing.name + listing.description;
+      console.log("nameAndDescription", nameAndDescription);
+      return nameAndDescription.includes(searchKeyword);
+    });
+    console.log("filteredListings", filteredListings);
+    console.log("allListings~~~~~~", allListings);
+    dispatch(filteredAllListings(filteredListings));
     // searchkeyword attach to query value
-    navigate(`/search/?searchKeyword=${searchKeyword}`)
-  }
+    navigate(`/search/?searchKeyword=${searchKeyword}`);
+  };
 
   const handleSearchSubmit = (data) => {
-    if(data?.search){
-      const searchKeyword = data.search
-      filterData(searchKeyword)
+    if (data?.search) {
+      const searchKeyword = data.search;
+      filterData(searchKeyword);
     }
-    console.log("allListings!!!!!!!!!!", allListings)
-    console.log("filteredListing", filteredListing)
+    console.log("allListings!!!!!!!!!!", allListings);
+    console.log("filteredListing", filteredListing);
   };
 
   useEffect(() => {
@@ -89,12 +103,9 @@ const Navbar = () => {
     setIsAvatarOpen(false);
   }, [isOpened]);
 
-
   useEffect(() => {
-    setValue("search", searchQueryVal)
-  }, [searchQueryVal])
-
-
+    setValue("search", searchQueryVal);
+  }, [searchQueryVal]);
 
   return (
     <header
@@ -118,26 +129,29 @@ const Navbar = () => {
             onClick={handleMenuContentClick}
           >
             {/* 搜尋 */}
-            <div className="relative">
-              <form
-                onSubmit={handleSubmit(handleSearchSubmit)}
-                className="flex items-center"
-              >
-                {/* border-gray-300 focus:outline-none focus:border-pink-300 */}
-                <input
-                  type="text"
-                  placeholder="search"
-                  className="dark:text-gray-900 w-[150px] tablet:w-64 px-4 py-2 rounded-full border-2 border-gray-300 focus:outline-none focus:border-darkorange"
-                  {...register("search")}
-                />
-                <button
-                  type="submit"
-                  className="absolute right-3 text-slate-600 hover:text-slate-400"
+
+            {location.pathname !== "/search/" && (
+              <div className="relative">
+                <form
+                  onSubmit={handleSubmit(handleSearchSubmit)}
+                  className="flex items-center"
                 >
-                  <FaSearch />
-                </button>
-              </form>
-            </div>
+                  {/* border-gray-300 focus:outline-none focus:border-pink-300 */}
+                  <input
+                    type="text"
+                    placeholder="search"
+                    className="dark:text-gray-900 w-[150px] tablet:w-64 px-4 py-2 rounded-full border-2 border-gray-300 focus:outline-none focus:border-darkorange"
+                    {...register("search")}
+                  />
+                  <button
+                    type="submit"
+                    className="absolute right-3 text-slate-600 hover:text-slate-400"
+                  >
+                    <FaSearch />
+                  </button>
+                </form>
+              </div>
+            )}
 
             <nav className="hidden md:block flex items-center space-x-6">
               <Link to="/" className="hover:text-hoverlighttext">
@@ -151,8 +165,6 @@ const Navbar = () => {
               </Link>
             </nav>
           </div>
-
-
 
           <div className="flex gap-3 justify-center items-center">
             {/* 切換dark mode */}
@@ -171,7 +183,10 @@ const Navbar = () => {
                     <span className="absolute top-2 w-3 h-3 bg-red-400 rounded-full"></span>
                   </div>
                 ) : (
-                  <Link to="/sign-in" className="px-2 py-1 bg-darkorange hover:bg-hoverlighttext text-white rounded-full transition-colors">
+                  <Link
+                    to="/sign-in"
+                    className="px-2 py-1 bg-darkorange hover:bg-hoverlighttext text-white rounded-full transition-colors"
+                  >
                     {/* <button
                       type="button"
                       className="px-2 py-1 bg-darkorange hover:bg-hoverlighttext text-white rounded-full transition-colors"
@@ -191,7 +206,7 @@ const Navbar = () => {
                   to="/profile"
                   className="flex items-center justify-center text-hoverlighttext text-sm mb-4"
                 >
-                    編輯或管理個人資料
+                  編輯或管理個人資料
                   {/* <button className="text-hoverlighttext text-sm mb-4">
                   </button> */}
                 </Link>

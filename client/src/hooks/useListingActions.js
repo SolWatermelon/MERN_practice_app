@@ -158,13 +158,18 @@ export const useListingActions = (listingId) => {
 
 
   const refetchAllListingsQuery = () => {
+    console.log("正在重新獲取 allListings...");
     getAllListingsQuery.refetch().then(({ data }) => {
       if (data) {
         console.log("最新的 allListingsData:", data.allListings);
         dispatch(acquireAllListings(data.allListings));
+      } else {
+        console.error("API 回應 data 為空");
       }
+    }).catch(error => {
+        console.error("API 請求失敗:", error);
     });
-  }
+};
 
 
 
