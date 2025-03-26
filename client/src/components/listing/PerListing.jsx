@@ -62,10 +62,10 @@ const PerListing = ({ setAllData, listing }) => {
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        <div className="text-sm">{createdAt}</div>
+        <div className="text-sm">{new Date(createdAt).toLocaleDateString()}</div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        <div className="text-sm">{updatedAt || "No update date"}</div>
+        <div className="text-sm">{new Date(updatedAt).toLocaleDateString() || "No update date"}</div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
         <Dialog>

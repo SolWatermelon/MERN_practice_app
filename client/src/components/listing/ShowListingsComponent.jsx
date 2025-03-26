@@ -31,7 +31,7 @@ const ShowListingsComponent = () => {
                 已發表房型列表
               </h2>
             </div>
-            {allData?.length && !allData[0]?._id && (
+            {!!allData?.length && !allData[0]?._id && (
               <div className="text-lg text-center">尚無貼文...</div>
             )}
 

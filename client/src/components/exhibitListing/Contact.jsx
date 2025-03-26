@@ -29,15 +29,15 @@ const Contact = ({ openMessageArea, unverifiedPerListingData }) => {
         <>
           <div className="h-[1px] w-full bg-gray-300 mt-4"></div>
           <div
-            className={`text-gray-500 mt-4 text-xs transition-all duration-300 ${
+            className={`text-gray-500 mt-4 transition-all duration-300 ${
               openMessageArea ? "opacity-100" : "h-0 opacity-0 overflow-hidden"
             }`}
           >
-            <p>
-              <span className="font-semibold block">
+            <p className="my-4">
+              <span className="block font-extrabold">
                 聯絡房東：{landlordInfo?._doc?.username}
               </span>
-              <span className="font-semibold block">
+              <span className="block font-extrabold">
                 諮詢物件：{unverifiedPerListingData?.name.toLowerCase()}
               </span>
             </p>

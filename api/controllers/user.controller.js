@@ -34,7 +34,7 @@ export const deleteUser = async (req, res, next) => {
   // check token first
   // 記得user id是從verify user來的~
   if (req.user.id !== req.params.id)
-    return errorHandler(401, "u can only delete ur own account");
+    return next(errorHandler(401, "u can only delete ur own account"))
   try {
     await User.findByIdAndDelete(req.params.id);
     res.clearCookie("access_token");
@@ -49,7 +49,7 @@ export const getUserListing =  async (req, res, next) => {
   // check token first
   // 記得user id是從verify user來的(cookie)
   if (req.user.id !== req.params.id)
-    return errorHandler(401, "u can only get ur own listings");
+    return next(errorHandler(401, "u can only get ur own listings"))
   try {
     const listings = await Listing.find({userRef: req.params.id})
     return res.status(200).json({ msg: "success", listings });

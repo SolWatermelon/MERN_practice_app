@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import ExhibitListingHeader from "./exhibitListingHeader";
+import ExhibitListingHeader from "./ExhibitListingHeader";
 import { useListingActions } from "../../hooks/useListingActions";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -30,7 +30,7 @@ const ExhibitListingComponent = () => {
       {isError && <p>{`錯誤！無法讀取頁面${error}`}</p>}
       {isSuccess && (
         <>
-          <ExhibitListingHeader unverifiedPerListingData={data} />
+          {/* <ExhibitListingHeader unverifiedPerListingData={data} /> */}
           <ExhibitListingBody unverifiedPerListingData={data} />
         </>
       )}
