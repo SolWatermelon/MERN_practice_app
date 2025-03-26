@@ -41,7 +41,6 @@ const router = createBrowserRouter([
       },
       {
         path: "/about",
-        // element: <PostListPage />,
         element: <About />,
       },
       {

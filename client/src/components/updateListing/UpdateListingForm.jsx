@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -7,7 +7,6 @@ import {
   FormItem,
   FormLabel,
   FormControl,
-  FormDescription,
   FormMessage,
 } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -16,9 +15,9 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
   const [isDiscountPrice, setIsDiscountPrice] = useState(false);
   return (
     <>
-      {/* Grid讓輸入欄位自動RWD */}
+      {/* grid讓輸入欄位自動RWD */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* 文字輸入 - Name */}
+        {/* 文字輸入-name */}
         <FormField
           control={form.control}
           name="name"
@@ -37,7 +36,7 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
           )}
         />
 
-        {/* 文字輸入 - description */}
+        {/* 文字輸入-description */}
         <FormField
           control={form.control}
           name="address"
@@ -57,7 +56,7 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
           )}
         />
 
-        {/* Textarea - description */}
+        {/* textarea-description */}
         <FormField
           control={form.control}
           name="description"
@@ -72,16 +71,11 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
                 />
               </FormControl>
               <FormMessage className="text-red-400 dark:text-red-400 text-sm" />
-              {/* {fieldState.error?.message && (
-        <p className="text-red-400 dark:text-red-400 text-sm">
-          {fieldState.error.message}
-        </p>
-      )} */}
             </FormItem>
           )}
         />
 
-        {/* Checkbox - Multiple Options */}
+        {/* checkbox*/}
         <FormItem>
           <FormLabel>Select Options</FormLabel>
           <div className="space-y-2">
@@ -98,9 +92,6 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
                     <Checkbox
                       className=" text-gray-800 border-2 border-gray-300"
                       checked={
-                        // if(oldCheckbox.furnished){
-                        //   option = "fur"
-                        // }
                         field.value.includes(option)
                       }
                       onCheckedChange={(checked) => {
@@ -112,7 +103,7 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
 
                         // offer控制isDiscountPrice
                         if (option === "offer") {
-                          // console.log("checked", checked)
+
                           setIsDiscountPrice(checked);
                         }
                       }}
@@ -129,12 +120,10 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
             >
               勾選offer後請記得填discountPrice
             </p>
-          {/* <FormMessage className="text-red-400 dark:text-red-400 text-sm" /> */}
         </FormItem>
 
-        {/* 使用Grid自動適應 */}
         <div className="grid grid-cols-2 md:grid-cols-2 gap-6">
-          {/* Number Input - regularPrice */}
+          {/* number input-regularPrice */}
           <FormField
             control={form.control}
             name="regularPrice"
@@ -154,7 +143,7 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
             )}
           />
 
-          {/* Number Input - discountPrice */}
+          {/* number input-discountPrice */}
           <FormField
             control={form.control}
             name="discountPrice"
@@ -175,7 +164,7 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
             )}
           />
 
-          {/* Number Input - bathrooms */}
+          {/* number input-bathrooms */}
           <FormField
             control={form.control}
             name="bathrooms"
@@ -195,7 +184,7 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
             )}
           />
 
-          {/* Number Input - bedrooms */}
+          {/* number input-bedrooms */}
           <FormField
             control={form.control}
             name="bedrooms"

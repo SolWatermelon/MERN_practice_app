@@ -11,12 +11,10 @@ import {errorHandler} from "./error.js"
 export const verifyUserToken = (req, res, next) => {
     // Check token from cookie
     const token = req.cookies.access_token;
-    // console.log("req",req.cookies)
     // verify token
     if(!token) return next(errorHandler(401, "Unauthorized"))
     // token is correct or not
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        // console.log("user~~~~~", user)
         if(err) return next(errorHandler(403, "Forbideen"))
         req.user = user
         next()

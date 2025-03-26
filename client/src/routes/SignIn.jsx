@@ -1,27 +1,20 @@
 import React from "react";
 import { useTheme } from "@/components/theme-provider";
-import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-// // import {toggleMenu} from "../slices/navToggleSlice.js"
+import { useDispatch } from "react-redux";
 import { signInSuccess } from "../slices/userSlice.js";
 import { ErrorMessage } from "@hookform/error-message";
 import {
   QueryClient,
   useMutation,
-  useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
 import { signIn, getUser } from "../service/service";
 import OAuth from "../components/OAuth.jsx";
 
-// =============================== 可以使用react hook form將state存在redux!!!請看form的官網(但我們是要redux toolkit唷) ----------------------
+
 const SignIn = () => {
-  // const { currentUser } = useSelector((state) => state.userReducer);
-  const { theme } = useTheme();
-  // const lightModeBG = `data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1091%26quot%3b)' fill='none'%3e%3crect width='1440' height='560' x='0' y='0' fill='rgba(255%2c 180%2c 81%2c 1)'%3e%3c/rect%3e%3cpath d='M 0%2c263 C 96%2c221 288%2c49.6 480%2c53 C 672%2c56.4 768%2c270.2 960%2c280 C 1152%2c289.8 1344%2c137.6 1440%2c102L1440 560L0 560z' fill='rgba(255%2c 212%2c 154%2c 1)'%3e%3c/path%3e%3cpath d='M 0%2c284 C 57.6%2c313.2 172.8%2c423.2 288%2c430 C 403.2%2c436.8 460.8%2c312.2 576%2c318 C 691.2%2c323.8 748.8%2c447.2 864%2c459 C 979.2%2c470.8 1036.8%2c375 1152%2c377 C 1267.2%2c379 1382.4%2c450.6 1440%2c469L1440 560L0 560z' fill='rgba(255%2c 235%2c 206%2c 1)'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1091'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e`;
-  // const darkModeBG =`data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1002%26quot%3b)' fill='none'%3e%3crect width='1440' height='560' x='0' y='0' fill='%230e2a47'%3e%3c/rect%3e%3cpath d='M 0%2c229 C 57.6%2c188.2 172.8%2c24.6 288%2c25 C 403.2%2c25.4 460.8%2c215.2 576%2c231 C 691.2%2c246.8 748.8%2c119.6 864%2c104 C 979.2%2c88.4 1036.8%2c158.6 1152%2c153 C 1267.2%2c147.4 1382.4%2c91.4 1440%2c76L1440 560L0 560z' fill='rgba(18%2c 57%2c 99%2c 1)'%3e%3c/path%3e%3cpath d='M 0%2c424 C 96%2c418.6 288%2c391.6 480%2c397 C 672%2c402.4 768%2c473.4 960%2c451 C 1152%2c428.6 1344%2c318.2 1440%2c285L1440 560L0 560z' fill='rgba(27%2c 81%2c 140%2c 1)'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1002'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e`
   const dispatch = useDispatch();
   const {
     register,
@@ -42,12 +35,11 @@ const SignIn = () => {
       }, 1000);
     },
     onError: (error) => {
-      console.error("API error:", error);
+      throw new Error(error.message)
     },
   });
 
   const onSubmit = (data) => {
-    console.log(data);
     mutation.mutate({ ...data });
     reset();
   };

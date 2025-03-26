@@ -14,15 +14,11 @@ export const listingSlice = createSlice({
     // 參數1 state: toolkit會把當下的state傳入(initialState)
     // 參數2 action: 對應的動作
     acquireAllListings: (state, action) => {
-        console.log("action~~~~~~", action)
         state.allListings = action.payload;
-        console.log("statestatestatestate", state)
     },
 
     filteredAllListings: (state, action) => {
-        console.log("action~~~~~~", action)
         state.filteredListing = action.payload;
-        console.log("statestatestatestate", state)
     },
   },
 });

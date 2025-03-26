@@ -1,20 +1,17 @@
 import React from "react";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { ErrorMessage } from "@hookform/error-message";
 import {
   QueryClient,
-  useMutation,
-  useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { signUp, getUser } from "../service/service";
 import OAuth from "../components/OAuth";
+import { useUserActions } from "@/hooks/useUserActions";
 
-// =============================== 可以使用react hook form將state存在redux!!!請看form的官網(但我們是要redux toolkit唷) ----------------------
 
 const SignUp = () => {
+  const {signupUserMutation} = useUserActions()
   const {
     register,
     handleSubmit,
@@ -22,24 +19,10 @@ const SignUp = () => {
     formState: { errors },
   } = useForm();
 
-  // const [formdata, setFormData] = useState(null);
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
-
-  const mutation = useMutation({
-    mutationFn: (userSigninData) => signUp(userSigninData),
-    onSuccess: () => {
-      setTimeout(() => {
-        navigate("/sign-in", { replace: true });
-      }, 1000);
-    },
-    onError: (error) => {
-      console.error("API error:", error);
-    },
-  });
 
   const onSubmit = (data) => {
-    mutation.mutate({ ...data });
+    signupUserMutation.mutate({ ...data });
     reset();
   };
 
@@ -47,14 +30,13 @@ const SignUp = () => {
     <div className="sign-page themed-background">
     <div className="flex items-center justify-center w-full mt-[100px]">
       <div className="bg-white rounded-lg shadow-md p-8 w-full max-w-md">
-        {/* <h1 className="text-4xl font-bold text-gray-700 mb-8">{formdata?.name&&<p>{formdata.name}{formdata.email}{formdata.password}</p>}</h1> */}
         <h1 className="text-4xl font-bold text-gray-700 mb-8">Sign Up</h1>
 
-        {mutation.isError && (
+        {signupUserMutation.isError && (
           <p className="text-red-500 text-sm">{"信箱已被使用，請重新註冊"}</p>
         )}
 
-        {mutation.isSuccess && (
+        {signupUserMutation.isSuccess && (
           <p className="text-blue-500 text-sm">
             {"成功註冊！即將跳轉到登入頁..."}
           </p>
@@ -118,27 +100,20 @@ const SignUp = () => {
           </div>
 
           <button
-            disabled={mutation.isPending}
+            disabled={signupUserMutation.isPending}
             type="submit"
             className="w-full font-medium py-3 px-4 bg-darkorange hover:bg-hoverlighttext text-white rounded-full transition-colors"
           >
-            {mutation.isPending ? "還在pend可以放icon" : "Sign up"}
+            {signupUserMutation.isPending ? "還在pend可以放icon" : "Sign up"}
           </button>
         </form>
 
         <div className="text-center my-4 text-gray-500">or</div>
 
-        <OAuth mutation={mutation} />
-
-        {/* <button
-          disabled={mutation.isPending}
-          className="w-full bg-pink-200 text-gray-700 font-medium py-3 px-4 rounded-full flex items-center justify-center hover:bg-pink-300 transition duration-200"
-        >
-          Sign in with Google
-        </button> */}
+        <OAuth signupUserMutation={signupUserMutation} />
 
         <div className="text-center mt-6 text-gray-500 text-sm">
-          {mutation.isPending ? (
+          {signupUserMutation.isPending ? (
             <span className="text-gray-700 ml-1">
               <span className="text-blue-700">
                 You already have an account? sign in

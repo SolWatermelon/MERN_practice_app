@@ -18,7 +18,6 @@ const ProfileComponent = () => {
         </TabsList>
 
         <TabsContent className="mb-24 xl:w-[700px]" value="edit">
-          {/* <ProfileEdit /> */}
           <ProfileEdit />
         </TabsContent>
 
@@ -26,7 +25,6 @@ const ProfileComponent = () => {
           className="xl-24 mobile:w-[330px] md:w-[500px] xl:w-[700px]"
           value="accountandarticle"
         >
-          {/* <AccountManagement /> */}
           <AccountManagement />
         </TabsContent>
       </Tabs>

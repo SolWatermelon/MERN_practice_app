@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
@@ -13,23 +13,10 @@ import Pic from "./Pic";
 
 const ListingPics = ({ form, imageItems, setImageItems }) => {
   const { currentUser } = useSelector((state) => state.userReducer);
-  // const [imageItems, setImageItems] = useState([]);
-  // imageItem結構：
-  // {
-  //   id: ID,
-  //   file: 文件obj,
-  //   base64: base64 encoded,
-  //   url: 上傳後的URL,
-  //   publicId: 上傳後的publicId,
-  //   status: 'pending' | 'uploading' | 'uploaded' | 'error'
-  // }
-
   const handleFileSelect = async (e) => {
     try {
       const files = e.target.files;
       if (!files || files.length === 0) return;
-      // console.log("files Type:", files instanceof FileList);
-      // console.log("files.length:", files?.length);
       // 建新的圖片
       const newItems = [];
 
@@ -116,9 +103,6 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
 
       // 所有base64
       const base64Images = pendingItems.map((item) => item.base64);
-
-      // console.log("pendingItems", pendingItems);
-
       const res = await axios.post("/api/listing/create/pics", {
         ...currentUser,
         // base64Images,
@@ -133,8 +117,6 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
     onSuccess: ({ data, pendingItems }) => {
       if (!data || !data.picsMainInfo) return;
 
-      // console.log("data", data);
-
       let updatedItems = [...imageItems];
 
       data.picsMainInfo.forEach((info, index) => {
@@ -143,7 +125,6 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
             item.publicId = info.listingPicsPublicID;
             item.url = info.listingPicsSecureURL;
             item.status = "uploaded";
-            console.log("item", item);
           }
         });
       });
@@ -270,53 +251,6 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
               </div>
             ))
           )}
-          {/* {imageItems.map((item) => (
-            <div key={item.id} className="relative">
-              {item.status === "uploaded" ? (
-                <>
-                  <Pic url={item.url} />
-                  <button
-                    type="button"
-                    className="mt-1 text-xs text-red-400"
-                    onClick={() => handleRemove(item)}
-                  >
-                    刪除
-                  </button>
-                </>
-              ) : item.status === "pending" || item.status === "uploading" ? (
-                <div className="flex flex-col items-center">
-                  <div className="h-20 w-20 bg-gray-200 flex items-center justify-center">
-                    {item.status === "uploading" ? (
-                      <span className="text-xs">上傳中...</span>
-                    ) : (
-                      <span className="text-xs">等待上傳</span>
-                    )}
-                  </div>
-                  <button
-                    type="button"
-                    className="mt-1 text-xs text-red-400"
-                    onClick={() => handleRemove(item)}
-                    disabled={item.status === "uploading"}
-                  >
-                    刪除
-                  </button>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center">
-                  <div className="h-20 w-20 bg-red-100 flex items-center justify-center">
-                    <span className="text-xs text-red-500">上傳失敗</span>
-                  </div>
-                  <button
-                    type="button"
-                    className="mt-1 text-xs text-red-400"
-                    onClick={() => handleRemove(item)}
-                  >
-                    刪除
-                  </button>
-                </div>
-              )}
-            </div>
-          ))} */}
         </div>
       </div>
     </div>

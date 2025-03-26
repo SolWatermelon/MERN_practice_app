@@ -1,5 +1,5 @@
 import ShowListingsComponent from "@/components/listing/ShowListingsComponent";
-import React, { useEffect } from "react";
+import React from "react";
 
 const ShowListings = () => {
   return (

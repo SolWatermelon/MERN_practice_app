@@ -15,8 +15,6 @@ export const userSlice = createSlice({
       state.currentUser = action.payload;
     },
     updateUserSuccess: (state, action) => {
-      console.log("state!!!!!!!!1", state)
-      console.log("action!!!!!!!!!!!!", action)
       state.currentUser = action.payload;
     },
     deleteUserSuccess: (state) => {

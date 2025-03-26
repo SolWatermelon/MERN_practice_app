@@ -4,18 +4,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useSelector, useDispatch } from "react-redux";
-// import ListingForm from "./ListingForm";
-// import ListingPics from "./ListingPics";
+import { useSelector } from "react-redux";
 import UpdateListingForm from "./UpdateListingForm";
 import UpdateListingPics from "./UpdateListingPics";
-// import UpdateListingPics from "./"
 import { useMutation } from "@tanstack/react-query";
 import { updateListingForm } from "@/service/service";
-// import { useSelector, useDispatch } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useListingActions } from "../../hooks/useListingActions";
-// import { useParams } from "react-router-dom";
 
 // Zod Schema驗證表單
 const formSchema = z.object({
@@ -28,6 +23,7 @@ const formSchema = z.object({
   bedrooms: z.coerce.number().min(1, "bedrooms must be a positive number"),
   options: z.array(z.string()),
 });
+
 const UpdatelistingComponent = () => {
   const [imageItems, setImageItems] = useState([]);
   const [checkboxOptions, setCheckboxOptios] = useState([
@@ -42,18 +38,12 @@ const UpdatelistingComponent = () => {
   const params = useParams();
   const listingId = params.listingId;
   const { currentUser } = useSelector((state) => state.userReducer);
-  // const {     verifiedPerListingData, verifiedPerListingPending, verifiedPerListingError, getVerifiedPerListQuery } =
-  //   useListingActions(listingId);
   const { getVerifiedPerListQuery, refetchAllListingsQuery } = useListingActions(listingId);
   const { data, isLoading, error, refetch } = getVerifiedPerListQuery;
 
   // 舊圖片的狀態
   const [displayedOldPics, setDisplayedOldPics] = useState([]);
   
-  useEffect(() => {
-    console.log("listingId", listingId);
-    console.log("耶耶getVerifiedPerListQuery.data", data);
-  }, [data]);
   useEffect(() => {
     refetchAllListingsQuery()
   }, [])
@@ -79,7 +69,6 @@ const UpdatelistingComponent = () => {
   useEffect(() => {
     console.log("data!", data);
     if (data) {
-      console.log("嗨嗨嗨嗨~~~");
       const {
         name,
         description,
@@ -144,17 +133,12 @@ const UpdatelistingComponent = () => {
       navigate(`/listing/${data._id}`);
     },
     onError: (error) => {
-      // console.log(error);
       throw new Error(error);
     },
   });
 
   // 提交form
   function onSubmit(formValue) {
-    // console.log("form.getValues", form.getValues("removedOldPicsIds"))
-    console.log("data", data);
-    console.log("displayedOldPics", displayedOldPics);
-    console.log("imageItems", imageItems);
     submitFormMutation.mutate(
       formValue,
       displayedOldPics,

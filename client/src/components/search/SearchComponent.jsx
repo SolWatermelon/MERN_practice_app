@@ -3,8 +3,8 @@ import PerSearchResultCard from "./PerSearchResultCard";
 import SearchForm from "./SearchForm";
 import { useSelector, useDispatch } from "react-redux";
 import { useListingActions } from "@/hooks/useListingActions";
-import { acquireAllListings, filteredAllListings } from "@/slices/listingSlice";
-import { useSearchParams, useLocation } from "react-router-dom";
+import { filteredAllListings } from "@/slices/listingSlice";
+import { useSearchParams } from "react-router-dom";
 
 const SearchComponent = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,10 +18,6 @@ const SearchComponent = () => {
   }, []);
 
   useEffect(() => {
-    console.log("allListings", allListings);
-    console.log("filteredListing", filteredListing);
-    // dispatch(filteredAllListings(allListings))
-
     // 如果不是透過navbar搜尋時的資料呈現
     const searchKeyword = searchParams?.get("searchKeyword");
     if (!searchKeyword) {
@@ -31,7 +27,6 @@ const SearchComponent = () => {
 
   return (
     <>
-      {/* {filteredListing?.length? "有":"沒有"} */}
       {!allListings?.length && !filteredListing?.length ? (
         <p>讀取中...</p>
       ) : (

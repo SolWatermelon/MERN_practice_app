@@ -21,7 +21,6 @@ export const avatarUpload = async (req, res, next) => {
       const deleteAvatar = await cloudinary.v2.uploader.destroy(
         `avatarphoto_${_id}`
       );
-      // console.log("deleteAvatar", deleteAvatar);
     }
 
 
@@ -47,8 +46,6 @@ export const avatarUpload = async (req, res, next) => {
       height: 500,
     });
 
-    console.log("uploadResult!!!!!!", uploadResult);
-
   
     // ==============================================
 
@@ -67,12 +64,6 @@ export const avatarUpload = async (req, res, next) => {
     if (!updatedUser) {
       return res.status(404).json({ message: "User avatar can not be update" });
     }
-
-    // const aa = {secure_url: uploadResult.secure_url, ...updatedUser}
-    // console.log("aa:", aa)
-    // const bb = {...updatedUser, secure_url: uploadResult.secure_url,}
-    // console.log("bb:", bb)
-    // return res.json(uploadResult);
     return res.json({secure_url: uploadResult.secure_url, ...updatedUser});
   } catch (e) {
     next(e);

@@ -1,50 +1,24 @@
 import React, { useEffect, useState } from "react";
 import PerListing from "./perListing";
-import { useSelector, useDispatch } from "react-redux";
 import { useListingActions } from "../../hooks/useListingActions";
-import {acquireAllListings} from "../../slices/listingSlice.js"
-// import { useListingActions } from "../hooks/useListingActions";
-// import { useListingActions } from "../../hooks/useListingActions";
 
 const ShowListingsComponent = () => {
-  const { allListings } = useSelector((state) => state.allListingsReducer);
-const dispatch = useDispatch()
-  // const { getAllListingsQuery } = useListingActions();
   const {
-    // allListingsData,
-    // allListingsDataPending,
-    // allListingsDataError,
-    // isAllListingsDataError,
-    // isAllListingsDataSuccess,
-    // getAllListingsQuery,
     refetchAllListingsQuery,
     getCertainUserAllListingsQuery,
     deleteListingMutation,
   } = useListingActions();
-  // const {
-  //   refetch:allListingsDataReftch,
-  //   data: allListingsData,
-  //   isPending: isAllListingsPending,
-  //   isSuccess: isAllListingsSuccess,
-  //   isError: isAllListingsError,
-  //   error: allListingsErrorMsg,
-  // } = getAllListingsQuery;
-  // const [userListings, setUserListings] = useState([]);
   const { data, isPending, error, isError, isSuccess, refetch } =
     getCertainUserAllListingsQuery;
-    // useEffect(() => {
-    //   allListingsDataReftch()
-    //   console.log("isAllListingsSuccess", isAllListingsSuccess)
-    //   if(isAllListingsSuccess){
-    //     dispatch(acquireAllListings(allListingsData?.allListings))
-    //     console.log("allListingsData?.allListings~~:", allListingsData?.allListings)
-    //   }
-  
-    // }, [isAllListingsSuccess]);
+  const [allData, setAllData] = useState([]);
 
-    useEffect(() => {
-      refetchAllListingsQuery();
-    }, [])
+  useEffect(() => {
+    refetchAllListingsQuery();
+  }, []);
+
+  useEffect(() => {
+    setAllData(data);
+  }, [data?.length]);
 
   return (
     <>
@@ -57,9 +31,10 @@ const dispatch = useDispatch()
                 已發表房型列表
               </h2>
             </div>
-            {!data[0]?._id && (
+            {allData?.length && !allData[0]?._id && (
               <div className="text-lg text-center">尚無貼文...</div>
             )}
+
             {deleteListingMutation.isPending && (
               <p className="text-xs">處理中...</p>
             )}
@@ -71,7 +46,6 @@ const dispatch = useDispatch()
             )}
 
             <div className="overflow-x-auto">
-              {/* {<p>{data.msg}</p>} */}
               <table className="min-w-full divide-y divide-gray-400 dark:divide-gray-200">
                 <thead className="bg-gray-200 dark:bg-gray-600">
                   <tr>
@@ -99,11 +73,23 @@ const dispatch = useDispatch()
                     ></th>
                   </tr>
                 </thead>
-                <tbody className=" divide-y divide-gray-200">
-                  {data[0]?._id &&
-                    data?.map((listing) => {
-                      return <PerListing key={listing._id} listing={listing} />;
-                    })}
+                <tbody className="divide-y divide-gray-200">
+                {/* <tbody> 無論如何至少要有一個<tr>! */}
+                  {Boolean(allData?.length) ? (
+                    allData.map((listing) => (
+                      <PerListing
+                        key={listing._id}
+                        setAllData={setAllData}
+                        listing={listing}
+                      />
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="100%" className="text-center py-4">
+                        No data available!
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>

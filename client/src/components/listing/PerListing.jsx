@@ -13,17 +13,18 @@ import {
 import { useListingActions } from "../../hooks/useListingActions";
 import { Link, useNavigate } from "react-router-dom";
 
-
-const PerListing = ({ listing }) => {
+const PerListing = ({ setAllData, listing }) => {
   const { imageUrls, _id, name, createdAt, updatedAt } = listing;
-
-  // const { getListingMutationTest, deleteListingMutation, userListings, setUserListings } = useListingActions();
   const navigate = useNavigate();
-  const { deleteListingMutation, setUserListings } = useListingActions();
+  const { deleteListingMutation } = useListingActions();
 
   const handleListingDelete = () => {
-    setUserListings((prev) => prev.filter((li) => li._id !== _id));
     deleteListingMutation.mutate({ imageUrls, _id });
+      setAllData((prev) =>
+        prev.filter((perData) => {
+          return perData._id !== _id;
+        })
+      );
   };
 
   return (
@@ -61,12 +62,10 @@ const PerListing = ({ listing }) => {
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-      <div className="text-sm">
-          {createdAt}
-        </div>
+        <div className="text-sm">{createdAt}</div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-      <div className="text-sm">{updatedAt|| "No update date"}</div>
+        <div className="text-sm">{updatedAt || "No update date"}</div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
         <Dialog>
@@ -90,11 +89,13 @@ const PerListing = ({ listing }) => {
             </DialogFooter>
           </DialogContent>
         </Dialog>
-        {/* <Button variant="deletemode" size="sm">
-            刪除
-          </Button> */}
-          
-        <Button onClick={() => {navigate(`/profile/update-listing/${_id}`)}} variant="signoutmode" size="sm">
+        <Button
+          onClick={() => {
+            navigate(`/profile/update-listing/${_id}`);
+          }}
+          variant="signoutmode"
+          size="sm"
+        >
           編輯
         </Button>
       </td>

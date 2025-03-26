@@ -1,17 +1,10 @@
-// import { Button } from "@/components/ui/button.jsx";
 import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import {acquireAllListings} from "../slices/listingSlice.js"
 import { useListingActions } from "../hooks/useListingActions";
-
-// import { toggleMenu } from "../slices/navMenuToggleSlice";
 import { toggleMenu } from "../slices/navToggleSlice.js";
 const Home = () => {
   const dispatch = useDispatch();
-  const { isOpened } = useSelector((state) => state.navToggleReducer);
-  const { currentUser } = useSelector((state) => state.userReducer);
-  const { allListings } = useSelector((state) => state.allListingsReducer);
   const { getAllListingsQuery } = useListingActions();
   const {
     data: allListingsData,
@@ -22,12 +15,9 @@ const Home = () => {
   } = getAllListingsQuery;
 
   useEffect(() => {
-    console.log("isAllListingsSuccess", isAllListingsSuccess)
     if(isAllListingsSuccess){
       dispatch(acquireAllListings(allListingsData?.allListings))
-      console.log("allListingsData?.allListings~~:", allListingsData?.allListings)
     }
-
   }, [isAllListingsSuccess]);
 
   return (
@@ -37,7 +27,6 @@ const Home = () => {
         dispatch(toggleMenu());
       }}
     >
-      {/* <p>{currentUser?.emaial}</p> */}
       <blockquote className={`text-2xl font-semibold italic text-center`}>
         Are you looking for
         <span className="before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-hoverlighttext relative inline-block">

@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import {  useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { acquireAllListings, filteredAllListings } from "@/slices/listingSlice";
+import { filteredAllListings } from "@/slices/listingSlice";
 import { useSelector, useDispatch } from "react-redux";
-import ListingForm from "../listing/ListingForm";
+
 
 const SearchForm = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQueryVal = searchParams.get("searchKeyword");
-  const { allListings, filteredListing } = useSelector(
+  const { allListings } = useSelector(
     (state) => state.allListingsReducer
   );
   const dispatch = useDispatch();
@@ -182,7 +182,7 @@ const SearchForm = () => {
   return (
     <div className="max-w-md mb-6 p-4">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* Search Term Input */}
+        {/* searchTerm input */}
         <div>
           <input
             {...register("searchTerm")}
@@ -196,7 +196,7 @@ const SearchForm = () => {
           )}
         </div>
 
-        {/* Type radio */}
+        {/* type radio */}
         <div className="flex space-x-4 dark:text-white">
           {["Rent", "Sell", "Offer"].map((type) => (
             <label key={type} className="inline-flex items-center">
@@ -211,7 +211,7 @@ const SearchForm = () => {
           ))}
         </div>
 
-        {/* Amenities Checkboxes */}
+        {/* checkbox*/}
         <div className="flex space-x-4 dark:text-white">
           {["Parking", "Furnished"].map((amenity) => (
             <label key={amenity} className="inline-flex items-center">
@@ -226,14 +226,14 @@ const SearchForm = () => {
           ))}
         </div>
 
-        {/* Submit Button */}
+        {/* submit */}
         <button
           type="submit"
           className="w-full font-medium py-3 px-4 bg-gray-500 hover:bg-gray-400 text-white rounded-full transition-colors"
         >
           Search
         </button>
-        {/* reset button */}
+        {/* reset */}
         <button
           type="button"
           onClick={() => {

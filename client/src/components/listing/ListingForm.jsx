@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Form,
   FormField,
   FormItem,
   FormLabel,
   FormControl,
-  FormDescription,
   FormMessage,
 } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -18,7 +16,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
     <>
       {/* Grid讓輸入欄位自動RWD */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* 文字輸入 - Name */}
+        {/* 文字輸入-Name */}
         <FormField
           control={form.control}
           name="name"
@@ -37,7 +35,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
           )}
         />
 
-        {/* 文字輸入 - description */}
+        {/* 文字輸入-description */}
         <FormField
           control={form.control}
           name="address"
@@ -57,7 +55,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
           )}
         />
 
-        {/* Textarea - description */}
+        {/* Textarea-description */}
         <FormField
           control={form.control}
           name="description"
@@ -72,16 +70,11 @@ const ListingForm = ({ form, checkboxOptions}) => {
                 />
               </FormControl>
               <FormMessage className="text-red-400 dark:text-red-400 text-sm" />
-              {/* {fieldState.error?.message && (
-        <p className="text-red-400 dark:text-red-400 text-sm">
-          {fieldState.error.message}
-        </p>
-      )} */}
             </FormItem>
           )}
         />
 
-        {/* Checkbox - Multiple Options */}
+        {/* checkbox-multiple Options */}
         <FormItem>
           <FormLabel>Select Options</FormLabel>
           <div className="space-y-2">
@@ -107,7 +100,6 @@ const ListingForm = ({ form, checkboxOptions}) => {
 
                         // offer控制isDiscountPrice
                         if (option === "offer") {
-                          // console.log("checked", checked)
                           setIsDiscountPrice(checked);
                         }
                       }}
@@ -124,10 +116,9 @@ const ListingForm = ({ form, checkboxOptions}) => {
             >
               勾選offer後請記得填discountPrice
             </p>
-          {/* <FormMessage className="text-red-400 dark:text-red-400 text-sm" /> */}
         </FormItem>
 
-        {/* 使用Grid自動適應 */}
+        {/* 使用grid自動適應 */}
         <div className="grid grid-cols-2 md:grid-cols-2 gap-6">
           {/* Number Input - regularPrice */}
           <FormField
@@ -149,7 +140,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
             )}
           />
 
-          {/* Number Input - discountPrice */}
+          {/* number input-discountPrice */}
           <FormField
             control={form.control}
             name="discountPrice"
@@ -170,7 +161,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
             )}
           />
 
-          {/* Number Input - bathrooms */}
+          {/* number input-bathrooms */}
           <FormField
             control={form.control}
             name="bathrooms"
@@ -190,7 +181,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
             )}
           />
 
-          {/* Number Input - bedrooms */}
+          {/* number input-bedrooms */}
           <FormField
             control={form.control}
             name="bedrooms"

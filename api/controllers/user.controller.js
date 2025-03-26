@@ -33,8 +33,6 @@ export const updateUserInfo = async (req, res, next) => {
 export const deleteUser = async (req, res, next) => {
   // check token first
   // 記得user id是從verify user來的~
-  // console.log("req.user.id", req.user.id)
-  // console.log("req.params.id",req.params.id)
   if (req.user.id !== req.params.id)
     return errorHandler(401, "u can only delete ur own account");
   try {
@@ -50,8 +48,6 @@ export const deleteUser = async (req, res, next) => {
 export const getUserListing =  async (req, res, next) => {
   // check token first
   // 記得user id是從verify user來的(cookie)
-  // console.log("req.user.id", req.user.id)
-  // console.log("req.params.id",req.params.id)
   if (req.user.id !== req.params.id)
     return errorHandler(401, "u can only get ur own listings");
   try {
@@ -66,8 +62,6 @@ export const getUserListing =  async (req, res, next) => {
 export const getUser =  async (req, res, next) => {
   // check token first
   // 記得user id是從verify user來的(cookie)
-  // console.log("req.user.id", req.user.id)
-  // console.log("req.params.id",req.params.id)
   try {
     const user = await User.findById(req.params.id)
     if (!user) return next(errorHandler(401, "user not found"))

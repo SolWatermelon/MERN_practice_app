@@ -70,20 +70,13 @@ const Navbar = () => {
     setIsAvatarOpen(false);
   };
 
-  useEffect(() => {
-    console.log("location.pathname~~~~~~~~", location.pathname);
-  }, [location.pathname]);
 
   const filterData = (searchKeyword) => {
-    console.log("searchKeyword", searchKeyword);
     // listing name or description filter
     const filteredListings = allListings.filter((listing) => {
       const nameAndDescription = listing.name + listing.description;
-      console.log("nameAndDescription", nameAndDescription);
       return nameAndDescription.includes(searchKeyword);
     });
-    console.log("filteredListings", filteredListings);
-    console.log("allListings~~~~~~", allListings);
     dispatch(filteredAllListings(filteredListings));
     // searchkeyword attach to query value
     navigate(`/search/?searchKeyword=${searchKeyword}`);
@@ -94,8 +87,6 @@ const Navbar = () => {
       const searchKeyword = data.search;
       filterData(searchKeyword);
     }
-    console.log("allListings!!!!!!!!!!", allListings);
-    console.log("filteredListing", filteredListing);
   };
 
   useEffect(() => {
@@ -123,7 +114,7 @@ const Navbar = () => {
             </span>
           </Link>
 
-          {/* 電腦裝置menu */}
+          {/* menu */}
           <div
             className="md:flex items-center space-x-8"
             onClick={handleMenuContentClick}
@@ -136,7 +127,6 @@ const Navbar = () => {
                   onSubmit={handleSubmit(handleSearchSubmit)}
                   className="flex items-center"
                 >
-                  {/* border-gray-300 focus:outline-none focus:border-pink-300 */}
                   <input
                     type="text"
                     placeholder="search"
@@ -185,14 +175,9 @@ const Navbar = () => {
                 ) : (
                   <Link
                     to="/sign-in"
-                    className="px-2 py-1 bg-darkorange hover:bg-hoverlighttext text-white rounded-full transition-colors"
+                    className="py-1 px-4 bg-darkorange hover:bg-hoverlighttext text-white rounded-full transition-colors"
                   >
-                    {/* <button
-                      type="button"
-                      className="px-2 py-1 bg-darkorange hover:bg-hoverlighttext text-white rounded-full transition-colors"
-                    >
-                      Sign In
-                    </button> */}
+                  登入
                   </Link>
                 )}
               </PopoverTrigger>
@@ -207,18 +192,7 @@ const Navbar = () => {
                   className="flex items-center justify-center text-hoverlighttext text-sm mb-4"
                 >
                   編輯或管理個人資料
-                  {/* <button className="text-hoverlighttext text-sm mb-4">
-                  </button> */}
                 </Link>
-                {/* <Link className="w-full py-2 bg-darkorange text-darkblue rounded-lg hover:bg-hoverlighttext transition-colors" to="/">
-                  登出
-                  <button
-                    type="button"
-                    className="w-full py-2 bg-darkorange text-darkblue rounded-lg hover:bg-hoverlighttext transition-colors"
-                  >
-                    登出
-                  </button>
-                </Link> */}
               </PopoverContent>
             </Popover>
 

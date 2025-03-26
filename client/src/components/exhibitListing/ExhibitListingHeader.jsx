@@ -13,44 +13,20 @@ const ExhibitListingHeader = ({ unverifiedPerListingData }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   // SwiperCore.use([Navigation]);
-  // const imageUrls = [
-  //   {
-  //     publicID: "listing-file-1742460247524-0",
-  //     url: "https://res.cloudinary.com/dr6qrkwdk/image/upload/v1742460253/listing-file-1742460247524-0.jpg",
-  //   },
-  //   {
-  //     publicID: "listing-file-1742460247524-0",
-  //     url: "https://res.cloudinary.com/dr6qrkwdk/image/upload/v1742460253/listing-file-1742460247524-0.jpg",
-  //   },
-  //   {
-  //     publicID: "listing-file-1742460247524-0",
-  //     url: "https://res.cloudinary.com/dr6qrkwdk/image/upload/v1742460253/listing-file-1742460247524-0.jpg",
-  //   },
-  //   {
-  //     publicID: "listing-file-1742460247524-0",
-  //     url: "https://res.cloudinary.com/dr6qrkwdk/image/upload/v1742460253/listing-file-1742460247524-0.jpg",
-  //   },
-  //   {
-  //     publicID: "listing-file-1742460247524-0",
-  //     url: "https://res.cloudinary.com/dr6qrkwdk/image/upload/v1742460253/listing-file-1742460247524-0.jpg",
-  //   },
-  // ];
 
-  // 開啟全屏輪播
+  // 開啟輪播
   const openFullscreen = (index) => {
     setActiveIndex(index);
     setIsFullscreen(true);
   };
 
-  // 關閉全屏輪播
+  // 關閉輪播
   const closeFullscreen = () => {
     setIsFullscreen(false);
   };
 
-  // return <div>{isSuccess && <p>{data?.address}</p>}</div>;
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* <div>{data?.imageUrls.length}</div> */}
       {/* 一張圖片 */}
       {unverifiedPerListingData?.imageUrls.length === 1 && (
         <div className="grid grid-cols-1 gap-4 ">
@@ -81,7 +57,6 @@ const ExhibitListingHeader = ({ unverifiedPerListingData }) => {
               <img
                 src={unverifiedPerListingData?.imageUrls[0].url}
                 alt="Gallery thumbnail 1"
-                // h-[300px]
                 className="w-full h-[300px] object-cover mx-auto"
               />
             </div>

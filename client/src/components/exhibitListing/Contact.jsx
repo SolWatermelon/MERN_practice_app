@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useUserActions } from "@/hooks/useUserActions";
-import { Link } from "react-router-dom";
 import { IoIosSend } from "react-icons/io";
 
 const Contact = ({ openMessageArea, unverifiedPerListingData }) => {
@@ -11,22 +10,13 @@ const Contact = ({ openMessageArea, unverifiedPerListingData }) => {
   const {
     data: landlordInfo,
     isSuccess: getlandLordSuccess,
-    isPending,
     isError: getlandLordError,
     error: getlandLordErrorMsg,
   } = getLandlordInfoQuery;
 
-  // const { _doc: actualLandlordData } = landlordInfo;
-
   const handleMessageChange = (e) => {
-    console.log("e.target.value", e.target.value);
     setMessage(e.target.value);
   };
-
-  // useEffect(() => {
-  //   // getLandlordUserInfoMutation.mutate(userRef);
-  //   console.log("landlordInfo~~~~", landlordInfo);
-  // }, [getlandLordSuccess]);
 
 
   useEffect(() => {

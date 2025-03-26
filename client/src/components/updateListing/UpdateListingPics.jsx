@@ -21,10 +21,6 @@ const UpdateListingPics = ({
   setDisplayedOldPics,
 }) => {
   const { currentUser } = useSelector((state) => state.userReducer);
-  // // 舊圖片的狀態
-  // const [displayedOldPics, setDisplayedOldPics] = useState([]);
-  // 被刪除的舊圖片ID
-  // const [removedOldPicsIds, setRemovedOldPicsIds] = useState([]);
 
   useEffect(() => {
     if (oldImageUrls.length > 0) {
@@ -39,7 +35,6 @@ const UpdateListingPics = ({
 
       const newItems = [];
 
-      // 轉換為base64-1
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         const base64 = await convertToBase64(file);
@@ -51,11 +46,9 @@ const UpdateListingPics = ({
           status: "pending",
         });
       }
-      // 更新
+      
       setImageItems([...imageItems, ...newItems]);
       updateFormFileValue();
-      // console.log("newItems.length", newItems.length);
-      // console.log("displayedOldPics.length", displayedOldPics.length);
       if (newItems.length + displayedOldPics.length > 5) {
         form.setValue("file", null);
         setImageItems([]);
@@ -68,7 +61,7 @@ const UpdateListingPics = ({
     }
   };
 
-  // 轉換文件為base64
+
   const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
       if (!(file instanceof Blob)) {
@@ -97,9 +90,6 @@ const UpdateListingPics = ({
     } else {
       form.setValue("file", null);
     }
-
-    // 同時更新移除的舊圖片列表
-    // form.setValue("removedImageIds", removedOldPicsIds);
   };
 
   // 上傳文件mutation
@@ -144,8 +134,6 @@ const UpdateListingPics = ({
           }
         });
       });
-
-      // console.log("updatedItems", updatedItems);
 
       setImageItems(updatedItems);
     },
@@ -249,9 +237,7 @@ const UpdateListingPics = ({
             上傳
           </Button>
         </div>
-
-        {/* <p>{imageItems.length}</p> */}
-        {/* <p>{imageItems.length + displayedOldPics.length}</p> */}
+        
         {/* 顯示新上傳的圖片 */}
         {imageItems.length > 0 &&
         imageItems.length + displayedOldPics.length <= 5 ? (

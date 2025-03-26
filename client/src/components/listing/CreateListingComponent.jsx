@@ -11,7 +11,7 @@ import { createListingForm } from "@/service/service";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useListingActions } from "@/hooks/useListingActions.js"
-import {acquireAllListings} from "@/slices/listingSlice.js"
+
 
 // Zod Schema驗證表單
 const formSchema = z.object({
@@ -23,22 +23,6 @@ const formSchema = z.object({
   bathrooms: z.coerce.number().min(1, "bathrooms must be a positive number"),
   bedrooms: z.coerce.number().min(1, "bedrooms must be a positive number"),
   options: z.array(z.string())
-  // .min(1, "At least one option must be selected."),
-  // file: z.any().refine((files) => files?.length > 0, "At least one file is required")
-  // 支持多檔案上傳
-  // file: z
-  //   .instanceof(FileList)
-  //   .refine((files) => files?.length > 0  && files?.length <= 6, "At least one file is required"),
-  // ===================
-  // 3/19注意
-  // file: z
-  //   .any()
-  //   .refine(
-    //     (files) =>
-    //       files instanceof FileList && files?.length > 0 && files?.length <= 6,
-    //     { message: "You must upload at least 1 and at most 6 files." }
-    //   ),
-    // imageUrls: z.array(z.string())
   });
 
 const CreateListingComponent = () => {
@@ -54,14 +38,6 @@ const CreateListingComponent = () => {
     "offer",
   ]);
   const navigate = useNavigate()
-  // const {
-  //   data: allListingsData,
-  //   isPending: isAllListingsPending,
-  //   isSuccess: isAllListingsSuccess,
-  //   isError: isAllListingsError,
-  //   error: allListingsErrorMsg,
-  // } = getAllListingsQuery;
-  const { allListings } = useSelector((state) => state.allListingsReducer);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -74,10 +50,6 @@ const CreateListingComponent = () => {
       options: [],
       bathrooms: 3,
       bedrooms: 3,
-      // offer: false,
-      // parking: false,
-      // furnished: false
-      // file: null,
     },
     mode: "onChange", // 讓錯誤即時顯示
     reValidateMode: "onChange",
@@ -93,20 +65,16 @@ const CreateListingComponent = () => {
       return createListingForm(formValue, imageItems, currentUser._id, checkboxOptions);
     },
     onSuccess: (data) => {
-      console.log("data", data);
-      // dispatch(acquireAllListings([...allListings, data]))
       if (!data) return;
       navigate(`/listing/${data._id}`)
     },
     onError: (error) => {
-      // console.log(error);
       throw new Error(error);
     },
   });
 
   // 提交form
   function onSubmit(formValue) {
-    console.log("這裡")
     submitFormMutation.mutate(formValue);
   }
 

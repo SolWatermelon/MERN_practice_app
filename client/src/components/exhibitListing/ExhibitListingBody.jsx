@@ -11,13 +11,8 @@ import ContactLandlord from "./ContactLandlord";
 // tag改成li和ul！！！！
 // 住址和房間測所數還沒寫
 const ExhibitListingBody = ({ unverifiedPerListingData }) => {
-  // const { listingData, isSuccess } = getUnverifiedPerListQueryingMutation;
   const { currentUser } = useSelector((state) => state.userReducer);
-  useEffect(() => {
-    if (unverifiedPerListingData) {
-      console.log("unverifiedPerListingData", unverifiedPerListingData);
-    }
-  }, []);
+
 
   return (
     <div>
@@ -44,8 +39,6 @@ const ExhibitListingBody = ({ unverifiedPerListingData }) => {
       <div className="h-[2px] w-full dark:bg-gray-600 bg-gray-500 my-7"></div>
 
       <div>
-        {/* currentUser && listingData?.userRef !== currentUser._id */}
-
         {/* 資訊大區塊 */}
         <div
           className={`mb-[200px] flex flex-col md:flex-row-reverse ${
@@ -54,16 +47,6 @@ const ExhibitListingBody = ({ unverifiedPerListingData }) => {
               : "md:justify-end"
           } w-full`}
         >
-          {/* <div className="mb-[200px] flex justify-center w-full md:justify-between md:flex-row-reverse"> */}
-          {/* <div className=" text-hoverlighttext bg-white w-[300px] h-[150px] shadow-md md:sticky md:top-3 mb-[70px] p-3 ">
-          <div className="text-[20px] font-bold  mb-3 flex items-center gap-2 justify-center"><FaEnvelopeOpenText /><p>連絡房東</p></div>
-          <button
-            type="button"
-            className="w-full font-medium py-3 px-4 bg-darkorange hover:bg-hoverlighttext text-white rounded-full transition-colors"
-          >
-            新增房源
-          </button>
-        </div> */}
           {/* 連絡房東=> 自己的發文無法看到連絡房東 */}
           {currentUser &&
             unverifiedPerListingData?.userRef !== currentUser._id && (
@@ -103,7 +86,6 @@ const ExhibitListingBody = ({ unverifiedPerListingData }) => {
                       <p className="inline-block px-2">上傳時間</p>
                     </span>
                     <span>{`${unverifiedPerListingData?.createdAt}`}</span>
-                    {/* {listingData?.updatedAt && <span>{`更新：${listingData?.updatedAt}`}</span>} */}
                   </span>
                 </div>
               </div>
@@ -114,7 +96,6 @@ const ExhibitListingBody = ({ unverifiedPerListingData }) => {
               <span className="text-[16px] font-bold underline decoration-2 mb-3">
                 所需金額
               </span>
-              {/* <div className="flex flex-col gap-2"> */}
               {unverifiedPerListingData?.discountPrice ? (
                 <>
                   <span className="text-[16px] font-semibold mb-1">驚爆價</span>
@@ -136,7 +117,6 @@ const ExhibitListingBody = ({ unverifiedPerListingData }) => {
                   </span>
                 </>
               )}
-              {/* </div> */}
             </div>
             <p className="h-[0.8px] w-[30%] dark:bg-gray-600 bg-gray-500  my-7"></p>
             {/* 房屋描述 */}
@@ -176,7 +156,6 @@ const ExhibitListingBody = ({ unverifiedPerListingData }) => {
                 </div>
               </div>
             </div>
-            {/* <p className="h-[0.8px] w-[30%] dark:bg-gray-600 bg-gray-500  my-7"></p> */}
           </div>
         </div>
       </div>

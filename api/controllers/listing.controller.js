@@ -57,33 +57,37 @@ export const deleteListing = async (req, res, next) => {
     api_secret: process.env.CLOUDINARY_API_SECRET,
   });
 
-  if (!req.params.id) return next(errorHandler(404, "listing not found"));
-  if (req.user.id !== req.params.id)
-    return errorHandler(401, "u can only delete ur own listing");
+  // if (!req.params.id) return next(errorHandler(404, "listing not found"));
+  // if (req.user.id !== req.params.id)
+  //   return next(errorHandler(401, "u can only delete ur own listing"))
+
+  const listing = await Listing.findById(req.params.id);
+  if (!listing) return next(errorHandler(404, "listing not found"));
+  if (listing.userRef !== req.user.id) {
+    return next(errorHandler(401, "u can only delete your own listing"));
+  }
 
   try {
     const { imageUrls } = req.body;
-
+    console.log("Deleting images:", imageUrls);
     const deletingImgs = imageUrls.map((url) => {
       return cloudinary.v2.uploader.destroy(`${url.publicID}`);
     });
-    const deletingImgsResult = await Promise.allSettled(deletingImgs);
+    await Promise.allSettled(deletingImgs);
 
-    const updatedUser = await Listing.findByIdAndDelete(req.params.id);
+    const deletedListing = await Listing.findByIdAndDelete(req.params.id)
 
-    if (!updatedUser) {
+    if (!deletedListing) {
       return res.status(404).json({ message: "listing can not be deleted" });
     }
     return res.status(200).json({ msg: "listing has been deleted" });
   } catch (e) {
+    console.error("Error in deleteListing:", e);
     next(e);
   }
 };
 
-// 發送的payload正確，但是送到資料庫時是舊資料3/21
 export const updateListing = async (req, res, next) => {
-  console.log("req.body", req.body);
-  console.log("req.params.id", req.params.id);
   cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -132,9 +136,7 @@ export const getUnverifiedListing = async (req, res, next) => {
 
 export const getAllListings = async (req, res, next) => {
   try {
-    console.log("這這")
     const allListings = await Listing.find({}).exec();
-    console.log("allListingsallListingsallListings~```", allListings)
     if (!allListings) {
       return res.status(404).json({ message: "listings can not be found" });
     }

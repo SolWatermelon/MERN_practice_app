@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,11 +10,9 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
-// import { useUserActions } from "../hooks/useUserActions"; // Create this custom hook
 import { useUserActions } from "../../hooks/useUserActions";
 
 const AccountManagement = () => {
-  // const [fetchEnabled, setFetchEnabled] = useState(false);
   const { deleteUser,  signoutUser } = useUserActions();
   const navigate = useNavigate();
 
@@ -24,16 +22,6 @@ const AccountManagement = () => {
         navigate("/sign-in", { replace: true });
       },
     });
-    // setFetchEnabled(true)
-
-    // signoutRefetch()
-    // console.log("isSignoutSuccess", isSignoutSuccess)
-    // console.log("signoutPending", signoutPending)
-    // console.log("isSignoutError", isSignoutError)
-    // // console.log("fetchEnabled", fetchEnabled)
-    // // if(isSignoutSuccess){
-    //   navigate("/sign-in", { replace: true });
-    // // }
   };
 
   const handleDeleteUser = () => {
@@ -98,10 +86,6 @@ const AccountManagement = () => {
               {signoutUser.isSuccess && (
                 <div className="text-blue-500 text-sm">登出成功</div>
               )}
-
-              {/* {isSignoutSuccess && (
-                <div className="text-blue-500 text-sm">登出成功</div>
-              )} */}
             </DialogContent>
           </Dialog>
 

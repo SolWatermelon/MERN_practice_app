@@ -1,6 +1,5 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
-// import { combineReducers } from '@reduxjs/toolkit';
 import navToggleReducer from "./slices/navToggleSlice.js";
 import userReducer from "./slices/userSlice.js";
 import allListingsReducer from "./slices/listingSlice.js"
