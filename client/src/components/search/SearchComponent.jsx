@@ -42,12 +42,13 @@ const SearchComponent = () => {
               <span>所有房屋</span>
             </div>
             <div className="flex gap-4 flex-wrap justify-center p-6">
-              {filteredListing?.length &&
+              {filteredListing?.length ?
                 filteredListing?.map((listing, i) => {
                   return (
                     <PerSearchResultCard listing={listing} key={listing._id} />
                   );
-                })}
+                }):<p className="text-white">無搜尋結果</p>
+                }
             </div>
           </div>
         </div>

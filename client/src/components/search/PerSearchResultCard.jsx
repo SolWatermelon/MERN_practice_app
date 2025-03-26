@@ -1,11 +1,14 @@
 import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-const PerSearchResultCard = ({ listing, id }) => {
+const PerSearchResultCard = ({ listing}) => {
+  
   
   return (
     <>
+    <Link to={`/listing/${listing?._id}`}>
       <div
-        key={id}
+        key={listing?._id}
         // sm:w-[200px] tablet:w-[200px] md:w-[400px] lg:w-[300px]
         className="w-[200px] tablet:w-[200px] md:w-[400px] lg:w-[250px] bg-white rounded-lg shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
       >
@@ -30,16 +33,17 @@ const PerSearchResultCard = ({ listing, id }) => {
               </div>
               <div className="flex items-center">
                 {/* <Bath size={16} className="mr-1" /> */}
-                <span>{listing.bathrooms} Baths</span>
+                <span>{listing?.bathrooms} Baths</span>
               </div>
             </div>
             <div className="flex items-center font-bold text-blue-600">
               {/* <DollarSign size={16} /> */}
-              <span>{listing.regularPrice}</span>
+              <span>{listing?.regularPrice}</span>
             </div>
           </div>
         </div>
       </div>
+    </Link>
     </>
   );
 };
