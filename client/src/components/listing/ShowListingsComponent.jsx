@@ -12,10 +12,9 @@ const ShowListingsComponent = () => {
     getCertainUserAllListingsQuery;
   const [allData, setAllData] = useState([]);
   const [canBroswedData, setCanBroswedData] = useState([]);
-  const perPageAmount = 5
+  const perPageAmount = 5;
   const [page, setPage] = useState(1);
-  const observerElementRef = useRef()
-
+  const observerElementRef = useRef();
 
   useEffect(() => {
     refetchAllListingsQuery();
@@ -23,7 +22,7 @@ const ShowListingsComponent = () => {
 
   useEffect(() => {
     setAllData(data);
-    setCanBroswedData(data?.slice(0, perPageAmount))
+    setCanBroswedData(data?.slice(0, perPageAmount));
   }, [data?.length]);
 
   const loadMore = () => {
@@ -34,29 +33,22 @@ const ShowListingsComponent = () => {
     });
   };
 
-
   useEffect(() => {
     if (!observerElementRef.current) return;
 
-    const intersectionObserver = new IntersectionObserver(
-      (entries) => {
-        // 目標在視野外就return
-        if (entries[0].intersectionRatio <= 0) return
-        // 目標在視野內
-        if (canBroswedData?.length < allData?.length) {
-          loadMore();
-        }
+    const intersectionObserver = new IntersectionObserver((entries) => {
+      // 目標在視野外就return
+      if (entries[0].intersectionRatio <= 0) return;
+      // 目標在視野內
+      if (canBroswedData?.length < allData?.length) {
+        loadMore();
       }
-    );
-setTimeout(()=> {
-  intersectionObserver.observe(observerElementRef.current);
-}, 1000)
+    });
+    setTimeout(() => {
+      intersectionObserver.observe(observerElementRef.current);
+    }, 1000);
     return () => intersectionObserver.disconnect();
   }, [canBroswedData, allData]);
-  
-
-
-
 
   return (
     <>
@@ -136,9 +128,13 @@ setTimeout(()=> {
         </div>
       )}
       {isError && <p>{`無法抓取資料:${error}`}</p>}
-      {allData?.length &&
-      <div className="text-center m-5 text-xl" ref={observerElementRef}>{canBroswedData?.length === allData?.length ? "無更多資料": "讀取更多..."}</div>
-      }
+      {!!allData?.length && (
+        <div className="text-center m-5 text-xl" ref={observerElementRef}>
+          {canBroswedData?.length === allData?.length
+            ? "無更多資料"
+            : "讀取更多..."}
+        </div>
+      )}
     </>
   );
 };

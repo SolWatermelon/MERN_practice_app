@@ -5,7 +5,7 @@ import { filteredAllListings } from "@/slices/listingSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 
-const SearchForm = () => {
+const SearchForm = ({setFilteredData, filteredData, pagination}) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQueryVal = searchParams.get("searchKeyword");
   const { allListings } = useSelector(
@@ -122,9 +122,16 @@ const SearchForm = () => {
     );
     if (!newSearchRes.length) {
       dispatch(filteredAllListings([]));
+      setFilteredData([])
     }
 
     dispatch(filteredAllListings(newSearchRes));
+
+    let slicedData = []
+    pagination.forEach((page) => {
+      slicedData = newSearchRes.slice((page*10)-page-9, (page*10)-page)
+      setFilteredData((prev) => [...prev, ...slicedData])
+    })
   };
 
   const setUrlQueries = (data) => {
@@ -172,6 +179,7 @@ const SearchForm = () => {
       data?.type === "All"
     ) {
       dispatch(filteredAllListings(allListings));
+      setFilteredData(filteredData)
       setSearchParams({});
       return;
     }
@@ -180,7 +188,7 @@ const SearchForm = () => {
   };
 
   return (
-    <div className="max-w-md mb-6 p-4">
+    <div className="w-full max-w-md mb-6 p-4">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* searchTerm input */}
         <div>
@@ -245,6 +253,7 @@ const SearchForm = () => {
               sort: "",
             });
             dispatch(filteredAllListings(allListings));
+            setFilteredData(filteredData)
           }}
           className="w-full font-medium dark:text-white py-3 px-4 border-4  border-gray-400 hover:bg-gray-400 text-gray-600 hover:text-white rounded-full transition-colors"
         >

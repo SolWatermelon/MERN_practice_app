@@ -166,7 +166,7 @@ const Navbar = () => {
                 {currentUser?._id ? (
                   <div>
                     <img
-                      className="w-10 h-10 rounded-full object-cover bg-gray-300 flex items-center justify-center relative"
+                      className="w-8 h-10 rounded-full object-cover bg-gray-300 flex items-center justify-center relative"
                       src={currentUser?.avatar}
                       alt="profile_pic"
                     />
@@ -175,9 +175,9 @@ const Navbar = () => {
                 ) : (
                   <Link
                     to="/sign-in"
-                    className="py-1 px-4 bg-darkorange hover:bg-hoverlighttext text-white rounded-full transition-colors"
+                    className="text-[14px] md:text-[16px] py-1 px-2 bg-darkorange hover:bg-hoverlighttext text-white rounded-full transition-colors"
                   >
-                  登入
+                  sign
                   </Link>
                 )}
               </PopoverTrigger>
