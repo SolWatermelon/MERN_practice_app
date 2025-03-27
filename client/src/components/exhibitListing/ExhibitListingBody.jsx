@@ -52,7 +52,7 @@ const ExhibitListingBody = ({ unverifiedPerListingData }) => {
     <div className="bg-white rounded-xl shadow-lg overflow-hidden h-[400px]">
       <div className="relative">
       <ExhibitListingHeader unverifiedPerListingData={unverifiedPerListingData}/>
-      <div className="absolute bottom-28 right-4 bg-black/50 text-white px-3 py-1 rounded-full">
+      <div className="absolute top-0 right-4 bg-black/50 text-white px-3 py-1 rounded-full">
           {unverifiedPerListingData?.imageUrls?.length} 張照片
         </div>
       </div>

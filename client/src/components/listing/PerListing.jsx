@@ -13,13 +13,18 @@ import {
 import { useListingActions } from "../../hooks/useListingActions";
 import { Link, useNavigate } from "react-router-dom";
 
-const PerListing = ({ setAllData, listing }) => {
+const PerListing = ({ setCanBroswedData, setAllData, listing }) => {
   const { imageUrls, _id, name, createdAt, updatedAt } = listing;
   const navigate = useNavigate();
   const { deleteListingMutation } = useListingActions();
 
   const handleListingDelete = () => {
     deleteListingMutation.mutate({ imageUrls, _id });
+    setCanBroswedData((prev) =>
+        prev.filter((perData) => {
+          return perData._id !== _id;
+        })
+      );
       setAllData((prev) =>
         prev.filter((perData) => {
           return perData._id !== _id;

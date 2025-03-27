@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import PerListing from "./perListing";
 import { useListingActions } from "../../hooks/useListingActions";
 
@@ -11,6 +11,11 @@ const ShowListingsComponent = () => {
   const { data, isPending, error, isError, isSuccess, refetch } =
     getCertainUserAllListingsQuery;
   const [allData, setAllData] = useState([]);
+  const [canBroswedData, setCanBroswedData] = useState([]);
+  const perPageAmount = 5
+  const [page, setPage] = useState(1);
+  const observerElementRef = useRef()
+
 
   useEffect(() => {
     refetchAllListingsQuery();
@@ -18,7 +23,40 @@ const ShowListingsComponent = () => {
 
   useEffect(() => {
     setAllData(data);
+    setCanBroswedData(data?.slice(0, perPageAmount))
   }, [data?.length]);
+
+  const loadMore = () => {
+    setPage((prev) => {
+      const nextPage = prev + 1;
+      setCanBroswedData(allData?.slice(0, nextPage * perPageAmount));
+      return nextPage;
+    });
+  };
+
+
+  useEffect(() => {
+    if (!observerElementRef.current) return;
+
+    const intersectionObserver = new IntersectionObserver(
+      (entries) => {
+        // 目標在視野外就return
+        if (entries[0].intersectionRatio <= 0) return
+        // 目標在視野內
+        if (canBroswedData?.length < allData?.length) {
+          loadMore();
+        }
+      }
+    );
+setTimeout(()=> {
+  intersectionObserver.observe(observerElementRef.current);
+}, 1000)
+    return () => intersectionObserver.disconnect();
+  }, [canBroswedData, allData]);
+  
+
+
+
 
   return (
     <>
@@ -31,7 +69,7 @@ const ShowListingsComponent = () => {
                 已發表房型列表
               </h2>
             </div>
-            {!!allData?.length && !allData[0]?._id && (
+            {!!canBroswedData?.length && !allData[0]?._id && (
               <div className="text-lg text-center">尚無貼文...</div>
             )}
 
@@ -74,11 +112,12 @@ const ShowListingsComponent = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                {/* <tbody> 無論如何至少要有一個<tr>! */}
-                  {Boolean(allData?.length) ? (
-                    allData.map((listing) => (
+                  {/* <tbody> 無論如何至少要有一個<tr>! */}
+                  {!!canBroswedData?.length ? (
+                    canBroswedData.map((listing) => (
                       <PerListing
                         key={listing._id}
+                        setCanBroswedData={setCanBroswedData}
                         setAllData={setAllData}
                         listing={listing}
                       />
@@ -97,6 +136,9 @@ const ShowListingsComponent = () => {
         </div>
       )}
       {isError && <p>{`無法抓取資料:${error}`}</p>}
+      {allData?.length &&
+      <div className="text-center m-5 text-xl" ref={observerElementRef}>{canBroswedData?.length === allData?.length ? "無更多資料": "讀取更多..."}</div>
+      }
     </>
   );
 };
