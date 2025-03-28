@@ -60,7 +60,7 @@ const Contact = ({ openMessageArea, unverifiedPerListingData }) => {
           </div>
         </>
       )}
-      {getlandLordError && <p>錯誤:${getlandLordErrorMsg}</p>}
+      {/* {getlandLordError && <p>錯誤:${getlandLordErrorMsg}</p>} */}
     </>
   );
 };

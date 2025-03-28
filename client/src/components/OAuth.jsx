@@ -10,6 +10,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
 
 const OAuth = () => {
   const queryClient = useQueryClient();
@@ -18,13 +19,17 @@ const OAuth = () => {
   const mutation = useMutation({
     mutationFn: () => googleSignIn(),
     onSuccess: (data) => {
+      
       dispatch(signInSuccess(data));
       setTimeout(() => {
         navigate("/");
       }, 1000);
+      toast.success("登入成功");
     },
     onError: (error) => {
-      throw new Error(error.message)
+      toast.error(
+        error?.message || error?.response?.data?.message || "發生錯誤"
+      );
     },
   });
   

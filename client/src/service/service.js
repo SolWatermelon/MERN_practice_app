@@ -20,32 +20,32 @@ export const getUser = async () => {
 
 export const signUp = async (data) => {
   const { name, email, password } = data;
-  try {
+  // try {
     const res = await axios.post("/api/auth/signup", {
       username: name,
       email,
       password,
     });
 
-    return res.data;
-  } catch (e) {
+    return res.data || null
+  // } catch (e) {
     // 一定要拋出來，錯誤時isError才會抓到
-    throw new Error(e.message);
-  }
+    // throw new Error(e.message);
+  // }
 };
 
 export const signIn = async (data) => {
   const { email, password } = data;
-  try {
+  // try {
     const res = await axios.post("/api/auth/signin", {
       email,
       password,
     });
     return res.data;
-  } catch (e) {
+  // } catch (e) {
     // 一定要拋出來，錯誤時isError才會抓到
-    throw new Error(e.message);
-  }
+    // throw new Error(e.message);
+  // }
 };
 
 const certainFieldSValidation = (
@@ -77,7 +77,7 @@ const certainFieldSValidation = (
 };
 
 export const googleSignIn = async () => {
-  try {
+  // try {
     const provider = new GoogleAuthProvider();
     const auth = getAuth(app);
     const result = await signInWithPopup(auth, provider);
@@ -87,11 +87,11 @@ export const googleSignIn = async () => {
       photo: result.user.photoURL,
     };
     const res = await axios.post("/api/auth/google", userInfo);
-    return res.data;
-  } catch (e) {
+    return res.data || null
+  // } catch (e) {
     // 一定要拋出來，錯誤時isError才會抓到
-    throw new Error(e.message);
-  }
+    // throw new Error(e.message);
+  // }
 };
 
 export const createListingForm = async (
@@ -103,7 +103,7 @@ export const createListingForm = async (
 
   certainFieldSValidation(checkboxOptions, imageItems, formValue);
 
-  try {
+  // try {
     const {
       name,
       description,
@@ -138,11 +138,11 @@ export const createListingForm = async (
     const res = await axios.post("/api/listing/create", {
       reqData,
     });
-    return res.data;
-  } catch (e) {
+    return res.data || null
+  // } catch (e) {
     // 一定要拋出來，錯誤時isError才會抓到
-    throw new Error(error.response?.data?.message || "發生未知錯誤");
-  }
+    // throw new Error(error.response?.data?.message || "發生未知錯誤");
+  // }
 };
 
 export const updateListingForm = async (
@@ -160,7 +160,7 @@ export const updateListingForm = async (
     displayedOldPics
   );
 
-  try {
+  // try {
     const {
       name,
       description,
@@ -200,9 +200,9 @@ export const updateListingForm = async (
     const res = await axios.post(`/api/listing/update/${listingId}`, {
       reqData,
     });
-    return res.data;
-  } catch (e) {
+    return res.data || null
+  // } catch (e) {
     // 一定要拋出來，錯誤時isError才會抓到
-    throw new Error(error.response?.data?.message || "發生未知錯誤");
-  }
+    // throw new Error(error.response?.data?.message || "發生未知錯誤");
+  // }
 };

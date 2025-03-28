@@ -11,6 +11,7 @@ import { useMutation } from "@tanstack/react-query";
 import { updateListingForm } from "@/service/service";
 import { useNavigate, useParams } from "react-router-dom";
 import { useListingActions } from "../../hooks/useListingActions";
+import toast from 'react-hot-toast';
 
 // Zod Schema驗證表單
 const formSchema = z.object({
@@ -39,7 +40,7 @@ const UpdatelistingComponent = () => {
   const listingId = params.listingId;
   const { currentUser } = useSelector((state) => state.userReducer);
   const { getVerifiedPerListQuery, refetchAllListingsQuery } = useListingActions(listingId);
-  const { data, isLoading, error, refetch } = getVerifiedPerListQuery;
+  const { data, isError,isLoading, error, refetch } = getVerifiedPerListQuery;
 
   // 舊圖片的狀態
   const [displayedOldPics, setDisplayedOldPics] = useState([]);
@@ -67,7 +68,7 @@ const UpdatelistingComponent = () => {
   });
 
   useEffect(() => {
-    console.log("data!", data);
+    // console.log("data!", data);
     if (data) {
       const {
         name,
@@ -112,6 +113,12 @@ const UpdatelistingComponent = () => {
         setOldImageUrls(imageUrls);
       }
     }
+    // else{
+    //   toast.error({
+    //     title: "發生錯誤",
+    //     description: error?.message,
+    //   });
+    // }
   }, [data]);
 
   // 提交form mutation
@@ -128,12 +135,12 @@ const UpdatelistingComponent = () => {
       );
     },
     onSuccess: (data) => {
-      console.log("data", data);
       if (!data) return;
+      toast.success("提交成功");
       navigate(`/listing/${data._id}`);
     },
     onError: (error) => {
-      throw new Error(error);
+      toast.error(error?.message || error?.response?.data?.message || "發生錯誤");
     },
   });
 
@@ -175,7 +182,7 @@ const UpdatelistingComponent = () => {
               )}
             </Button>
           </div>
-          {submitFormMutation.isSuccess && (
+          {/* {submitFormMutation.isSuccess && (
             <p className="text-blue-500 text-center text-xs mt-3">更新成功！</p>
           )}
           {submitFormMutation.isError && (
@@ -183,7 +190,7 @@ const UpdatelistingComponent = () => {
               {submitFormMutation?.error?.response?.data?.message ||
                 submitFormMutation?.error?.message}
             </p>
-          )}
+          )} */}
         </form>
       </Form>
     </div>

@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signInSuccess } from "../slices/userSlice.js";
 import { ErrorMessage } from "@hookform/error-message";
+import toast from "react-hot-toast";
 import {
   QueryClient,
   useMutation,
@@ -29,13 +30,16 @@ const SignIn = () => {
   const mutation = useMutation({
     mutationFn: (userSigninData) => signIn(userSigninData),
     onSuccess: (data) => {
+      toast.success("登入成功");
       dispatch(signInSuccess(data));
       setTimeout(() => {
         navigate("/", { replace: true });
       }, 1000);
     },
     onError: (error) => {
-      throw new Error(error.message)
+      toast.error(
+        error?.message || error?.response?.data?.message || "發生錯誤"
+      );
     },
   });
 
@@ -110,7 +114,7 @@ const SignIn = () => {
               type="submit"
               className="w-full font-medium py-3 px-4 bg-darkorange hover:bg-hoverlighttext text-white rounded-full transition-colors"
             >
-              {mutation.isPending ? "還在pend可以放icon" : "Sign in"}
+              {mutation.isPending ? "登入中..." : "Sign in"}
             </button>
           </form>
 

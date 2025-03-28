@@ -52,8 +52,8 @@ const ProfileEdit = () => {
         </div>
         
         {updateAvatar.isPending && <div className="text-gray-500 text-sm">上傳中...</div>}
-        {updateAvatar.isError && <div className="text-red-500 text-sm">上傳錯誤，請重新上傳</div>}
-        {updateAvatar.isSuccess && <div className="text-blue-500 text-sm">上傳成功</div>}
+        {/* {updateAvatar.isError && <div className="text-red-500 text-sm">上傳錯誤，請重新上傳</div>}
+        {updateAvatar.isSuccess && <div className="text-blue-500 text-sm">上傳成功</div>} */}
       </div>
 
       <input
@@ -136,8 +136,8 @@ const ProfileEdit = () => {
               </button>
             </div>
             
-            {updateUserInfo.isError && <div className="text-red-500 text-sm mt-2">儲存失敗</div>}
-            {updateUserInfo.isSuccess && <div className="text-blue-500 text-sm mt-2">儲存成功</div>}
+            {/* {updateUserInfo.isError && <div className="text-red-500 text-sm mt-2">儲存失敗</div>}
+            {updateUserInfo.isSuccess && <div className="text-blue-500 text-sm mt-2">儲存成功</div>} */}
           </form>
         </div>
       </div>

@@ -80,12 +80,12 @@ const AccountManagement = () => {
               {signoutUser.isPending && (
                 <div className="text-gray-500 text-sm">登出中...</div>
               )}
-              {signoutUser.isError && (
+              {/* {signoutUser.isError && (
                 <div className="text-red-500 text-sm">無法登出</div>
               )}
               {signoutUser.isSuccess && (
                 <div className="text-blue-500 text-sm">登出成功</div>
-              )}
+              )} */}
             </DialogContent>
           </Dialog>
 
@@ -112,12 +112,12 @@ const AccountManagement = () => {
                 </Button>
               </DialogFooter>
 
-              {deleteUser.isError && (
+              {/* {deleteUser.isError && (
                 <div className="text-red-500 text-sm mt-2">刪除失敗</div>
               )}
               {deleteUser.isSuccess && (
                 <div className="text-green-500 text-sm mt-2">刪除成功</div>
-              )}
+              )} */}
             </DialogContent>
           </Dialog>
         </span>

@@ -11,6 +11,7 @@ import { createListingForm } from "@/service/service";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useListingActions } from "@/hooks/useListingActions.js"
+import toast from "react-hot-toast";
 
 
 // Zod Schema驗證表單
@@ -66,10 +67,11 @@ const CreateListingComponent = () => {
     },
     onSuccess: (data) => {
       if (!data) return;
+      toast.success("提交成功");
       navigate(`/listing/${data._id}`)
     },
     onError: (error) => {
-      throw new Error(error);
+      toast.error(error?.message || error?.response?.data?.message || "發生錯誤");
     },
   });
 
@@ -103,7 +105,7 @@ const CreateListingComponent = () => {
               )}
             </Button>
           </div>
-          {submitFormMutation.isSuccess && (
+          {/* {submitFormMutation.isSuccess && (
             <p className="text-blue-500 text-center text-xs mt-3">提交成功！</p>
           )}
           {submitFormMutation.isError && (
@@ -111,7 +113,7 @@ const CreateListingComponent = () => {
               {submitFormMutation?.error?.response?.data?.message ||
                 submitFormMutation?.error?.message}
             </p>
-          )}
+          )} */}
         </form>
       </Form>
     </div>

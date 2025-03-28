@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/form";
 import { Button } from "../ui/button";
 import Pic from "../listing/Pic";
+import toast from "react-hot-toast";
+import { MdCancel } from "react-icons/md";
 
 const UpdateListingPics = ({
   form,
@@ -46,7 +48,7 @@ const UpdateListingPics = ({
           status: "pending",
         });
       }
-      
+
       setImageItems([...imageItems, ...newItems]);
       updateFormFileValue();
       if (newItems.length + displayedOldPics.length > 5) {
@@ -57,10 +59,11 @@ const UpdateListingPics = ({
       return newItems;
     } catch (error) {
       console.error("處理文件失敗:", error);
-      throw error;
+      toast.error(
+        error?.message || error?.response?.data?.message || "發生錯誤"
+      );
     }
   };
-
 
   const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -100,7 +103,11 @@ const UpdateListingPics = ({
       );
 
       if (pendingItems.length === 0) {
-        throw new Error("沒有等待上傳的圖片");
+        toast.error(
+          error?.message ||
+            error?.response?.data?.message ||
+            "沒有等待上傳的圖片"
+        );
       }
 
       // 更新狀態為uploading
@@ -136,14 +143,16 @@ const UpdateListingPics = ({
       });
 
       setImageItems(updatedItems);
+      toast.success("上傳成功");
     },
     onError: (error) => {
-      console.error("上傳失敗:", error);
-
       setImageItems((prev) =>
         prev.map((item) =>
           item.status === "uploading" ? { ...item, status: "error" } : item
         )
+      );
+      toast.error(
+        error?.message || error?.response?.data?.message || "發生錯誤，上傳失敗"
       );
     },
   });
@@ -169,8 +178,6 @@ const UpdateListingPics = ({
   return (
     <div className="flex flex-col gap-4">
       {/* 顯示舊的已上傳圖片 */}
-      <p>{displayedOldPics.length}</p>
-
       {displayedOldPics.length > 0 && (
         <div className="mt-4">
           <h3 className="text-gray-700 text-sm mb-2">已上傳圖片</h3>
@@ -181,13 +188,10 @@ const UpdateListingPics = ({
                 className="relative"
               >
                 <Pic url={item.url} />
-                <button
-                  type="button"
-                  className="mt-1 text-xs text-red-400"
+                <MdCancel
+                  className=" absolute top-4  right-0 text-[21px] cursor-pointer hover:scale-[1.08] mt-1 text-xs text-red-400"
                   onClick={() => handleOldPicRemove(item)}
-                >
-                  刪除
-                </button>
+                />
               </div>
             ))}
           </div>
@@ -197,14 +201,7 @@ const UpdateListingPics = ({
       <div>
         <div className="flex items-center gap-2">
           <div className="text-gray-700 text-sm">Upload File</div>
-
           {uploadMutation.isPending && <p className="text-xs">處理中...</p>}
-          {uploadMutation.isSuccess && (
-            <p className="text-blue-500 text-xs">上傳成功！</p>
-          )}
-          {uploadMutation.isError && (
-            <p className="text-red-500 text-xs">上傳失敗</p>
-          )}
         </div>
 
         <div className="flex justify-start items-center flex-wrap gap-2">
@@ -237,7 +234,7 @@ const UpdateListingPics = ({
             上傳
           </Button>
         </div>
-        
+
         {/* 顯示新上傳的圖片 */}
         {imageItems.length > 0 &&
         imageItems.length + displayedOldPics.length <= 5 ? (
@@ -247,13 +244,14 @@ const UpdateListingPics = ({
                 {item.status === "uploaded" ? (
                   <>
                     <Pic url={item.url} />
-                    <button
-                      type="button"
-                      className="mt-1 text-xs text-red-400"
+                    <MdCancel
+                      disabled={
+                        !imageItems.some((item) => item.status === "pending")
+                      }
+                      className=" absolute top-4 right-0 text-[17px] cursor-pointer hover:scale-[1.08] mt-1 text-xs text-red-400"
                       onClick={() => handleRemove(item)}
-                    >
-                      刪除
-                    </button>
+                    />
+                    {/* </div> */}
                   </>
                 ) : item.status === "pending" || item.status === "uploading" ? (
                   <div className="flex flex-col items-center">
@@ -270,7 +268,10 @@ const UpdateListingPics = ({
                       onClick={() => handleRemove(item)}
                       disabled={item.status === "uploading"}
                     >
-                      刪除
+                      <MdCancel
+                        className=" absolute top-0 right-0 text-[17px] cursor-pointer hover:scale-[1.08] mt-1 text-xs text-red-400"
+                        onClick={() => handleRemove(item)}
+                      />
                     </button>
                   </div>
                 ) : (
@@ -278,13 +279,10 @@ const UpdateListingPics = ({
                     <div className="h-20 w-20 bg-red-100 flex items-center justify-center">
                       <span className="text-xs text-red-500">上傳失敗</span>
                     </div>
-                    <button
-                      type="button"
-                      className="mt-1 text-xs text-red-400"
+                    <MdCancel
+                      className=" absolute top-4 right-0 text-[17px] cursor-pointer hover:scale-[1.08] mt-1 text-xs text-red-400"
                       onClick={() => handleRemove(item)}
-                    >
-                      刪除
-                    </button>
+                    />
                   </div>
                 )}
               </div>

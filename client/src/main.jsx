@@ -15,8 +15,6 @@ import SignUp from "./routes/SignUp";
 import Profile from "./routes/Profile";
 import MainLayouts from "./layouts/MainLayouts";
 import { Provider } from "react-redux";
-import News from "./routes/News";
-// import store from "./store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { persistor, store } from "./store.js";
@@ -28,6 +26,7 @@ import ShowListings from "./routes/ShowListings";
 import UpdateListing from "./routes/UpdateListing";
 import Listing from "./routes/Listing";
 import Search from "./routes/Search";
+import toast, { Toaster } from "react-hot-toast";
 
 const queryClient = new QueryClient();
 
@@ -66,13 +65,9 @@ const router = createBrowserRouter([
           },
           {
             path: "update-listing/:listingId",
-            element: <UpdateListing/>,
+            element: <UpdateListing />,
           },
         ],
-      },
-      {
-        path: "/news",
-        element: <News />,
       },
       {
         path: "/listing/:listingId",
@@ -92,6 +87,18 @@ createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <QueryClientProvider client={queryClient}>
+          <Toaster
+            position="top-right"
+            reverseOrder={false}
+            toastOptions={{
+              // success: { iconTheme: { primary: "green", secondary: "white" } },
+              style: {
+                border: "2px solid #713200",
+                padding: "16px",
+                color: "#713200",
+              },
+            }}
+          />
           <ThemeProvider>
             <RouterProvider router={router} />
           </ThemeProvider>

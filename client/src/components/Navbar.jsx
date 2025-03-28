@@ -28,6 +28,7 @@ const Navbar = () => {
   const { allListings, filteredListing } = useSelector(
     (state) => state.allListingsReducer
   );
+  const [showNav, setShowNav] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -70,6 +71,10 @@ const Navbar = () => {
     setIsAvatarOpen(false);
   };
 
+  useEffect(() => {
+    console.log("location.pathname", location.pathname);
+    setShowNav(location.pathname === "/search/" ? false : true);
+  }, [location.pathname]);
 
   const filterData = (searchKeyword) => {
     // listing name or description filter
@@ -121,7 +126,7 @@ const Navbar = () => {
           >
             {/* 搜尋 */}
 
-            {location.pathname !== "/search/" && (
+            {showNav && (
               <div className="relative">
                 <form
                   onSubmit={handleSubmit(handleSearchSubmit)}
@@ -150,9 +155,6 @@ const Navbar = () => {
               <Link to="/about" className="hover:text-hoverlighttext">
                 About
               </Link>
-              <Link to="/news" className="hover:text-hoverlighttext">
-                News
-              </Link>
             </nav>
           </div>
 
@@ -177,7 +179,7 @@ const Navbar = () => {
                     to="/sign-in"
                     className="text-[14px] md:text-[16px] py-1 px-2 bg-darkorange hover:bg-hoverlighttext text-white rounded-full transition-colors"
                   >
-                  sign
+                    sign
                   </Link>
                 )}
               </PopoverTrigger>
@@ -227,12 +229,6 @@ const Navbar = () => {
                     className="text-lg hover:text-hoverlighttext transition-all"
                   >
                     About
-                  </Link>
-                  <Link
-                    to="/news"
-                    className="text-lg hover:text-hoverlighttext transition-all"
-                  >
-                    News
                   </Link>
                 </div>
               </div>

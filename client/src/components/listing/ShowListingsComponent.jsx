@@ -68,12 +68,12 @@ const ShowListingsComponent = () => {
             {deleteListingMutation.isPending && (
               <p className="text-xs">處理中...</p>
             )}
-            {deleteListingMutation.isSuccess && (
+            {/* {deleteListingMutation.isSuccess && (
               <p className="text-blue-500 text-xs">刪除成功！</p>
             )}
             {deleteListingMutation.isError && (
               <p className="text-red-500 text-xs">刪除失敗</p>
-            )}
+            )} */}
 
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-400 dark:divide-gray-200">
@@ -127,7 +127,7 @@ const ShowListingsComponent = () => {
           </div>
         </div>
       )}
-      {isError && <p>{`無法抓取資料:${error}`}</p>}
+      {/* {isError && <p>{`無法抓取資料:${error}`}</p>} */}
       {!!allData?.length && (
         <div className="text-center m-5 text-xl" ref={observerElementRef}>
           {canBroswedData?.length === allData?.length
