@@ -7,6 +7,8 @@ import { FaRegMoneyBill1 } from "react-icons/fa6";
 import { FaCheckCircle, FaHome } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 // import {ExhibitListingHeader} from "./ExhibitListingHeader"
+import { PiToiletPaper } from "react-icons/pi";
+import { LuBedDouble } from "react-icons/lu";
 
 import ContactLandlord from "./ContactLandlord";
 import ExhibitListingHeader from "./ExhibitListingHeader";
@@ -15,6 +17,9 @@ import ExhibitListingHeader from "./ExhibitListingHeader";
 // 住址和房間測所數還沒寫
 const ExhibitListingBody = ({ unverifiedPerListingData }) => {
   const { currentUser } = useSelector((state) => state.userReducer);
+  // useEffect(() => {
+  //   console.log("unverifiedPerListingData", unverifiedPerListingData)
+  // }, [])
 
   return (
 <div className="container mx-auto px-4 py-8 bg-gray-50">
@@ -23,7 +28,9 @@ const ExhibitListingBody = ({ unverifiedPerListingData }) => {
 
   {/* 標題區域 */}
   <div className="mb-8">
-
+{/* {unverifiedPerListingData.type}
+{unverifiedPerListingData.offer?"true":"false"}
+{unverifiedPerListingData.name} */}
     <div className="flex flex-wrap items-center gap-4">
       {unverifiedPerListingData?.type === "rent" ? (
         <span className="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-full text-sm font-medium">
@@ -35,7 +42,7 @@ const ExhibitListingBody = ({ unverifiedPerListingData }) => {
         </span>
       )}
       
-      {!unverifiedPerListingData?.offer && (
+      {unverifiedPerListingData?.offer && (
         <span className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-full text-sm font-medium">
           優惠中
         </span>
@@ -80,6 +87,36 @@ const ExhibitListingBody = ({ unverifiedPerListingData }) => {
               title: "上傳時間",
               value: new Date(unverifiedPerListingData?.createdAt).toLocaleDateString()
             }
+          ].map((item, index) => (
+            <div 
+              key={index} 
+              className="flex items-center gap-3 bg-gray-100 p-4 rounded-lg hover:shadow-md transition-all"
+            >
+              {item.icon}
+              <div>
+                <p className="font-medium text-gray-600">{item.title}</p>
+                <p className="font-bold">{item.value}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+            {/* 房屋格局 */}
+            <div className="bg-white p-6 rounded-xl shadow-md">
+        <h2 className="text-xl font-semibold mb-4 border-b pb-2">房屋格局</h2>
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+          {[
+            { 
+              icon: <LuBedDouble className="text-indigo-400 text-2xl" />, 
+              title: "房間",
+              value: unverifiedPerListingData?.bedrooms
+            },
+            { 
+              icon: <PiToiletPaper className="text-red-400 text-2xl" />, 
+              title: "浴室",
+              value: unverifiedPerListingData?.bathrooms
+            },
           ].map((item, index) => (
             <div 
               key={index} 
@@ -142,7 +179,7 @@ const ExhibitListingBody = ({ unverifiedPerListingData }) => {
   {/* 優選理由 */}
   <div className="mt-8 bg-indigo-100  p-6 rounded-xl shadow-md">
     <h2 className="text-2xl font-bold text-indigo-800 mb-6 text-center">
-      為什麼選擇這間房
+      為什麼選擇99房屋？
     </h2>
     <div className="grid md:grid-cols-3 gap-6">
       {[
@@ -161,7 +198,7 @@ const ExhibitListingBody = ({ unverifiedPerListingData }) => {
         {
           icon: <IoIosTimer className="text-purple-500 text-3xl" />,
           title: "可視發布日期",
-          description: "篩選新舊房源很重要",
+          description: "隨時追蹤新物件",
           color: "bg-red-100"
         }
       ].map((item, index) => (

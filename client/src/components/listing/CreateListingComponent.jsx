@@ -20,7 +20,7 @@ const formSchema = z.object({
   description: z.string().min(2, "description must be at least 2 characters."),
   address: z.string().min(8, "address must be at least 8 characters."),
   regularPrice: z.coerce.number().min(3, "Must be at least 3"),
-  discountPrice: z.coerce.number().min(0, "Must be at least 1"),
+  discountPrice: z.coerce.number().min(1, "Must be at least 1"),
   bathrooms: z.coerce.number().min(1, "bathrooms must be a positive number"),
   bedrooms: z.coerce.number().min(1, "bedrooms must be a positive number"),
   options: z.array(z.string())
@@ -42,15 +42,15 @@ const CreateListingComponent = () => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "預設name",
-      description: "預設description",
-      address: "descriptionaddress",
-      type: "rent",
-      regularPrice: 3,
+      name: "",
+      description: "",
+      address: "",
+      type: "",
+      regularPrice: 0,
       discountPrice: 0,
       options: [],
-      bathrooms: 3,
-      bedrooms: 3,
+      bathrooms: 0,
+      bedrooms: 0,
     },
     mode: "onChange", // 讓錯誤即時顯示
     reValidateMode: "onChange",

@@ -200,8 +200,8 @@ const UpdateListingPics = ({
 
       <div>
         <div className="flex items-center gap-2">
-          <div className="text-gray-700 text-sm">Upload File</div>
-          {uploadMutation.isPending && <p className="text-xs">處理中...</p>}
+          <div className="text-gray-700 text-sm">上傳圖片</div>
+          {/* {uploadMutation.isPending && <p className="text-xs">處理中...</p>} */}
         </div>
 
         <div className="flex justify-start items-center flex-wrap gap-2">

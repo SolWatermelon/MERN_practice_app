@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import PerSearchResultCard from "./PerSearchResultCard";
 import SearchForm from "./SearchForm";
 import { useSelector, useDispatch } from "react-redux";
@@ -16,6 +16,8 @@ const SearchComponent = () => {
     (state) => state.allListingsReducer
   );
   const dispatch = useDispatch();
+  // const memoizedAllListings = useMemo(() => allListings, [allListings]);
+  // const memoizedFilteredListing = useMemo(() => filteredListing, [filteredListing]);
 
   useEffect(() => {
     refetchAllListingsQuery();
@@ -76,7 +78,7 @@ const SearchComponent = () => {
               {filteredData?.length ? (
                 filteredData?.map((listing, i) => {
                   return (
-                    <PerSearchResultCard listing={listing} key={listing._id} />
+                    <PerSearchResultCard listing={listing} key={`${listing._id}${i}`} />
                   );
                 })
               ) : (
@@ -85,11 +87,11 @@ const SearchComponent = () => {
             </div>
             <div className="w-full text-center">
               {!!pagination?.length ? (
-                pagination.map((page) => {
+                pagination.map((page, i) => {
                   return (
                     <button
                     className="bg-gray-500 text-white mx-1 px-2 rounded-md hover:bg-hoverlighttext hover:text-white "
-                      key={page}
+                    key={`${page}${i}`}
                       type="button"
                       onClick={() => {
                         handlePerPageData(page);

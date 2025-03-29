@@ -22,7 +22,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-700">Name</FormLabel>
+              <FormLabel className="text-gray-700">標題</FormLabel>
               <FormControl>
                 <Input
                   className="w-full p-3 rounded-full border-2 border-gray-400 text-gray-800 focus:outline-none focus:border-darkorange"
@@ -41,7 +41,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
           name="address"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-700">address</FormLabel>
+              <FormLabel className="text-gray-700">住址</FormLabel>
               <FormControl>
                 <Input
                   className="w-full p-3 rounded-full border-2 border-gray-400 text-gray-800 focus:outline-none focus:border-darkorange"
@@ -61,7 +61,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
           name="description"
           render={({ field, fieldState }) => (
             <FormItem>
-              <FormLabel className="text-gray-700">description</FormLabel>
+              <FormLabel className="text-gray-700">描述</FormLabel>
               <FormControl>
                 <Textarea
                   className="w-full p-3 border-2 border-gray-400 text-gray-800  focus:outline-none focus:border-darkorange"
@@ -76,7 +76,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
 
         {/* checkbox-multiple Options */}
         <FormItem>
-          <FormLabel>Select Options</FormLabel>
+          <FormLabel>選項</FormLabel>
           <div className="space-y-2">
             {checkboxOptions.map((option) => (
               <FormField
@@ -114,7 +114,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
               hidden={!isDiscountPrice}
               className="text-red-400 dark:text-red-400 text-sm"
             >
-              勾選offer後請記得填discountPrice
+              勾選offer後請記得填優惠價
             </p>
         </FormItem>
 
@@ -126,7 +126,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
             name="regularPrice"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>regularPrice</FormLabel>
+                <FormLabel>原價</FormLabel>
                 <FormControl>
                   <Input
                     className="w-full p-3 rounded-full border-2 border-gray-400 text-gray-800 focus:outline-none focus:border-darkorange"
@@ -146,7 +146,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
             name="discountPrice"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>discountPrice</FormLabel>
+                <FormLabel>優惠價</FormLabel>
                 <FormControl>
                   <Input
                     disabled={!isDiscountPrice}
@@ -167,7 +167,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
             name="bathrooms"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>bathrooms</FormLabel>
+                <FormLabel>浴室</FormLabel>
                 <FormControl>
                   <Input
                     className="w-full p-3 rounded-full border-2 border-gray-400 text-gray-800 focus:outline-none focus:border-darkorange"
@@ -187,7 +187,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
             name="bedrooms"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>bedrooms</FormLabel>
+                <FormLabel>房間</FormLabel>
                 <FormControl>
                   <Input
                     className="w-full p-3 rounded-full border-2 border-gray-400 text-gray-800 focus:outline-none focus:border-darkorange"

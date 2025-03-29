@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import HomeListing from "./HomeListing";
 import HomeSwiper from "./HomeSwiper";
 import HomeTop from "./homeTop";
@@ -9,6 +9,7 @@ import { acquireAllListings } from "@/slices/listingSlice.js";
 const HomeComponent = () => {
   const dispatch = useDispatch();
   const { getAllListingsQuery } = useListingActions();
+  const [swiperPics, setSwiperPics] = useState([]);
   const {
     data: allListingsData,
     isPending: isAllListingsPending,
@@ -17,25 +18,30 @@ const HomeComponent = () => {
     error: allListingsErrorMsg,
   } = getAllListingsQuery;
 
-
- 
   useEffect(() => {
     if (isAllListingsSuccess) {
-      console.log("allListingsData?.allListings", allListingsData?.allListings)
+      console.log("allListingsData?.allListings", allListingsData?.allListings);
       dispatch(acquireAllListings(allListingsData?.allListings));
+      setSwiperPics(
+        allListingsData?.allListings
+          .map((listing) => listing?.imageUrls[0])
+          .filter((listing, index) => {
+            return index < 6;
+          })
+      );
     }
   }, [isAllListingsSuccess]);
   return (
     <>
-      {!isAllListingsPending && 
-      <div className="home-page py-12">
-        <HomeTop />
-        {/* 隨機抓幾張 */}
-        <HomeSwiper />
-        {/* 附家具和停車位的 */}
-        <HomeListing />
-      </div>
-      }
+    {isAllListingsPending && <p>讀取中...</p>}
+      {isAllListingsSuccess && (
+        <div className="home-page">
+          <HomeTop swiperPic={swiperPics[5]}/>
+          <HomeSwiper swiperPics={swiperPics} />
+          <HomeListing />
+        </div>
+      )}
+      {isAllListingsError && <p>發生錯誤</p>}
     </>
   );
 };

@@ -1,16 +1,13 @@
 import React, { useEffect } from "react";
-import {  useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { filteredAllListings } from "@/slices/listingSlice";
 import { useSelector, useDispatch } from "react-redux";
 
-
-const SearchForm = ({setFilteredData, filteredData, pagination}) => {
+const SearchForm = ({ setFilteredData, filteredData, pagination }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQueryVal = searchParams.get("searchKeyword");
-  const { allListings } = useSelector(
-    (state) => state.allListingsReducer
-  );
+  const { allListings } = useSelector((state) => state.allListingsReducer);
   const dispatch = useDispatch();
   const {
     register,
@@ -104,9 +101,11 @@ const SearchForm = ({setFilteredData, filteredData, pagination}) => {
               .includes(value.toLowerCase());
 
           case "type":
+            const newOffer = listing.offer && "offer";
             return (
               value.toLowerCase() === "all" ||
-              listing.type.toLowerCase() === value.toLowerCase()
+              listing.type.toLowerCase() === value.toLowerCase() ||
+              newOffer === value.toLowerCase()
             );
 
           case "parking":
@@ -122,16 +121,16 @@ const SearchForm = ({setFilteredData, filteredData, pagination}) => {
     );
     if (!newSearchRes.length) {
       dispatch(filteredAllListings([]));
-      setFilteredData([])
+      setFilteredData([]);
     }
 
     dispatch(filteredAllListings(newSearchRes));
 
-    let slicedData = []
+    let slicedData = [];
     pagination.forEach((page) => {
-      slicedData = newSearchRes.slice((page*10)-page-9, (page*10)-page)
-      setFilteredData((prev) => [...prev, ...slicedData])
-    })
+      slicedData = newSearchRes.slice(page * 10 - page - 9, page * 10 - page);
+      setFilteredData((prev) => [...prev, ...slicedData]);
+    });
   };
 
   const setUrlQueries = (data) => {
@@ -179,7 +178,7 @@ const SearchForm = ({setFilteredData, filteredData, pagination}) => {
       data?.type === "All"
     ) {
       dispatch(filteredAllListings(allListings));
-      setFilteredData(filteredData)
+      setFilteredData(filteredData);
       setSearchParams({});
       return;
     }
@@ -253,7 +252,7 @@ const SearchForm = ({setFilteredData, filteredData, pagination}) => {
               sort: "",
             });
             dispatch(filteredAllListings(allListings));
-            setFilteredData(filteredData)
+            setFilteredData(filteredData);
           }}
           className="w-full font-medium dark:text-white py-3 px-4 border-4  border-gray-400 hover:bg-gray-400 text-gray-600 hover:text-white rounded-full transition-colors"
         >

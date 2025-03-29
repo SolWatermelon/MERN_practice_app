@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import PerListing from "./perListing";
 import { useListingActions } from "../../hooks/useListingActions";
 
@@ -15,6 +15,8 @@ const ShowListingsComponent = () => {
   const perPageAmount = 5;
   const [page, setPage] = useState(1);
   const observerElementRef = useRef();
+  const memoizedAllData = useMemo(() => allData, [allData]);
+  const memoizedCanBroswedData = useMemo(() => canBroswedData, [canBroswedData]);
 
   useEffect(() => {
     refetchAllListingsQuery();
@@ -48,11 +50,11 @@ const ShowListingsComponent = () => {
       intersectionObserver.observe(observerElementRef.current);
     }, 1000);
     return () => intersectionObserver.disconnect();
-  }, [canBroswedData, allData]);
+  }, [memoizedCanBroswedData, memoizedAllData]);
 
   return (
     <>
-      {isPending && <p>loading...</p>}
+      {isPending && <p>讀取中...</p>}
       {isSuccess && (
         <div className="max-w-4xl mx-auto bg-white dark:bg-gray-500 rounded-md mt-9">
           <div className=" rounded-lg shadow-lg overflow-hidden ">
