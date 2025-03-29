@@ -35,7 +35,7 @@ const HomeTop = ({ swiperPic }) => {
             </p>
             <Link
               to={"/search/"}
-              className="underline underline-offset-4 text-md mt-20 font-extrabold dark:text-orange text-green-600 hover:text-green-500 dark:hover:text-darkorange"
+              className="underline underline-offset-4 text-md mt-20 font-extrabold dark:text-orange text-blue-600 hover:text-blue-500 dark:hover:text-darkorange"
             >
               現在就來探索，開啟美好生活新篇章 Let's go
             </Link>

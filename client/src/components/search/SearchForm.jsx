@@ -86,6 +86,13 @@ const SearchForm = ({ setFilteredData, filteredData, pagination }) => {
     // [setValue]是防止不必要的重複渲染
   }, [searchParams, setValue]);
 
+  useEffect(() => {
+    const allParams = getAllParams();
+    if(allParams?.length){
+      filterData()
+    }
+  }, [])
+
   const filterData = () => {
     const allParams = getAllParams();
     const newSearchRes = allListings.filter((listing) =>

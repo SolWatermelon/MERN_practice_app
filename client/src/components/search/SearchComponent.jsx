@@ -16,8 +16,9 @@ const SearchComponent = () => {
     (state) => state.allListingsReducer
   );
   const dispatch = useDispatch();
+  const queries = Array.from(searchParams.entries()).length
   // const memoizedAllListings = useMemo(() => allListings, [allListings]);
-  // const memoizedFilteredListing = useMemo(() => filteredListing, [filteredListing]);
+  const memoizedFilteredListing = useMemo(() => filteredListing, [filteredListing]);
 
   useEffect(() => {
     refetchAllListingsQuery();
@@ -27,7 +28,10 @@ const SearchComponent = () => {
     if (!allListings || allListings.length === 0) return;
     // 如果不是透過navbar搜尋時的資料呈現
     const searchKeyword = searchParams?.get("searchKeyword");
-    if (!searchKeyword) {
+    console.log("queries", queries)
+    console.log("searchKeyword", searchKeyword)
+    // if (searchKeyword === null && queries<=1) {
+      if (!searchKeyword && !queries) {
       dispatch(filteredAllListings(allListings));
     }
   }, [allListings]);
@@ -46,7 +50,7 @@ const SearchComponent = () => {
     // 第一頁
     const slicedData = filteredListing.slice(1 * 10 - 1 - 9, 1 * 10 - 1);
     setFilteredData(slicedData);
-  }, [filteredListing]);
+  }, [memoizedFilteredListing]);
 
   const handlePerPageData = (page) => {
     console.log("嗨嗨", page);

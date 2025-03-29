@@ -158,7 +158,7 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
       <div>
         <div className="flex items-center gap-2">
           <div className="text-gray-700 text-sm">上傳圖片
-          <p className="text-[12px] text-red-400">（圖片上限為5張）</p>
+          <p className="text-red-400 dark:text-red-500 text-xs">（圖片上限為5張）</p>
           </div>
           {/* {uploadMutation.isPending && <p className="text-xs">處理中...</p>} */}
         </div>
@@ -200,7 +200,7 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
         {/* 顯示已上傳的圖片 */}
         <div className="mt-4 flex flex-wrap gap-4">
           {imageItems.length > 5 ? (
-            <p className="text-[14px] text-red-200">圖片數量錯誤</p>
+            <p className="text-red-400 dark:text-red-500 text-xs">圖片數量錯誤</p>
           ) : (
             imageItems.map((item) => (
               <div key={item.id} className="relative">
@@ -235,7 +235,7 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
                 ) : (
                   <div className="flex flex-col items-center">
                     <div className="h-20 w-20 bg-red-100 flex items-center justify-center">
-                      <span className="text-xs text-red-500">上傳失敗</span>
+                      <span className="text-red-400 dark:text-red-500 text-xs">上傳失敗</span>
                     </div>
                     <MdCancel
                       className=" absolute top-4 right-0 text-[17px] cursor-pointer hover:scale-[1.08] mt-1 text-xs text-red-400"

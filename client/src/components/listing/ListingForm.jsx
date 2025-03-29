@@ -26,11 +26,11 @@ const ListingForm = ({ form, checkboxOptions}) => {
               <FormControl>
                 <Input
                   className="w-full p-3 rounded-full border-2 border-gray-400 text-gray-800 focus:outline-none focus:border-darkorange"
-                  placeholder="Enter your name"
+                  placeholder="Enter your title"
                   {...field}
                 />
               </FormControl>
-              <FormMessage className="text-red-400 dark:text-red-400 text-sm" />
+              <FormMessage className="text-red-400 dark:text-red-500 text-xs" />
             </FormItem>
           )}
         />
@@ -50,7 +50,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
                   {...field}
                 />
               </FormControl>
-              <FormMessage className="text-red-400 dark:text-red-400 text-sm" />
+              <FormMessage className="text-red-400 dark:text-red-500 text-xs" />
             </FormItem>
           )}
         />
@@ -69,7 +69,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
                   {...field}
                 />
               </FormControl>
-              <FormMessage className="text-red-400 dark:text-red-400 text-sm" />
+              <FormMessage className="text-red-400 dark:text-red-500 text-xs" />
             </FormItem>
           )}
         />
@@ -112,7 +112,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
           </div>
             <p
               hidden={!isDiscountPrice}
-              className="text-red-400 dark:text-red-400 text-sm"
+              className="text-red-400 dark:text-red-500 text-xs"
             >
               勾選offer後請記得填優惠價
             </p>
@@ -135,7 +135,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-red-400 dark:text-red-400 text-sm" />
+                <FormMessage className="text-red-400 dark:text-red-500 text-xs" />
               </FormItem>
             )}
           />
@@ -156,7 +156,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-red-400 dark:text-red-400 text-sm" />
+                <FormMessage className="text-red-400 dark:text-red-500 text-xs" />
               </FormItem>
             )}
           />
@@ -176,7 +176,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-red-400 dark:text-red-400 text-sm" />
+                <FormMessage className="text-red-400 dark:text-red-500 text-xs" />
               </FormItem>
             )}
           />
@@ -196,7 +196,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-red-400 dark:text-red-400 text-sm" />
+                <FormMessage className="text-red-400 dark:text-red-500 text-xs"/>
               </FormItem>
             )}
           />

@@ -15,13 +15,13 @@ import toast from 'react-hot-toast';
 
 // Zod Schema驗證表單
 const formSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters."),
-  description: z.string().min(2, "description must be at least 2 characters."),
-  address: z.string().min(8, "address must be at least 8 characters."),
-  regularPrice: z.coerce.number().min(3, "Must be at least 3"),
-  discountPrice: z.coerce.number().min(0, "Must be at least 1"),
-  bathrooms: z.coerce.number().min(1, "bathrooms must be a positive number"),
-  bedrooms: z.coerce.number().min(1, "bedrooms must be a positive number"),
+  name: z.string().min(2, "標題至少輸入2字"),
+  description: z.string().min(2, "描述至少輸入2字"),
+  address: z.string().min(8, "地址至少輸入8字"),
+  regularPrice: z.coerce.number().min(3, "原價至少為3"),
+  discountPrice: z.coerce.number().min(1, "優惠價至少為1"),
+  bathrooms: z.coerce.number().min(1, "浴室數量必須非負數"),
+  bedrooms: z.coerce.number().min(1, "房間數量必須非負數"),
   options: z.array(z.string()),
 });
 

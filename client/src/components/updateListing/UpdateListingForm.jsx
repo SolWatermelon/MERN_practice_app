@@ -31,7 +31,7 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
                   {...field}
                 />
               </FormControl>
-              <FormMessage className="text-red-400 dark:text-red-400 text-sm" />
+              <FormMessage className="text-red-400 dark:text-red-500 text-xs" />
             </FormItem>
           )}
         />
@@ -51,7 +51,7 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
                   {...field}
                 />
               </FormControl>
-              <FormMessage className="text-red-400 dark:text-red-400 text-sm" />
+              <FormMessage className="text-red-400 dark:text-red-500 text-xs" />
             </FormItem>
           )}
         />
@@ -70,7 +70,7 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
                   {...field}
                 />
               </FormControl>
-              <FormMessage className="text-red-400 dark:text-red-400 text-sm" />
+              <FormMessage className="text-red-400 dark:text-red-500 text-xs" />
             </FormItem>
           )}
         />
@@ -116,7 +116,7 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
           </div>
             <p
               hidden={!isDiscountPrice}
-              className="text-red-400 dark:text-red-400 text-sm"
+              className="text-red-400 dark:text-red-500 text-xs"
             >
               勾選offer後請記得填優惠價
             </p>
@@ -138,7 +138,7 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-red-400 dark:text-red-400 text-sm" />
+                <FormMessage className="text-red-400 dark:text-red-500 text-xs" />
               </FormItem>
             )}
           />
@@ -159,7 +159,7 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-red-400 dark:text-red-400 text-sm" />
+                <FormMessage className="text-red-400 dark:text-red-500 text-xs" />
               </FormItem>
             )}
           />
@@ -179,7 +179,7 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-red-400 dark:text-red-400 text-sm" />
+                <FormMessage className="text-red-400 dark:text-red-500 text-xs" />
               </FormItem>
             )}
           />
@@ -199,7 +199,7 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-red-400 dark:text-red-400 text-sm" />
+                <FormMessage className="text-red-400 dark:text-red-500 text-xs" />
               </FormItem>
             )}
           />
