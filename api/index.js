@@ -15,6 +15,7 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config();
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 mongoose
   .connect(process.env.MONGODB)
@@ -53,6 +54,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
   console.log("server is running on PORT 3000");
 });
