@@ -6,8 +6,12 @@ import authRouter from "./routes/auth.route.js";
 import avatarRouter from "./routes/avatar.route.js";
 import cookieParser from "cookie-parser";
 import listingRouter from "./routes/listing.route.js";
+import { fileURLToPath } from 'url';
 import path from "path";
 // import cors from "cors";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 const app = express();
