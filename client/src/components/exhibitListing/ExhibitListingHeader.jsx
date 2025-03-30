@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Thumbs, Pagination } from "swiper/modules";
 import SwiperCore from "swiper";
@@ -6,6 +6,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/thumbs";
+
 
 const ExhibitListingHeader = ({ unverifiedPerListingData }) => {
   // const { data, isSuccess } = getUnverifiedPerListQueryingMutation;
@@ -25,28 +26,28 @@ const ExhibitListingHeader = ({ unverifiedPerListingData }) => {
     setIsFullscreen(false);
   };
 
+
+
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 " >
       {/* 一張縮圖 */}
       {unverifiedPerListingData?.imageUrls.length && (
         <div className="grid grid-cols-1 gap-4 ">
           {
             <div
-              className="bg-gray-200 cursor-pointer hover:scale-[1.05] transition-transform duration-3000"
+              className="bg-gray-200 cursor-pointer rounded-lg border-4 dark:border-white border-gray-200 hover:scale-[1.05] transition-transform duration-3000"
               onClick={() => openFullscreen(0)}
             >
               <img
                 src={unverifiedPerListingData?.imageUrls[0].url}
                 alt={`Gallery thumbnail 0`}
                 // h-[300px]
-                className="w-full h-[ˇ00px] object-cover transition-transform duration-300 group-hover:scale-105"
+                className="w-full rounded-lg object-cover transition-transform duration-300 group-hover:scale-105 "
               />
             </div>
           }
         </div>
       )}
-
-
 
       {/* 全屏輪播 */}
       {isFullscreen && (
@@ -71,12 +72,14 @@ const ExhibitListingHeader = ({ unverifiedPerListingData }) => {
             className="h-screen bg-gray-300"
           >
             {unverifiedPerListingData?.imageUrls.map((image, index) => (
-              <SwiperSlide key={index}>
-                <img
-                  src={image.url}
-                  alt={`Gallery image ${index + 1}`}
-                  className="max-h-full max-w-full mx-auto object-contain"
-                />
+              <SwiperSlide key={index} className="bg-gray-300 relative">
+                <div className="bg-gray-300 absolute top-[10vh] left-0 right-0">
+                  <img
+                    src={image.url}
+                    alt={`Gallery image ${index + 1}`}
+                    className="max-h-full max-w-full mx-auto object-contain"
+                  />
+                </div>
               </SwiperSlide>
             ))}
 

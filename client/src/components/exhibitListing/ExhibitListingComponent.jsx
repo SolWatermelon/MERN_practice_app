@@ -24,9 +24,9 @@ const ExhibitListingComponent = () => {
   }, []);
 
   return (
-    <div className="px-[70px]">
-      <div className=" bg-white p-[20px] rounded-lg my-6 shadow-lg dark:text-gray-500">
-      {isPending && <p>讀取中...</p>}
+    <div>
+      <div className="rounded-lg shadow-lg dark:text-gray-500">
+      {isPending && <p className="dark:text-white">讀取中...</p>}
       {/* {isError && <p>{`錯誤！無法讀取頁面${error}`}</p>} */}
       {isSuccess && (
         <>
