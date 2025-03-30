@@ -10,7 +10,7 @@ export default defineConfig({
       "/api": {
         target: "http://localhost:3000",
         changeOrigin: true,
-        // secure: false, //部屬時再改
+        // secure: false, //部署時再改
         secure: true,
       },
     },

@@ -151,7 +151,7 @@ export const useUserActions = (userRef) => {
       const res = await axios.get(`/api/user/${userRefId}`);
       return res.data || null;
     },
-    enabled: !!userRef, // 變數存在才執行(必須轉成布玲)
+    enabled: !!userRef, // 變數存在才執行(必須轉成boolean)
     onError: (error) => {
       toast.error(
         error?.response?.data?.message || error?.message || "發生錯誤"
