@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import HomeListing from "./HomeListing";
 import HomeSwiper from "./HomeSwiper";
-import HomeTop from "./homeTop";
+import HomeTop from "./HomeTop";
 import { useListingActions } from "@/hooks/useListingActions";
 import { useDispatch } from "react-redux";
 import { acquireAllListings } from "@/slices/listingSlice.js";
