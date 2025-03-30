@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
-import PerListing from "./perListing";
 import { useListingActions } from "../../hooks/useListingActions";
+import PerListing from "@/components/listing/PerListing"
 
 const ShowListingsComponent = () => {
   const {
@@ -73,7 +73,6 @@ const ShowListingsComponent = () => {
             {deleteListingMutation.isPending && (
               <p className="text-xs">處理中...</p>
             )}
-
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-400 dark:divide-gray-200">
                 <thead className="bg-gray-200 dark:bg-gray-600">
