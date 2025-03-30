@@ -21,7 +21,7 @@ const About = () => {
   ];
 
   return (
-    <main className="p-10 font-bold">
+    <main className="p-[30px] sm:px-[100px] md:py-[60px] font-bold">
       <div>
         <p className="text-xl font-extrabold w-full border-b-2 dark:border-white border-gray-300 mb-4">
           專案背景
