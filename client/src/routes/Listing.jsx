@@ -1,5 +1,5 @@
 import React from "react";
-import ExhibitListingComponent from "@/components/exhibitListing/exhibitListingComponent";
+import ExhibitListingComponent from "@/components/exhibitListing/ExhibitListingComponent";
 
 const Listing = () => {
   return (
