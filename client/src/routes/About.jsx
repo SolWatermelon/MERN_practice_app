@@ -39,7 +39,7 @@ const About = () => {
       </div>
       <div className="flex flex-col">
         <span className="text-xl font-extrabold w-full border-b-2 dark:border-white mb-4 border-gray-300 ">
-          核心功能與技術
+          核心功能及技術
         </span>
         <span className="flex gap-10 lg:flex-nowrap flex-wrap">
           <ul className="text-hoverlighttext dark:text-orange">
