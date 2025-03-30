@@ -20,7 +20,6 @@ const HomeComponent = () => {
   useEffect(() => {
     if (isAllListingsSuccess) {
       dispatch(acquireAllListings(allListingsData?.allListings));
-      console.log("allListingsData?.allListings", allListingsData?.allListings)
       setSwiperPics(
         allListingsData?.allListings
           .map((listing) => listing?.imageUrls[0])
