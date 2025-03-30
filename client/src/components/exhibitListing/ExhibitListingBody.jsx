@@ -3,39 +3,27 @@ import { LuSofa } from "react-icons/lu";
 import { IoIosTimer } from "react-icons/io";
 import { FaCar } from "react-icons/fa";
 import { FaRegMoneyBill1 } from "react-icons/fa6";
-// import { IoCalendar } from "react-icons/io";
 import { FaCheckCircle, FaHome } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
-// import {ExhibitListingHeader} from "./ExhibitListingHeader"
 import { PiToiletPaper } from "react-icons/pi";
 import { LuBedDouble } from "react-icons/lu";
 import AOS from "aos";
 import "aos/dist/aos.css";
-
 import ContactLandlord from "./ContactLandlord";
 import ExhibitListingHeader from "./ExhibitListingHeader";
 
-// tag改成li和ul！！！！
-// 住址和房間測所數還沒寫
 const ExhibitListingBody = ({ unverifiedPerListingData }) => {
   const { currentUser } = useSelector((state) => state.userReducer);
-  // useEffect(() => {
-  //   console.log("unverifiedPerListingData", unverifiedPerListingData)
-  // }, [])
+
   useEffect(() => {
     AOS.init();
   }, []);
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* <ExhibitListingHeader /> */}
-
       <div className="p-10">
         {/* 標題區域 */}
         <div className="mb-8">
-          {/* {unverifiedPerListingData.type}
-{unverifiedPerListingData.offer?"true":"false"}
-{unverifiedPerListingData.name} */}
           <div className="flex flex-wrap items-center gap-4 ">
             {unverifiedPerListingData?.type === "rent" ? (
               <span className="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-full text-sm font-medium">
@@ -196,7 +184,7 @@ const ExhibitListingBody = ({ unverifiedPerListingData }) => {
           </div>
         </div>
       </div>
-      {/* =============== */}
+
       {/* 關於房屋 */}
       <div className="mt-1 p-6">
         <h2 className="text-3xl font-bold dark:text-white mb-4 border-b-2 dark:border-white border-gray-300 pb-2">

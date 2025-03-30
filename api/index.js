@@ -4,14 +4,10 @@ import dotenv from "dotenv";
 import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
 import avatarRouter from "./routes/avatar.route.js";
-import { v2 as cloudinary } from "cloudinary";
 import cookieParser from "cookie-parser";
 import listingRouter from "./routes/listing.route.js"
 // import cors from "cors";
 
-
-// import pkg from 'cookie-parser';
-// const { cookieParser } = pkg;
 dotenv.config();
 const app = express();
 
@@ -24,8 +20,6 @@ mongoose
     console.log("failed to connect to mongoDB:", e);
   });
 
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: "50mb" })); // 允許最大10MB JSON資料
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());

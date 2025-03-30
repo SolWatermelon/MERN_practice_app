@@ -7,22 +7,18 @@ export const avatarUpload = async (req, res, next) => {
   cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET, // Click 'View API Keys' above to copy your API secret
+    api_secret: process.env.CLOUDINARY_API_SECRET,
   });
 
   try {
     const { _id, username, email, createdAt, updatedAt, base64Image } =
       req.body;
 
-    // Upload an image
-    // POST https://api.cloudinary.com/v1_1/demo/image/upload
-
     if(_id){
       const deleteAvatar = await cloudinary.v2.uploader.destroy(
         `avatarphoto_${_id}`
       );
     }
-
 
     const uploadResult = await cloudinary.v2.uploader
       .upload(base64Image, {
@@ -46,10 +42,6 @@ export const avatarUpload = async (req, res, next) => {
       height: 500,
     });
 
-  
-    // ==============================================
-
-
     const updatedUser = await User.findByIdAndUpdate(
       _id,
       { 
@@ -62,7 +54,7 @@ export const avatarUpload = async (req, res, next) => {
     console.log("updatedUser:", updatedUser)
 
     if (!updatedUser) {
-      return res.status(404).json({ message: "User avatar can not be update" });
+      return res.status(404).json({ message: "User avatar can not be updated" });
     }
     return res.json({secure_url: uploadResult.secure_url, ...updatedUser});
   } catch (e) {

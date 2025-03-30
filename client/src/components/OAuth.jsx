@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import {
   QueryClient,
   useMutation,
-  useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
@@ -19,7 +18,6 @@ const OAuth = () => {
   const mutation = useMutation({
     mutationFn: () => googleSignIn(),
     onSuccess: (data) => {
-      
       dispatch(signInSuccess(data));
       setTimeout(() => {
         navigate("/");
@@ -27,16 +25,20 @@ const OAuth = () => {
       toast.success("登入成功");
     },
     onError: (error) => {
+      if (error.code === "auth/popup-closed-by-user") {
+        toast.success("使用者已關閉登入視窗");
+        return
+      }
       toast.error(
-        error?.message || error?.response?.data?.message || "發生錯誤"
+        error?.response?.data?.message || error?.message || "發生錯誤"
       );
     },
   });
-  
-  
+
   const handleGoogle = () => {
     mutation.mutate();
   };
+
   return (
     <button
       onClick={handleGoogle}

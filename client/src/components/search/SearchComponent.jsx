@@ -16,9 +16,11 @@ const SearchComponent = () => {
     (state) => state.allListingsReducer
   );
   const dispatch = useDispatch();
-  const queries = Array.from(searchParams.entries()).length
-  // const memoizedAllListings = useMemo(() => allListings, [allListings]);
-  const memoizedFilteredListing = useMemo(() => filteredListing, [filteredListing]);
+  const queries = Array.from(searchParams.entries()).length;
+  const memoizedFilteredListing = useMemo(
+    () => filteredListing,
+    [filteredListing]
+  );
 
   useEffect(() => {
     refetchAllListingsQuery();
@@ -28,23 +30,17 @@ const SearchComponent = () => {
     if (!allListings || allListings.length === 0) return;
     // 如果不是透過navbar搜尋時的資料呈現
     const searchKeyword = searchParams?.get("searchKeyword");
-    console.log("queries", queries)
-    console.log("searchKeyword", searchKeyword)
-    // if (searchKeyword === null && queries<=1) {
-      if (!searchKeyword && !queries) {
+    if (!searchKeyword && !queries) {
       dispatch(filteredAllListings(allListings));
     }
   }, [allListings]);
 
   useEffect(() => {
     if (!filteredListing || filteredListing.length === 0) return;
-    console.log("filteredListing", filteredListing);
-    // 一頁9筆(頁碼數)
     const PageAmount = Math.ceil(filteredListing.length / 9);
     const pageAmountArr = Array.from({ length: PageAmount }, (_, index) => {
       return index + 1;
     });
-    console.log("pageAmountArr", pageAmountArr);
     setPagination(pageAmountArr);
 
     // 第一頁
@@ -53,8 +49,6 @@ const SearchComponent = () => {
   }, [memoizedFilteredListing]);
 
   const handlePerPageData = (page) => {
-    console.log("嗨嗨", page);
-    // 一頁9筆(po文呈現)
     const slicedData = filteredListing.slice(
       page * 10 - page - 9,
       page * 10 - page
@@ -65,7 +59,7 @@ const SearchComponent = () => {
   return (
     <>
       {!allListings?.length && !filteredListing?.length ? (
-        <p>讀取中...</p>
+        <p>尚無貼文</p>
       ) : (
         <div className="search-res-page rounded-md shadow-md p-6 bg-gray-50 flex gap-6 flex-col items-center md:items-start  md:justify-start md:flex-row text-gray-500">
           <SearchForm
@@ -82,7 +76,10 @@ const SearchComponent = () => {
               {filteredData?.length ? (
                 filteredData?.map((listing, i) => {
                   return (
-                    <PerSearchResultCard listing={listing} key={`${listing._id}${i}`} />
+                    <PerSearchResultCard
+                      listing={listing}
+                      key={`${listing._id}${i}`}
+                    />
                   );
                 })
               ) : (
@@ -94,8 +91,8 @@ const SearchComponent = () => {
                 pagination.map((page, i) => {
                   return (
                     <button
-                    className="bg-gray-500 text-white mx-1 px-2 rounded-md hover:bg-hoverlighttext hover:text-white "
-                    key={`${page}${i}`}
+                      className="bg-gray-500 text-white mx-1 px-2 rounded-md hover:bg-hoverlighttext hover:text-white "
+                      key={`${page}${i}`}
                       type="button"
                       onClick={() => {
                         handlePerPageData(page);

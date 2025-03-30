@@ -57,10 +57,6 @@ export const deleteListing = async (req, res, next) => {
     api_secret: process.env.CLOUDINARY_API_SECRET,
   });
 
-  // if (!req.params.id) return next(errorHandler(404, "listing not found"));
-  // if (req.user.id !== req.params.id)
-  //   return next(errorHandler(401, "u can only delete ur own listing"))
-
   const listing = await Listing.findById(req.params.id);
   if (!listing) return next(errorHandler(404, "listing not found"));
   if (listing.userRef !== req.user.id) {
@@ -131,8 +127,6 @@ export const getUnverifiedListing = async (req, res, next) => {
     next(e);
   }
 };
-
-
 
 export const getAllListings = async (req, res, next) => {
   try {

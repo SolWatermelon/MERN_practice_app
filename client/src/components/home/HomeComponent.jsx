@@ -15,17 +15,16 @@ const HomeComponent = () => {
     isPending: isAllListingsPending,
     isSuccess: isAllListingsSuccess,
     isError: isAllListingsError,
-    error: allListingsErrorMsg,
   } = getAllListingsQuery;
 
   useEffect(() => {
     if (isAllListingsSuccess) {
-      console.log("allListingsData?.allListings", allListingsData?.allListings);
       dispatch(acquireAllListings(allListingsData?.allListings));
+      console.log("allListingsData?.allListings", allListingsData?.allListings)
       setSwiperPics(
         allListingsData?.allListings
           .map((listing) => listing?.imageUrls[0])
-          .filter((listing, index) => {
+          .filter((_, index) => {
             return index < 6;
           })
       );
@@ -36,7 +35,7 @@ const HomeComponent = () => {
     {isAllListingsPending && <p>讀取中...</p>}
       {isAllListingsSuccess && (
         <div className="home-page">
-          <HomeTop swiperPic={swiperPics[5]}/>
+          <HomeTop swiperPic={swiperPics[4]}/>
           <HomeSwiper swiperPics={swiperPics} />
           <HomeListing />
         </div>

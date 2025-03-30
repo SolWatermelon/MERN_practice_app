@@ -10,14 +10,11 @@ const Contact = ({ openMessageArea, unverifiedPerListingData }) => {
   const {
     data: landlordInfo,
     isSuccess: getlandLordSuccess,
-    isError: getlandLordError,
-    error: getlandLordErrorMsg,
   } = getLandlordInfoQuery;
 
   const handleMessageChange = (e) => {
     setMessage(e.target.value);
   };
-
 
   useEffect(() => {
     setMessage(openMessageArea&&"")
@@ -60,7 +57,6 @@ const Contact = ({ openMessageArea, unverifiedPerListingData }) => {
           </div>
         </>
       )}
-      {/* {getlandLordError && <p>錯誤:${getlandLordErrorMsg}</p>} */}
     </>
   );
 };

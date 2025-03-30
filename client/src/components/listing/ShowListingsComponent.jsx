@@ -8,7 +8,7 @@ const ShowListingsComponent = () => {
     getCertainUserAllListingsQuery,
     deleteListingMutation,
   } = useListingActions();
-  const { data, isPending, error, isError, isSuccess, refetch } =
+  const { data, isPending, isSuccess, refetch } =
     getCertainUserAllListingsQuery;
   const [allData, setAllData] = useState([]);
   const [canBroswedData, setCanBroswedData] = useState([]);
@@ -16,7 +16,10 @@ const ShowListingsComponent = () => {
   const [page, setPage] = useState(1);
   const observerElementRef = useRef();
   const memoizedAllData = useMemo(() => allData, [allData]);
-  const memoizedCanBroswedData = useMemo(() => canBroswedData, [canBroswedData]);
+  const memoizedCanBroswedData = useMemo(
+    () => canBroswedData,
+    [canBroswedData]
+  );
 
   useEffect(() => {
     refetchAllListingsQuery();
@@ -43,12 +46,12 @@ const ShowListingsComponent = () => {
       if (entries[0].intersectionRatio <= 0) return;
       // 目標在視野內
       if (canBroswedData?.length < allData?.length) {
-        loadMore();
+        setTimeout(() => {
+          loadMore();
+        }, 1000);
       }
     });
-    setTimeout(() => {
       intersectionObserver.observe(observerElementRef.current);
-    }, 1000);
     return () => intersectionObserver.disconnect();
   }, [memoizedCanBroswedData, memoizedAllData]);
 
@@ -70,12 +73,6 @@ const ShowListingsComponent = () => {
             {deleteListingMutation.isPending && (
               <p className="text-xs">處理中...</p>
             )}
-            {/* {deleteListingMutation.isSuccess && (
-              <p className="text-blue-500 text-xs">刪除成功！</p>
-            )}
-            {deleteListingMutation.isError && (
-              <p className="text-red-500 text-xs">刪除失敗</p>
-            )} */}
 
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-400 dark:divide-gray-200">
@@ -119,7 +116,7 @@ const ShowListingsComponent = () => {
                   ) : (
                     <tr>
                       <td colSpan="100%" className="text-center py-4">
-                        No data available!
+                        尚無貼文
                       </td>
                     </tr>
                   )}
@@ -129,7 +126,6 @@ const ShowListingsComponent = () => {
           </div>
         </div>
       )}
-      {/* {isError && <p>{`無法抓取資料:${error}`}</p>} */}
       {!!allData?.length && (
         <div className="text-center m-5 text-xl" ref={observerElementRef}>
           {canBroswedData?.length === allData?.length

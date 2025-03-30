@@ -17,10 +17,6 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
-        // foreground: {
-        //   DEFAULT: "#000000",
-        //   dark: "#ffffff", // 在 dark mode 下變成白色
-        // },
         orange: "#FFEEA5",
         darkorange: "#FFBB30",
         hoverlighttext: "#FF9100",

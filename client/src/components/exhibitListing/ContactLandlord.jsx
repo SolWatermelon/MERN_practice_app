@@ -40,7 +40,6 @@ const ContactLandlord = ({ unverifiedPerListingData }) => {
           />
         </div>
       </div>
-      {/* )} */}
     </>
   );
 };

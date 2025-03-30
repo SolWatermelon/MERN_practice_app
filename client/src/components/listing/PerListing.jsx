@@ -21,15 +21,15 @@ const PerListing = ({ setCanBroswedData, setAllData, listing }) => {
   const handleListingDelete = () => {
     deleteListingMutation.mutate({ imageUrls, _id });
     setCanBroswedData((prev) =>
-        prev.filter((perData) => {
-          return perData._id !== _id;
-        })
-      );
-      setAllData((prev) =>
-        prev.filter((perData) => {
-          return perData._id !== _id;
-        })
-      );
+      prev.filter((perData) => {
+        return perData._id !== _id;
+      })
+    );
+    setAllData((prev) =>
+      prev.filter((perData) => {
+        return perData._id !== _id;
+      })
+    );
   };
 
   return (
@@ -67,10 +67,14 @@ const PerListing = ({ setCanBroswedData, setAllData, listing }) => {
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        <div className="text-sm">{new Date(createdAt).toLocaleDateString()}</div>
+        <div className="text-sm">
+          {new Date(createdAt).toLocaleDateString()}
+        </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        <div className="text-sm">{new Date(updatedAt).toLocaleDateString() || "No update date"}</div>
+        <div className="text-sm">
+          {new Date(updatedAt).toLocaleDateString() || "No update date"}
+        </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
         <Dialog>
@@ -89,7 +93,6 @@ const PerListing = ({ setCanBroswedData, setAllData, listing }) => {
             <DialogFooter>
               <Button onClick={handleListingDelete} variant="destructive">
                 確認刪除
-                {/* {deleteUser.isPending ? "刪除中..." : "確認刪除"} */}
               </Button>
             </DialogFooter>
           </DialogContent>

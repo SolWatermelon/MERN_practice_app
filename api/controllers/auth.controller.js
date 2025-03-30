@@ -62,7 +62,7 @@ export const googleSignin = async (req, res, next) => {
     const { name, email, photo } = req.body;
     const validUser = await User.findOne({ email }).exec();
     if (!validUser) {
-      // password is required!!!!!!!!!! so we have to create a new one
+      // password is required! so we have to create a new one
       const pwds = generateRandomPassword();
       const hashedPassword = bcryptjs.hashSync(pwds, 10);
       const newUser = new User({

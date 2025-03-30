@@ -1,6 +1,13 @@
 import express from "express";
 const router = express.Router();
-import { createListing, createListingPics, deleteListing, updateListing, getUnverifiedListing, getAllListings } from "../controllers/listing.controller.js";
+import {
+  createListing,
+  createListingPics,
+  deleteListing,
+  updateListing,
+  getUnverifiedListing,
+  getAllListings,
+} from "../controllers/listing.controller.js";
 import { verifyUserToken } from "../utils/verifyUser.js";
 
 router.post("/create", verifyUserToken, createListing);

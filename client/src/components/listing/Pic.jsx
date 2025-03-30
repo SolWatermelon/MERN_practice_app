@@ -1,7 +1,6 @@
 import React from "react";
 
 const Pic = ({ url, index }) => {
-
   return (
     <div className="mt-5">
       <div className="w-[200px] bg-gray-300">

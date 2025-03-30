@@ -5,8 +5,6 @@ import {
   googleSignin,
   signout,
 } from "../controllers/auth.controller.js";
-// import { signin } from "../controllers/auth.controller.js";
-// import { googleSignin } from "../controllers/auth.controller.js";
 
 const router = express.Router();
 

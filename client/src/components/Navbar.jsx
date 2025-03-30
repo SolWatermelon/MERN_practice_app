@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-// , useDispatch
 import { useSelector, useDispatch } from "react-redux";
 import {
   filteredAllListings,
@@ -15,7 +14,6 @@ import {
 } from "@/slices/listingSlice.js";
 import { toggleMenu } from "@/slices/navToggleSlice.js";
 import { ModeToggle } from "./mode-toggle";
-import { useListingActions } from "@/hooks/useListingActions.js";
 import {
   Popover,
   PopoverContent,
@@ -25,9 +23,7 @@ import {
 const Navbar = () => {
   const { isOpened } = useSelector((state) => state.navToggleReducer);
   const { currentUser } = useSelector((state) => state.userReducer);
-  const { allListings, filteredListing } = useSelector(
-    (state) => state.allListingsReducer
-  );
+  const { allListings } = useSelector((state) => state.allListingsReducer);
   const [showNav, setShowNav] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -46,7 +42,6 @@ const Navbar = () => {
   const handleMenuToggle = (e) => {
     e.stopPropagation();
     setIsMenuOpen(!isMenuOpen);
-    // 打開漢堡時關閉使用者小卡
     if (!isMenuOpen) {
       setIsAvatarOpen(false);
     }
@@ -55,7 +50,6 @@ const Navbar = () => {
   const handleAvatarToggle = (e) => {
     e.stopPropagation();
     setIsAvatarOpen(!isAvatarOpen);
-    // 打開使用者小卡時關閉漢堡
     if (!isAvatarOpen) {
       setIsMenuOpen(false);
     }
@@ -65,14 +59,12 @@ const Navbar = () => {
     e.stopPropagation();
   };
 
-  // 點nav任一處關閉所有
   const handleGlobalClick = () => {
     setIsMenuOpen(false);
     setIsAvatarOpen(false);
   };
 
   useEffect(() => {
-    console.log("location.pathname", location.pathname);
     setShowNav(location.pathname === "/search/" ? false : true);
   }, [location.pathname]);
 
@@ -125,7 +117,6 @@ const Navbar = () => {
             onClick={handleMenuContentClick}
           >
             {/* 搜尋 */}
-
             {showNav && (
               <div className="relative">
                 <form

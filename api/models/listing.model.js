@@ -19,9 +19,9 @@ const listingSchema = new Schema(
       required: true,
     },
     bedrooms: {
-        type: Number,
-        required: true,
-      },
+      type: Number,
+      required: true,
+    },
     furnished: {
       type: Boolean,
       required: true,

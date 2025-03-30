@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
-import { Input } from "@/components/ui/input";
 import {
   FormField,
   FormItem,
@@ -58,9 +57,8 @@ const UpdateListingPics = ({
 
       return newItems;
     } catch (error) {
-      console.error("處理文件失敗:", error);
       toast.error(
-        error?.message || error?.response?.data?.message || "發生錯誤"
+        error?.response?.data?.message || error?.message || "發生錯誤"
       );
     }
   };
@@ -85,8 +83,6 @@ const UpdateListingPics = ({
       .map((item) => item.file);
 
     if (pendingFiles.length > 0) {
-      // Web API中用於保存拖放操作或剪貼板操作期間的數據
-      // 將js file轉換為form可以使用的FileList格式
       const dataTransfer = new DataTransfer();
       pendingFiles.forEach((file) => dataTransfer.items.add(file));
       form.setValue("file", dataTransfer.files);
@@ -95,7 +91,6 @@ const UpdateListingPics = ({
     }
   };
 
-  // 上傳文件mutation
   const uploadMutation = useMutation({
     mutationFn: async () => {
       const pendingItems = imageItems.filter(
@@ -104,9 +99,7 @@ const UpdateListingPics = ({
 
       if (pendingItems.length === 0) {
         toast.error(
-          error?.message ||
-            error?.response?.data?.message ||
-            "沒有等待上傳的圖片"
+          error?.response?.data?.message || error?.message || "沒有等待上傳的圖片"
         );
       }
 
@@ -152,7 +145,7 @@ const UpdateListingPics = ({
         )
       );
       toast.error(
-        error?.message || error?.response?.data?.message || "發生錯誤，上傳失敗"
+        error?.response?.data?.message || error?.message || "發生錯誤，上傳失敗"
       );
     },
   });
@@ -167,9 +160,6 @@ const UpdateListingPics = ({
   const handleOldPicRemove = (item) => {
     // 從顯示列表移除
     setDisplayedOldPics((prev) => prev.filter((pic) => pic.url !== item.url));
-
-    // 要刪除的圖片ID或url加入
-    // setRemovedOldPicsIds((prev) => [...prev, item.publicID || item.url]);
 
     // 更新表單值
     updateFormFileValue();
@@ -201,7 +191,6 @@ const UpdateListingPics = ({
       <div>
         <div className="flex items-center gap-2">
           <div className="text-gray-700 text-sm">上傳圖片</div>
-          {/* {uploadMutation.isPending && <p className="text-xs">處理中...</p>} */}
         </div>
 
         <div className="flex justify-start items-center flex-wrap gap-2">
@@ -251,7 +240,6 @@ const UpdateListingPics = ({
                       className=" absolute top-4 right-0 text-[17px] cursor-pointer hover:scale-[1.08] mt-1 text-xs text-red-400"
                       onClick={() => handleRemove(item)}
                     />
-                    {/* </div> */}
                   </>
                 ) : item.status === "pending" || item.status === "uploading" ? (
                   <div className="flex flex-col items-center">

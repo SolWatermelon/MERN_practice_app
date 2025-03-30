@@ -14,7 +14,6 @@ const ListingForm = ({ form, checkboxOptions}) => {
   const [isDiscountPrice, setIsDiscountPrice] = useState(false);
   return (
     <>
-      {/* Grid讓輸入欄位自動RWD */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* 文字輸入-Name */}
         <FormField
@@ -74,7 +73,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
           )}
         />
 
-        {/* checkbox-multiple Options */}
+        {/* checkbox-multiple options */}
         <FormItem>
           <FormLabel>選項</FormLabel>
           <div className="space-y-2">
@@ -120,7 +119,7 @@ const ListingForm = ({ form, checkboxOptions}) => {
 
         {/* 使用grid自動適應 */}
         <div className="grid grid-cols-2 md:grid-cols-2 gap-6">
-          {/* Number Input - regularPrice */}
+          {/* number input-regularPrice */}
           <FormField
             control={form.control}
             name="regularPrice"

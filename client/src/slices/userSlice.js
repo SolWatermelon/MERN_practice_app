@@ -8,7 +8,6 @@ const initialState = {
 export const userSlice = createSlice({
   name: "userSlice",
   initialState,
-  // reducers ⇒ store接收到action要做的處理，意即邏輯(action通常包含type和payload，但這兩toolkit會自動生成，因此此處只需要寫邏輯)
   reducers: {
     // 參數1 state: toolkit會把當下的state傳入(initialState)
     signInSuccess: (state, action) => {

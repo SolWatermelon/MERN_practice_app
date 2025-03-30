@@ -2,12 +2,12 @@ import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { MdOutlineEdit } from "react-icons/md";
-import {useUserActions} from "../../hooks/useUserActions"
+import { useUserActions } from "../../hooks/useUserActions";
 
 const ProfileEdit = () => {
-    const { currentUser, updateAvatar, updateUserInfo } = useUserActions();
+  const { currentUser, updateAvatar, updateUserInfo } = useUserActions();
   const avatarRef = useRef(null);
-  
+
   const {
     register,
     handleSubmit,
@@ -18,7 +18,7 @@ const ProfileEdit = () => {
       name: currentUser?.username || "",
       email: currentUser?.email || "",
       password: "",
-    }
+    },
   });
 
   const handleAvatar = () => {
@@ -29,7 +29,7 @@ const ProfileEdit = () => {
     updateUserInfo.mutate(data, {
       onSuccess: () => {
         reset({ password: "" });
-      }
+      },
     });
   };
 
@@ -50,10 +50,10 @@ const ProfileEdit = () => {
             <MdOutlineEdit className="text-3xl text-white" />
           </div>
         </div>
-        
-        {updateAvatar.isPending && <div className="text-gray-500 text-sm">上傳中...</div>}
-        {/* {updateAvatar.isError && <div className="text-red-500 text-sm">上傳錯誤，請重新上傳</div>}
-        {updateAvatar.isSuccess && <div className="text-blue-500 text-sm">上傳成功</div>} */}
+
+        {updateAvatar.isPending && (
+          <div className="text-gray-500 text-sm">上傳中...</div>
+        )}
       </div>
 
       <input
@@ -69,7 +69,7 @@ const ProfileEdit = () => {
       <div className="flex items-center justify-center mt-[10px] w-full">
         <div className="px-8 pt-3 pb-16 md:p-8 w-full max-w-md">
           <h1 className="text-4xl font-bold text-gray-700 mb-8">個人資料</h1>
-          
+
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-4">
               <input
@@ -79,7 +79,12 @@ const ProfileEdit = () => {
                 className="w-full p-3 rounded-full border-2 border-gray-300 text-gray-800 focus:outline-none focus:border-darkorange"
                 {...register("name", { required: "name is required." })}
               />
-              <ErrorMessage errors={errors} name="name" as="p" className="text-red-500 text-sm" />
+              <ErrorMessage
+                errors={errors}
+                name="name"
+                as="p"
+                className="text-red-500 text-sm"
+              />
             </div>
 
             <div className="mb-4">
@@ -96,7 +101,12 @@ const ProfileEdit = () => {
                   },
                 })}
               />
-              <ErrorMessage errors={errors} name="email" as="p" className="text-red-500 text-sm" />
+              <ErrorMessage
+                errors={errors}
+                name="email"
+                as="p"
+                className="text-red-500 text-sm"
+              />
             </div>
 
             <div className="mb-6">
@@ -110,11 +120,18 @@ const ProfileEdit = () => {
                     value: 8,
                     message: "Password must be at least 8 characters.",
                   },
-                  validate: value => 
-                    value === "" || value.length >= 8 || "Password must be at least 8 characters."
+                  validate: (value) =>
+                    value === "" ||
+                    value.length >= 8 ||
+                    "Password must be at least 8 characters.",
                 })}
               />
-              <ErrorMessage errors={errors} name="password" as="p" className="text-red-500 text-sm" />
+              <ErrorMessage
+                errors={errors}
+                name="password"
+                as="p"
+                className="text-red-500 text-sm"
+              />
             </div>
 
             <div className="flex gap-3">
@@ -135,14 +152,11 @@ const ProfileEdit = () => {
                 取消
               </button>
             </div>
-            
-            {/* {updateUserInfo.isError && <div className="text-red-500 text-sm mt-2">儲存失敗</div>}
-            {updateUserInfo.isSuccess && <div className="text-blue-500 text-sm mt-2">儲存成功</div>} */}
           </form>
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default ProfileEdit
+export default ProfileEdit;

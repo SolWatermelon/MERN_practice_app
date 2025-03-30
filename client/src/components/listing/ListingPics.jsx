@@ -107,7 +107,6 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
       const base64Images = pendingItems.map((item) => item.base64);
       const res = await axios.post("/api/listing/create/pics", {
         ...currentUser,
-        // base64Images,
         pendingItems,
       });
 
@@ -122,7 +121,7 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
 
       let updatedItems = [...imageItems];
 
-      data.picsMainInfo.forEach((info, index) => {
+      data.picsMainInfo.forEach((info) => {
         updatedItems.forEach((item) => {
           if (info.listingPicsPublicID.includes(item.id)) {
             item.publicId = info.listingPicsPublicID;
@@ -136,7 +135,7 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
     },
     onError: (error) => {
       toast.error(
-        error?.message || error?.response?.data?.message || "發生錯誤"
+        error?.response?.data?.message || error?.message || "發生錯誤"
       );
 
       // 失敗後將狀態改變
@@ -157,10 +156,12 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
     <div className="flex flex-col gap-4">
       <div>
         <div className="flex items-center gap-2">
-          <div className="text-gray-700 text-sm">上傳圖片
-          <p className="text-red-400 dark:text-red-500 text-xs">（圖片上限為5張）</p>
+          <div className="text-gray-700 text-sm">
+            上傳圖片
+            <p className="text-red-400 dark:text-red-500 text-xs">
+              （圖片上限為5張）
+            </p>
           </div>
-          {/* {uploadMutation.isPending && <p className="text-xs">處理中...</p>} */}
         </div>
 
         <div className="flex justify-start items-center flex-wrap gap-2">
@@ -200,19 +201,15 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
         {/* 顯示已上傳的圖片 */}
         <div className="mt-4 flex flex-wrap gap-4">
           {imageItems.length > 5 ? (
-            <p className="text-red-400 dark:text-red-500 text-xs">圖片數量錯誤</p>
+            <p className="text-red-400 dark:text-red-500 text-xs">
+              圖片數量錯誤
+            </p>
           ) : (
             imageItems.map((item) => (
               <div key={item.id} className="relative">
                 {item.status === "uploaded" ? (
                   <>
                     <Pic url={item.url} />
-                    {/* <button
-                      type="button"
-                      className="mt-1 text-xs text-red-400"
-                      onClick={() => handleRemove(item)}
-                    >
-                    </button> */}
                     <MdCancel
                       className=" absolute top-4 right-0 text-[17px] cursor-pointer hover:scale-[1.08] mt-1 text-xs text-red-400"
                       onClick={() => handleRemove(item)}
@@ -235,7 +232,9 @@ const ListingPics = ({ form, imageItems, setImageItems }) => {
                 ) : (
                   <div className="flex flex-col items-center">
                     <div className="h-20 w-20 bg-red-100 flex items-center justify-center">
-                      <span className="text-red-400 dark:text-red-500 text-xs">上傳失敗</span>
+                      <span className="text-red-400 dark:text-red-500 text-xs">
+                        上傳失敗
+                      </span>
                     </div>
                     <MdCancel
                       className=" absolute top-4 right-0 text-[17px] cursor-pointer hover:scale-[1.08] mt-1 text-xs text-red-400"

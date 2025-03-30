@@ -1,19 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Thumbs, Pagination } from "swiper/modules";
-import SwiperCore from "swiper";
+import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/thumbs";
 
-
 const ExhibitListingHeader = ({ unverifiedPerListingData }) => {
-  // const { data, isSuccess } = getUnverifiedPerListQueryingMutation;
-  // const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  // SwiperCore.use([Navigation]);
 
   // 開啟輪播
   const openFullscreen = (index) => {
@@ -26,10 +21,8 @@ const ExhibitListingHeader = ({ unverifiedPerListingData }) => {
     setIsFullscreen(false);
   };
 
-
-
   return (
-    <div className="container mx-auto px-4 py-8 " >
+    <div className="container mx-auto px-4 py-8 ">
       {/* 一張縮圖 */}
       {unverifiedPerListingData?.imageUrls.length && (
         <div className="grid grid-cols-1 gap-4 ">
@@ -41,7 +34,6 @@ const ExhibitListingHeader = ({ unverifiedPerListingData }) => {
               <img
                 src={unverifiedPerListingData?.imageUrls[0].url}
                 alt={`Gallery thumbnail 0`}
-                // h-[300px]
                 className="w-full rounded-lg object-cover transition-transform duration-300 group-hover:scale-105 "
               />
             </div>
@@ -77,7 +69,7 @@ const ExhibitListingHeader = ({ unverifiedPerListingData }) => {
                   <img
                     src={image.url}
                     alt={`Gallery image ${index + 1}`}
-                    className="max-h-full max-w-full mx-auto object-contain"
+                    className="max-h-full max-w-[70%] mx-auto object-contain"
                   />
                 </div>
               </SwiperSlide>

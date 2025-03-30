@@ -91,7 +91,6 @@ createRoot(document.getElementById("root")).render(
             position="top-right"
             reverseOrder={false}
             toastOptions={{
-              // success: { iconTheme: { primary: "green", secondary: "white" } },
               style: {
                 border: "2px solid #713200",
                 padding: "16px",

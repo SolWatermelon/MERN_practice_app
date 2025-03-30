@@ -11,19 +11,32 @@ import { useMutation } from "@tanstack/react-query";
 import { updateListingForm } from "@/service/service";
 import { useNavigate, useParams } from "react-router-dom";
 import { useListingActions } from "../../hooks/useListingActions";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 
 // Zod Schema驗證表單
-const formSchema = z.object({
-  name: z.string().min(2, "標題至少輸入2字"),
-  description: z.string().min(2, "描述至少輸入2字"),
-  address: z.string().min(8, "地址至少輸入8字"),
-  regularPrice: z.coerce.number().min(3, "原價至少為3"),
-  discountPrice: z.coerce.number().min(1, "優惠價至少為1"),
-  bathrooms: z.coerce.number().min(1, "浴室數量必須非負數"),
-  bedrooms: z.coerce.number().min(1, "房間數量必須非負數"),
-  options: z.array(z.string()),
-});
+const formSchema = z
+  .object({
+    name: z.string().min(2, "標題至少輸入2字"),
+    description: z.string().min(2, "描述至少輸入2字"),
+    address: z.string().min(8, "地址至少輸入8字"),
+    regularPrice: z.coerce.number().min(3, "原價至少為3"),
+    discountPrice: z.coerce.number().optional(), // 預設允許為 undefined
+    bathrooms: z.coerce.number().min(1, "浴室數量必須非負數"),
+    bedrooms: z.coerce.number().min(1, "房間數量必須非負數"),
+    options: z.array(z.string()),
+  })
+  .superRefine((data, ctx) => {
+    if (data.options.includes("offer")) {
+      // 檢查offer有無被勾
+      if (data.discountPrice === undefined || data.discountPrice < 1) {
+        ctx.addIssue({
+          path: ["discountPrice"],
+          message: "優惠價至少為1",
+          code: z.ZodIssueCode.custom,
+        });
+      }
+    }
+  });
 
 const UpdatelistingComponent = () => {
   const [imageItems, setImageItems] = useState([]);
@@ -39,36 +52,35 @@ const UpdatelistingComponent = () => {
   const params = useParams();
   const listingId = params.listingId;
   const { currentUser } = useSelector((state) => state.userReducer);
-  const { getVerifiedPerListQuery, refetchAllListingsQuery } = useListingActions(listingId);
-  const { data, isError,isLoading, error, refetch } = getVerifiedPerListQuery;
+  const { getVerifiedPerListQuery, refetchAllListingsQuery } =
+    useListingActions(listingId);
+  const { data } = getVerifiedPerListQuery;
 
   // 舊圖片的狀態
   const [displayedOldPics, setDisplayedOldPics] = useState([]);
-  
+
   useEffect(() => {
-    refetchAllListingsQuery()
-  }, [])
+    refetchAllListingsQuery();
+  }, []);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "defaultdefault",
-      description: "defaultdefault",
-      address: "defaultdefault",
-      type: "default",
-      regularPrice: 3,
+      name: "",
+      description: "",
+      address: "",
+      type: "",
+      regularPrice: 0,
       discountPrice: 0,
       options: [],
-      bathrooms: 1,
-      bedrooms: 1,
-      // removedOldPicsIds:[]
+      bathrooms: 0,
+      bedrooms: 0,
     },
     mode: "onChange", // 讓錯誤即時顯示
     reValidateMode: "onChange",
   });
 
   useEffect(() => {
-    // console.log("data!", data);
     if (data) {
       const {
         name,
@@ -88,7 +100,6 @@ const UpdatelistingComponent = () => {
         offer,
         parking,
         updatedAt,
-        // removedOldPicsIds
       } = data;
 
       const oldSelectedCheckbox = [
@@ -113,18 +124,10 @@ const UpdatelistingComponent = () => {
         setOldImageUrls(imageUrls);
       }
     }
-    // else{
-    //   toast.error({
-    //     title: "發生錯誤",
-    //     description: error?.message,
-    //   });
-    // }
   }, [data]);
 
-  // 提交form mutation
   const submitFormMutation = useMutation({
     mutationFn: (formValue) => {
-      console.log("formValue~", formValue);
       return updateListingForm(
         formValue,
         displayedOldPics,
@@ -140,7 +143,9 @@ const UpdatelistingComponent = () => {
       navigate(`/listing/${data._id}`);
     },
     onError: (error) => {
-      toast.error(error?.message || error?.response?.data?.message || "發生錯誤");
+      toast.error(
+        error?.response?.data?.message || error?.message || "發生錯誤"
+      );
     },
   });
 
@@ -182,15 +187,6 @@ const UpdatelistingComponent = () => {
               )}
             </Button>
           </div>
-          {/* {submitFormMutation.isSuccess && (
-            <p className="text-blue-500 text-center text-xs mt-3">更新成功！</p>
-          )}
-          {submitFormMutation.isError && (
-            <p className="text-red-500 text-center text-xs  mt-3">
-              {submitFormMutation?.error?.response?.data?.message ||
-                submitFormMutation?.error?.message}
-            </p>
-          )} */}
         </form>
       </Form>
     </div>

@@ -39,9 +39,6 @@ export const useUserActions = (userRef) => {
         base64Image,
       });
       return res.data || null;
-      // } catch (error) {
-      // throw new Error(error?.message);
-      // }
     },
     onSuccess: (data) => {
       if (!data) return;
@@ -56,7 +53,7 @@ export const useUserActions = (userRef) => {
     },
     onError: (error) => {
       toast.error(
-        error?.message || error?.response?.data?.message || "發生錯誤，請重新上傳"
+        error?.response?.data?.message || error?.message || "發生錯誤，請重新操作"
       );
     },
   });
@@ -64,7 +61,6 @@ export const useUserActions = (userRef) => {
   // user info update mutation
   const updateUserInfo = useMutation({
     mutationFn: async (data) => {
-      // try {
       const { name, email, password } = data;
       const updatedData = password
         ? { name, email, password }
@@ -75,9 +71,6 @@ export const useUserActions = (userRef) => {
         updatedData
       );
       return res.data || null;
-      // } catch (error) {
-      // throw new Error(error?.message);
-      // }
     },
     onSuccess: (data) => {
       toast.success("儲存成功");
@@ -91,21 +84,15 @@ export const useUserActions = (userRef) => {
       );
     },
     onError: (error) => {
-      toast.error(
-         "發生錯誤，儲存失敗"
-      );
+      toast.error("發生錯誤，儲存失敗");
     },
   });
 
   // user deletion mutation
   const deleteUser = useMutation({
     mutationFn: async () => {
-      // try {
       const res = await axios.delete(`/api/user/delete/${currentUser?._id}`);
       return res.data || null;
-      // } catch (error) {
-      // throw new Error(error?.message);
-      // }
     },
     onSuccess: (data) => {
       dispatch(deleteUserSuccess(data));
@@ -129,7 +116,7 @@ export const useUserActions = (userRef) => {
     },
     onError: (error) => {
       toast.error(
-        error?.message || error?.response?.data?.message || "發生錯誤"
+        error?.response?.data?.message || error?.message || "發生錯誤"
       );
     },
   });
@@ -150,7 +137,7 @@ export const useUserActions = (userRef) => {
     },
     onError: (error) => {
       toast.error(
-        error?.message || error?.response?.data?.message || "發生錯誤"
+        error?.response?.data?.message || error?.message || "發生錯誤"
       );
     },
   });
@@ -159,22 +146,15 @@ export const useUserActions = (userRef) => {
   const getLandlordInfoQuery = useQuery({
     queryKey: ["landlordInfo", userRef],
     queryFn: async ({ queryKey }) => {
-      // try {
       const [, userRefId] = queryKey;
       if (!userRefId) return;
-
       const res = await axios.get(`/api/user/${userRefId}`);
-      // if (!res.data) throw new Error("無法抓取資料");
-
       return res.data || null;
-      // } catch (error) {
-      // throw new Error(error?.message)
-      // }
     },
     enabled: !!userRef, // 變數存在才執行(必須轉成布玲)
     onError: (error) => {
       toast.error(
-        error?.message || error?.response?.data?.message || "發生錯誤"
+        error?.response?.data?.message || error?.message || "發生錯誤"
       );
     },
   });

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Form,
   FormField,
   FormItem,
   FormLabel,
@@ -11,13 +10,11 @@ import {
 } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
 
-const UpdateListingForm = ({ form, checkboxOptions}) => {
+const UpdateListingForm = ({ form, checkboxOptions }) => {
   const [isDiscountPrice, setIsDiscountPrice] = useState(false);
   return (
     <>
-      {/* grid讓輸入欄位自動RWD */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* 文字輸入-name */}
         <FormField
           control={form.control}
           name="name"
@@ -35,8 +32,6 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
             </FormItem>
           )}
         />
-
-        {/* 文字輸入-description */}
         <FormField
           control={form.control}
           name="address"
@@ -55,8 +50,6 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
             </FormItem>
           )}
         />
-
-        {/* textarea-description */}
         <FormField
           control={form.control}
           name="description"
@@ -74,8 +67,6 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
             </FormItem>
           )}
         />
-
-        {/* checkbox*/}
         <FormItem>
           <FormLabel>選項</FormLabel>
           <div className="space-y-2">
@@ -91,19 +82,18 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
                   >
                     <Checkbox
                       className=" text-gray-800 border-2 border-gray-300"
-                      checked={
-                        field.value.includes(option)
-                      }
+                      checked={field.value.includes(option)}
                       onCheckedChange={(checked) => {
                         const newOptions = checked
                           ? [...field.value, option] // 加入選項
                           : field.value.filter((val) => val !== option); // 移除選項
 
-                          form.setValue("options", newOptions, { shouldValidate: true });
+                        form.setValue("options", newOptions, {
+                          shouldValidate: true,
+                        });
 
                         // offer控制isDiscountPrice
                         if (option === "offer") {
-
                           setIsDiscountPrice(checked);
                         }
                       }}
@@ -114,16 +104,15 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
               />
             ))}
           </div>
-            <p
-              hidden={!isDiscountPrice}
-              className="text-red-400 dark:text-red-500 text-xs"
-            >
-              勾選offer後請記得填優惠價
-            </p>
+          <p
+            hidden={!isDiscountPrice}
+            className="text-red-400 dark:text-red-500 text-xs"
+          >
+            勾選offer後請記得填優惠價
+          </p>
         </FormItem>
 
         <div className="grid grid-cols-2 md:grid-cols-2 gap-6">
-          {/* number input-regularPrice */}
           <FormField
             control={form.control}
             name="regularPrice"
@@ -142,8 +131,6 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
               </FormItem>
             )}
           />
-
-          {/* number input-discountPrice */}
           <FormField
             control={form.control}
             name="discountPrice"
@@ -163,8 +150,6 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
               </FormItem>
             )}
           />
-
-          {/* number input-bathrooms */}
           <FormField
             control={form.control}
             name="bathrooms"
@@ -183,8 +168,6 @@ const UpdateListingForm = ({ form, checkboxOptions}) => {
               </FormItem>
             )}
           />
-
-          {/* number input-bedrooms */}
           <FormField
             control={form.control}
             name="bedrooms"

@@ -1,5 +1,4 @@
 import React from "react";
-import { useTheme } from "@/components/theme-provider";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -11,9 +10,8 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { signIn, getUser } from "../service/service";
+import { signIn } from "../service/service";
 import OAuth from "../components/OAuth.jsx";
-
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -38,7 +36,7 @@ const SignIn = () => {
     },
     onError: (error) => {
       toast.error(
-        error?.message || error?.response?.data?.message || "發生錯誤"
+        error?.response?.data?.message || error?.message || "發生錯誤"
       );
     },
   });
@@ -50,7 +48,6 @@ const SignIn = () => {
 
   return (
     <div className="sign-page themed-background">
-
       <div className="flex items-center justify-center w-full mt-[100px]">
         <div className="bg-white rounded-lg shadow-md p-8 w-full max-w-md">
           <h1 className="text-4xl font-bold text-gray-700 mb-8">Sign In</h1>
@@ -75,7 +72,7 @@ const SignIn = () => {
                 placeholder="email"
                 className="w-full p-3 rounded-full border-2 border-gray-300 text-gray-800 focus:outline-none focus:border-darkorange"
                 {...register("email", {
-                  required: "Email is required.",
+                  required: "信箱為必填",
                   pattern: {
                     value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
                     message: "Email format is incorrect.",
@@ -97,7 +94,7 @@ const SignIn = () => {
                 placeholder="password"
                 className="w-full p-3 rounded-full border-2 border-gray-300 text-gray-800 focus:outline-none focus:border-darkorange"
                 {...register("password", {
-                  required: "password is required",
+                  required: "密碼為必填",
                   minLength: { value: 8, message: "minimun is 8 characters." },
                 })}
               />

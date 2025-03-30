@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
@@ -6,7 +6,6 @@ import { acquireAllListings } from "@/slices/listingSlice.js";
 import toast from "react-hot-toast";
 
 export const useListingActions = (listingId) => {
-  const [userListings, setUserListings] = useState([]);
   const { currentUser } = useSelector((state) => state.userReducer);
   const dispatch = useDispatch();
 
@@ -31,14 +30,12 @@ export const useListingActions = (listingId) => {
       const [, id] = queryKey;
       if (!id || !currentUser?._id) return null;
       const res = await axios.get(`/api/listing/get/${listingId}`);
-      // if (!Object.keys(res?.data?.listing).length)
-      //   throw new Error("無法抓取資料");
       return res.data.listing || null;
     },
     enabled: !!currentUser?._id && !!listingId, // 變數存在才執行
     onError: (error) => {
       toast.error(
-        error?.message || error?.response?.data?.message || "發生錯誤"
+        error?.response?.data?.message || error?.message || "發生錯誤"
       );
     },
   });
@@ -53,7 +50,7 @@ export const useListingActions = (listingId) => {
     enabled: !!currentUser?._id, // 變數存在才執行
     onError: (error) => {
       toast.error(
-        error?.message || error?.response?.data?.message || "發生錯誤"
+        error?.response?.data?.message || error?.message || "發生錯誤"
       );
     },
   });
@@ -66,7 +63,7 @@ export const useListingActions = (listingId) => {
     },
     onError: (error) => {
       toast.error(
-        error?.message || error?.response?.data?.message || "發生錯誤"
+        error?.response?.data?.message || error?.message || "發生錯誤"
       );
     },
   });
@@ -93,12 +90,12 @@ export const useListingActions = (listingId) => {
       });
       return res.data || null;
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("刪除成功");
     },
     onError: (error) => {
       toast.error(
-        error?.message || error?.response?.data?.message || "發生錯誤"
+        error?.response?.data?.message || error?.message || "發生錯誤"
       );
     },
   });

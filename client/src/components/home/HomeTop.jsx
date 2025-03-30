@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -50,7 +50,10 @@ const HomeTop = ({ swiperPic }) => {
           <div className="border-4 m-5 hover:scale-[1.04] border-white hover:border-gray-500 transition-transform w-[300px] h-[300px] rounded-tr-3xl rounded-bl-3xl overflow-hidden relative bg-gray-300">
             <img
               className="w-full h-full object-cover cursor-pointer "
-              src={swiperPic?.url}
+              src={`${
+                swiperPic?.url ||
+                "https://res.cloudinary.com/dr6qrkwdk/image/upload/v1743186331/avatarphoto_67e6e97c2f9931339c1dbca5.jpg"
+              }  `}
               alt="header_pic"
             />
           </div>

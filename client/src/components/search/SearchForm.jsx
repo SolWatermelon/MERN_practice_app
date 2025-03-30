@@ -13,9 +13,7 @@ const SearchForm = ({ setFilteredData, filteredData, pagination }) => {
     register,
     handleSubmit,
     setValue,
-    getValues,
     reset,
-    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -24,8 +22,6 @@ const SearchForm = ({ setFilteredData, filteredData, pagination }) => {
       type: "",
       //   "Parking", "Furnished"
       amenities: [],
-      // sort: "",
-      // order: "",
     },
   });
 
@@ -50,8 +46,6 @@ const SearchForm = ({ setFilteredData, filteredData, pagination }) => {
     // shouldDirty: true,     // 標記欄位為已更改
     // shouldTouch: true      // 標記欄位已被觸碰
     // });
-    // ==================================
-    // 搜尋關鍵字
     const searchKeyword = searchParams.get("searchKeyword");
     if (searchKeyword) {
       setValue("searchTerm", searchKeyword);
@@ -88,19 +82,16 @@ const SearchForm = ({ setFilteredData, filteredData, pagination }) => {
 
   useEffect(() => {
     const allParams = getAllParams();
-    if(allParams?.length){
-      filterData()
+    if (allParams?.length) {
+      filterData();
     }
-  }, [])
+  }, []);
 
   const filterData = () => {
     const allParams = getAllParams();
     const newSearchRes = allListings.filter((listing) =>
       allParams.every((param) => {
         const [key, value] = Object.entries(param)[0];
-        console.log("key", key);
-        console.log("value", value);
-
         switch (key) {
           case "searchKeyword":
             return (listing.name + listing.description)
@@ -163,11 +154,7 @@ const SearchForm = ({ setFilteredData, filteredData, pagination }) => {
     if (amenities.includes("Furnished")) {
       searchParams.set("furnished", "true");
     }
-
-    // 更新query
     setSearchParams(searchParams);
-
-    // 篩選
     filterData();
   };
 
@@ -177,13 +164,7 @@ const SearchForm = ({ setFilteredData, filteredData, pagination }) => {
     });
 
     // 表單沒填回傳全部資料
-    if (
-      !data?.amenities?.length &&
-      // !data?.order &&
-      !data?.searchTerm &&
-      // !data?.sort &&
-      data?.type === "All"
-    ) {
+    if (!data?.amenities?.length && !data?.searchTerm && data?.type === "All") {
       dispatch(filteredAllListings(allListings));
       setFilteredData(filteredData);
       setSearchParams({});
