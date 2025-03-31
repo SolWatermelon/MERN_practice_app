@@ -3,8 +3,16 @@
 此房屋管理系統為使用前端Vite+React、後端Node.js+Express與資料庫MongoDB進行開發與串接的MERN專案，旨在模擬提供房東與房客一個簡單與直覺的房屋資訊管理平台。專案的主要功能包括房源管理（CRUD）、使用者帳戶管理（CRUD）、身分驗證（JWT）、多條件篩選房屋、Google OAuth、dark模式切換與聯絡屋主。此專案也是我練習RESTful API設計、資料庫操作、雲端部署的實戰結果，幫助我建立從開發到實際部屬的完整流程經驗。
 
 ## 專案展示
-> Render免費版會讓Server定時進入休眠狀態，因此第一次載入會特別慢，請見諒！
-網頁連結：https://mern-practice-app.onrender.com
+
+### 重要說明
+Render免費版會讓Server定時進入休眠狀態，因此有時載入會特別慢，請見諒！ 
+     
+     https://render.com/docs/free?_gl=1*1xvo6ra*_gcl_au*MTc3MjQ1NjgyNi4xNzQzMzQxODEy*_ga*NDk2ODc2NDUuMTc0MzM0MDIyMw..*_ga_QK9L9QJC5N*MTc0MzQzNDk4My4xMS4xLjE3NDM0MzUwNTcuNjAuMC4w#free-web-services
+
+
+### 網頁連結
+https://mern-practice-app.onrender.com
+
 
 ## 核心技術
 
