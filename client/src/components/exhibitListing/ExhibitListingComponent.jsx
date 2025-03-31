@@ -20,12 +20,12 @@ const ExhibitListingComponent = () => {
 
   return (
     <div>
-      {!currentUser?.id && isPending && "oops！請先登入網站以解鎖更多資訊唷"}
+      {!currentUser?._id && <p>oops！請先登入網站以解鎖更多資訊唷</p>}
       <div className="rounded-lg shadow-lg dark:text-gray-500">
-        {isPending && currentUser?.id && (
+        {isPending && currentUser?._id && (
           <p className="dark:text-white">讀取中...</p>
         )}
-        {isSuccess && (
+        {isSuccess && currentUser?._id && (
           <>
             <ExhibitListingBody unverifiedPerListingData={data} />
           </>
