@@ -171,3 +171,5 @@
 ### 測試帳號
     email: user1234@example.com
     password: user1234
+(也可自行建立帳戶)
+
