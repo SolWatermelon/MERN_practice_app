@@ -6,7 +6,7 @@ import authRouter from "./routes/auth.route.js";
 import avatarRouter from "./routes/avatar.route.js";
 import cookieParser from "cookie-parser";
 import listingRouter from "./routes/listing.route.js";
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
 import path from "path";
 // import cors from "cors";
 
@@ -38,11 +38,14 @@ app.use("/api/auth", authRouter);
 app.use("/api/avatar", avatarRouter);
 app.use("/api/listing", listingRouter);
 
-// app.use(express.static(path.join(__dirname, '../client/dist')))
-app.use(express.static(path.join(__dirname, 'client', 'dist')));
+app.use(express.static(path.join(__dirname, "../client/dist")));
+// app.use(express.static(path.join(__dirname, 'client', 'dist')));
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"))
-})
+  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "client", "dist", "index.html"))
+// })
 
 // error handing middleware
 app.use((err, req, res, next) => {
