@@ -27,6 +27,7 @@ import UpdateListing from "./routes/UpdateListing";
 import Listing from "./routes/Listing";
 import Search from "./routes/Search";
 import toast, { Toaster } from "react-hot-toast";
+import PageNotFound from "./routes/PageNotFound";
 
 const queryClient = new QueryClient();
 
@@ -76,6 +77,10 @@ const router = createBrowserRouter([
       {
         path: "/search",
         element: <Search />,
+      },
+      {
+        path: "*",
+        element: <PageNotFound />,
       },
     ],
   },

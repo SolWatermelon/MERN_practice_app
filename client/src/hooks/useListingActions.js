@@ -13,7 +13,13 @@ export const useListingActions = (listingId) => {
     queryKey: ["perVerifiedListing", listingId],
     queryFn: async ({ queryKey }) => {
       const [, id] = queryKey;
-      if (!id || !currentUser?._id) return null;
+      if (!id || !currentUser?._id) {
+        console.log("Missing id or currentUser._id:", {
+          id,
+          userId: currentUser?._id,
+        });
+        return null;
+      }
       const res = await axios.get(`/api/user/listings/${currentUser._id}`);
       return res.data.listings.find((listing) => listing._id === id) || null;
     },
@@ -28,6 +34,8 @@ export const useListingActions = (listingId) => {
     queryKey: ["perUnverifiedListing", listingId],
     queryFn: async ({ queryKey }) => {
       const [, id] = queryKey;
+      console.log("id", id);
+      console.log("currentUser?._id", currentUser?._id);
       if (!id || !currentUser?._id) return null;
       const res = await axios.get(`/api/listing/get/${listingId}`);
       return res.data.listing || null;
@@ -71,13 +79,16 @@ export const useListingActions = (listingId) => {
   const refetchAllListingsQuery = async () => {
     try {
       const res = await getAllListingsQuery.refetch();
+      console.log("res", res);
       if (res.isSuccess) {
+        console.log("res.isSuccess", res.isSuccess);
         dispatch(acquireAllListings(res.data.allListings));
       }
       if (res.isError) {
         throw new Error("抓取資料錯誤");
       }
     } catch (error) {
+      console.log("error", error);
       throw new Error(error?.message);
     }
   };

@@ -29,11 +29,12 @@ const HomeComponent = () => {
       );
     }
   }, [isAllListingsSuccess]);
+
   return (
     <>
     {isAllListingsPending && <p>讀取中...</p>}
       {isAllListingsSuccess && (
-        <div className="home-page">
+        <div className="home-page mb-4">
           <HomeTop swiperPic={swiperPics[4]}/>
           <HomeSwiper swiperPics={swiperPics} />
           <HomeListing />
