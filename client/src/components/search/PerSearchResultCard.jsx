@@ -13,6 +13,7 @@ const PerSearchResultCard = ({ listing }) => {
             src={listing?.imageUrls[0].url}
             alt="property_pic"
             className="w-full h-48 object-cover"
+            loading="lazy"
           />
           <div className="p-4">
             <h3 className="text-lg font-semibold mb-2">{listing?.name}</h3>

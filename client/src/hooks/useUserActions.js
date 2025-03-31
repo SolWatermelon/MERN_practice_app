@@ -110,9 +110,9 @@ export const useUserActions = (userRef) => {
     mutationFn: (userSigninData) => signUp(userSigninData),
     onSuccess: () => {
       toast.success("註冊成功");
-      setTimeout(() => {
+      // setTimeout(() => {
         navigate("/sign-in", { replace: true });
-      }, 1000);
+      // }, 1000);
     },
     onError: (error) => {
       toast.error(

@@ -55,6 +55,7 @@ const HomeTop = ({ swiperPic }) => {
                 "https://res.cloudinary.com/dr6qrkwdk/image/upload/v1743186331/avatarphoto_67e6e97c2f9931339c1dbca5.jpg"
               }  `}
               alt="header_pic"
+              loading="lazy"
             />
           </div>
         </Link>

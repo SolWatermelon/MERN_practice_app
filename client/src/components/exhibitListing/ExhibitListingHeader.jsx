@@ -35,6 +35,7 @@ const ExhibitListingHeader = ({ unverifiedPerListingData }) => {
                 src={unverifiedPerListingData?.imageUrls[0].url}
                 alt={`Gallery thumbnail 0`}
                 className="w-full rounded-lg object-cover transition-transform duration-300 group-hover:scale-105 "
+                loading="lazy"
               />
             </div>
           }
@@ -70,6 +71,7 @@ const ExhibitListingHeader = ({ unverifiedPerListingData }) => {
                     src={image.url}
                     alt={`Gallery image ${index + 1}`}
                     className="max-h-full max-w-[70%] mx-auto object-contain"
+                    loading="lazy"
                   />
                 </div>
               </SwiperSlide>

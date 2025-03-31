@@ -19,9 +19,9 @@ const OAuth = () => {
     mutationFn: () => googleSignIn(),
     onSuccess: (data) => {
       dispatch(signInSuccess(data));
-      setTimeout(() => {
+      // setTimeout(() => {
         navigate("/");
-      }, 1000);
+      // }, 1000);
       toast.success("登入成功");
     },
     onError: (error) => {
@@ -46,7 +46,7 @@ const OAuth = () => {
       disabled={mutation.isPending}
       className="w-full font-medium py-3 px-4 border-4 border-darkorange hover:border-hoverlighttext text-gray-800 rounded-full transition-colors"
     >
-      Sign with Google
+      Continue with Google
     </button>
   );
 };

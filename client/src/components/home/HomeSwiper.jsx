@@ -34,6 +34,7 @@ const HomeSwiper = ({ swiperPics }) => {
                     className="w-full h-full mx-auto object-cover"
                     src={pic.url}
                     alt={`homepage_pic_${index}`}
+                    loading="lazy"
                   />
                 </SwiperSlide>
               );

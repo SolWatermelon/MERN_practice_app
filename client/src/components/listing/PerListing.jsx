@@ -46,6 +46,7 @@ const PerListing = ({ setCanBroswedData, setAllData, listing }) => {
                 className="w-[50px]"
                 src={imageUrls[0]?.url}
                 alt={imageUrls[0]?.url}
+                loading="lazy"
               />
             </Link>
           ) : (

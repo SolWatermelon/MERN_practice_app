@@ -30,9 +30,9 @@ const SignIn = () => {
     onSuccess: (data) => {
       toast.success("登入成功");
       dispatch(signInSuccess(data));
-      setTimeout(() => {
+      // setTimeout(() => {
         navigate("/", { replace: true });
-      }, 1000);
+      // }, 1000);
     },
     onError: (error) => {
       toast.error(

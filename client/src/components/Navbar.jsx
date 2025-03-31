@@ -162,6 +162,7 @@ const Navbar = () => {
                       className="w-8 h-10 rounded-full object-cover bg-gray-300 flex items-center justify-center relative"
                       src={currentUser?.avatar}
                       alt="profile_pic"
+                      loading="lazy"
                     />
                     <span className="absolute top-2 w-3 h-3 bg-red-400 rounded-full"></span>
                   </div>

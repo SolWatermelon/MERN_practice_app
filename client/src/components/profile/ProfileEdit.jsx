@@ -42,6 +42,7 @@ const ProfileEdit = () => {
             className="w-full h-full object-cover cursor-pointer"
             src={currentUser?.avatar}
             alt="profile_pic"
+            loading="lazy"
           />
           <div
             onClick={handleAvatar}

@@ -8,6 +8,7 @@ const Pic = ({ url, index }) => {
           className="w-full h-[100px] object-contain"
           src={url}
           alt={`listing_pic${index}`}
+          loading="lazy"
         />
       </div>
     </div>

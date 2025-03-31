@@ -18,6 +18,7 @@ const About = () => {
     "Mongoose",
     "JWT",
     "Google OAuth",
+    "Postman"
   ];
 
   return (
