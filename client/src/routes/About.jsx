@@ -78,7 +78,7 @@ const About = () => {
             </p>
             <p>
               在開發過程中，我使用Postman測試API，並透過
-              Render部署後端，使前後端可獨立運行。
+              Render部署網頁。
             </p>
           </div>
         </div>
