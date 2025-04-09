@@ -194,3 +194,8 @@
 - 房客留言與評價功能
 - 載入畫面時skeleton設計
 - tooltip設計
+
+## 📫 聯絡方式
+GitHub: @SolWatermelon
+
+Email: iamwatermelon0430@gmail.com
