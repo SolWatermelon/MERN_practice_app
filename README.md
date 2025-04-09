@@ -9,6 +9,8 @@ Render免費版會讓Server定時進入休眠狀態，因此有時載入會特�
      
      https://render.com/docs/free?_gl=1*1xvo6ra*_gcl_au*MTc3MjQ1NjgyNi4xNzQzMzQxODEy*_ga*NDk2ODc2NDUuMTc0MzM0MDIyMw..*_ga_QK9L9QJC5N*MTc0MzQzNDk4My4xMS4xLjE3NDM0MzUwNTcuNjAuMC4w#free-web-services
 
+### 網頁狀態
+https://stats.uptimerobot.com/dcbZVcDaVl
 
 ### 網頁連結
 https://mern-practice-app.onrender.com
